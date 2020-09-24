@@ -41,7 +41,7 @@
       }
     },
     components:{
-      'Foot': Foot
+      Foot: Foot
     },
     methods: {
       login() {
@@ -56,7 +56,7 @@
             console.log(response)
             if(response.data != ""){
               //使用vue-router 路由到指定页面，该方法称之为编程式导航
-              sessionStorage.setItem("username", response.data)
+              localStorage.setItem("username", response.data)
               this_.$router.push("/main/"+this_.username);
             }else{
               this_.$message.error("账号密码错误");

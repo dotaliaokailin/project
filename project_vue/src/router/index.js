@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Login from '../views/Login'
 import Main from '../views/Main'
 import Error from '../views/Error'
+import Calendar from '../views/tools/Calendar'
 
 Vue.use(Router)
 
@@ -40,8 +41,18 @@ const router =  new Router({
       props: true,
       meta: {
         role: 'user'
-      }
-    }
+      },
+      children:[
+        {//日历
+          path: '/tools/calendar',
+          name: 'Calendar',
+          component: Calendar,
+          meta: {
+            role: 'user'
+          },
+        }
+      ]
+    },
   ]
 })
 
@@ -51,7 +62,7 @@ router.beforeEach((to,from,next) =>{
   if(to.name == 'Login' || to.name == 'Error') {
     next()
   }else{
-    let username  = sessionStorage.getItem("username");
+    let username  = localStorage.getItem("username");
     if(username !== null && username !==undefined && username.length > 0  && username.includes(to.meta.role)){
       next();
     }else{
@@ -60,4 +71,9 @@ router.beforeEach((to,from,next) =>{
   }
 })
 
+
+const originalPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 export default router;
