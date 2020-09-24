@@ -13,7 +13,7 @@
                   </template>
                   <el-menu-item-group>
                     <span slot="title">分组一</span>
-                    <el-menu-item index="1-1" @click="menu_item_click">选项1</el-menu-item>
+                    <el-menu-item index="1-1"><router-link to="/tools/calendar">选项1</router-link></el-menu-item>
                     <el-menu-item index="1-2">选项2</el-menu-item>
                   </el-menu-item-group>
                   <el-menu-item-group title="分组2">
@@ -45,7 +45,7 @@
             </div>
           </el-aside>
           <el-container>
-            <el-main>Main</el-main>
+            <el-main><router-view></router-view></el-main>
             <el-footer><Foot></Foot></el-footer>
           </el-container>
         </el-container>
@@ -88,9 +88,8 @@
             console.log(response);
           });
         },
-        menu_item_click: function () {
-          console.log(1111)
-          this.$router.push('/tools/calendar');
+        menu_item_click: function (item) {
+          console.log(item)
         }
       },
       created: function () {
