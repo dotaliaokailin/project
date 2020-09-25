@@ -1,0 +1,19 @@
+{
+  "path": "/main/:name",
+  "name": "Main",
+  "component": "Main",
+  "props": "true",
+  "meta": {
+    "role": "user"
+  },
+  "children":[
+    {
+      "path": "/tools/calendar",
+      "name": "Calendar",
+      "component": "Calendar",
+      "meta": {
+        "role": "user"
+      }
+    }
+  ]
+}
