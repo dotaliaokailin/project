@@ -32,7 +32,9 @@ public enum ResultCodeEnum implements CustomResultCode{
     NO_PERMISSION(3001, "没有权限"),
 
     /*异常错误*/
-    NO_FOUND_USER_EXCEPTION(9000, "用户不存在");
+    NO_FOUND_USER_EXCEPTION(9000, "用户不存在"),
+    NO_FOUND_USER_PAGE_EXCEPTION(9001, "用户数据为空"),
+    NO_FOUND_DEPARTMENTS(9100, "部门不存在");
 
     private Integer code;
     private String message;

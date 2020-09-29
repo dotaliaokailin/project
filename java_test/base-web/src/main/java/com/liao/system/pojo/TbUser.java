@@ -2,6 +2,8 @@ package com.liao.system.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
@@ -68,5 +70,9 @@ public class TbUser implements Serializable {
     @ApiModelProperty(value = "部门id")
     private Long departmentId;
 
+    @ApiModelProperty(value = "是否删除")
+    private Integer deleted;
 
+    @TableField(exist = false)
+    private String deptName;
 }

@@ -1,7 +1,11 @@
 package com.liao.system.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+
+import java.beans.Transient;
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
@@ -45,5 +49,7 @@ public class TbDepartment implements Serializable {
     @ApiModelProperty(value = "系主任id，关联用户表")
     private Long mgrId;
 
-
+    @ApiModelProperty(value = "部门的人数")
+    @TableField(exist = false)//实体类中引入非数据库字段,用来接收分组查询的组的人数
+    private Long deptCount;
 }

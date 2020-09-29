@@ -16,5 +16,4 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TbUserRoleServiceImpl extends ServiceImpl<TbUserRoleMapper, TbUserRole> implements TbUserRoleService {
-
 }

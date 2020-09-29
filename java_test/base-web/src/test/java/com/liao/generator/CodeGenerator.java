@@ -151,6 +151,7 @@ public class CodeGenerator {
         //设置那些表需要自动生成
         strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
         //strategy.setControllerMappingHyphenStyle(true);
+        //忽略表中前缀
         //strategy.setTablePrefix(pc.getModuleName() + "_");
         mpg.setStrategy(strategy);
         //mpg.setTemplateEngine(new FreemarkerTemplateEngine());

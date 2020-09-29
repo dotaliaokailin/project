@@ -2,7 +2,8 @@
 SQLyog Ultimate v11.42 (64 bit)
 MySQL - 5.7.28 : Database - test
 *********************************************************************
-*/
+*/
+
 
 /*!40101 SET NAMES utf8 */;
 
@@ -376,6 +377,7 @@ CREATE TABLE `tb_user` (
   `password` varchar(128) NOT NULL COMMENT '密码',
   `birth` date DEFAULT NULL,
   `department_id` bigint(20) DEFAULT '1' COMMENT '部门id',
+  `deleted` int(11) NOT NULL DEFAULT '0' COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=189 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='用户表';
 
