@@ -7,7 +7,7 @@
       </template>
       <MenuTree :menuList="item.children"></MenuTree>
     </el-submenu>
-      <el-menu-item v-else :index="item.id+''" :key="item.id+''" :disabled="item.disabled" :route="item.url">
+      <el-menu-item v-else :index="item.url+''" :key="item.url+''" :disabled="item.disabled" :route="item.url">
         <i :class="item.icon"></i>
         <span slot="title">{{item.menuName}}</span>
       </el-menu-item>

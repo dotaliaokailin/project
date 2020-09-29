@@ -3,3 +3,13 @@ html,body,#app{
   padding: 0;
   margin: 0;
 }
+/**
+  表单lable与输入框不对齐
+  原.el-form-item__label加了float:none
+ */
+.el-form-item__label {
+  float: left!important;
+}
+.el-main {
+  line-height: 30px!important;
+}

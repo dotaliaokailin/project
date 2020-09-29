@@ -23,12 +23,14 @@
             <el-button class="arrow_btn" :icon="isCollapse ? 'el-icon-d-arrow-right' : 'el-icon-d-arrow-left'" circle></el-button>
           </el-tooltip>
         </div>
-        <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" :collapse-transition="false">
+        <el-menu :default-active="activePath" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" :collapse-transition="false" :router="true">
           <!-- 菜单树-->
           <MenuTree :menuList="menuList"></MenuTree>
         </el-menu>
       </el-aside>
-      <el-main>Main</el-main>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
@@ -39,6 +41,7 @@
       name: "Main",
       data(){
         return {
+          activePath : '/main',
           isCollapse : false,
           sidebar_i : 'el-icon-d-arrow-left',
           menuList: [
@@ -496,6 +499,7 @@
       },
       created() {
         //this.getMenuDate();
+        this.activePath = window.sessionStorage.getItem("activePath");
       }
     }
 </script>
