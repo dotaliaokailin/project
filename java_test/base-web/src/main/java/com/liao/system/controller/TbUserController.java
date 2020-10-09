@@ -14,6 +14,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,11 +55,11 @@ public class TbUserController {
     @ApiOperation(value = "用户信息", notes = "根据ID查询用户信息")
     public Result getUserById(@PathVariable("id") Long id){
         TbUser user = tbUserService.getById(id);
-        if(null != user){
+        if(null != user)
             return Result.ok().data("user", user);
-        }else{
+        else
             throw new BusinessException(ResultCodeEnum.NO_FOUND_USER_EXCEPTION.getCode(), ResultCodeEnum.NO_FOUND_USER_EXCEPTION.getMessage());
-        }
+
     }
 
     /**
@@ -71,11 +72,11 @@ public class TbUserController {
    @ApiOperation(value = "用户分页", notes = "用户分页列表")
    public Result usersPage(@RequestParam(required = true, defaultValue = "1") Integer currentPage, @RequestParam(required = true, defaultValue = "10") Integer pageSize){
        Page<TbUser> page = tbUserService.page(new Page<>(currentPage, pageSize));
-       if(null != page){
+       if(null != page)
            return Result.ok().data("total",page.getTotal()).data("userList", page.getRecords());
-       }else{
+       else
            throw new BusinessException(ResultCodeEnum.NO_FOUND_USER_PAGE_EXCEPTION.getCode(), ResultCodeEnum.NO_FOUND_USER_PAGE_EXCEPTION.getMessage());
-       }
+
    }
 
     /**
@@ -89,13 +90,23 @@ public class TbUserController {
     @ApiOperation(value = "用户条件分页", notes = "用户条件分页列表")
     public Result findUserPage(@RequestParam(required = true, defaultValue = "1") Integer currentPage, @RequestParam(required = true, defaultValue = "10") Integer pageSize
             , @RequestBody UserVo userVo){
-        System.out.println("currentPage = [" + currentPage + "], pageSize = [" + pageSize + "], userVo = [" + userVo + "]");
         IPage<TbUser> page = tbUserService.findUserPage(currentPage, pageSize, userVo);
-        if(null != page){
+        if(null != page)
             return Result.ok().data("total",page.getTotal()).data("userList", page.getRecords());
-        }else{
+        else
             throw new BusinessException(ResultCodeEnum.NO_FOUND_USER_PAGE_EXCEPTION.getCode(), ResultCodeEnum.NO_FOUND_USER_PAGE_EXCEPTION.getMessage());
-        }
+
+    }
+
+
+    @PostMapping("/saveOrUpdate")
+    @ApiOperation(value = "用户新增修改", notes = "用户新增修改操作")
+    public Result saveOrUpdate(@RequestBody TbUser tbUser){
+        boolean flag = tbUserService.saveOrUpdate(tbUser);
+        if(flag)
+            return Result.ok().code(ResultCodeEnum.OP_SUCCESS.getCode()).message(ResultCodeEnum.OP_SUCCESS.getMessage());
+        else
+            throw new BusinessException(ResultCodeEnum.OP_FAIL.getCode(), ResultCodeEnum.OP_FAIL.getMessage());
     }
 }
 

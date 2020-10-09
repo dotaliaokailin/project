@@ -3,6 +3,8 @@ package com.liao.response;
 public enum ResultCodeEnum implements CustomResultCode{
     /* 成功 */
     SUCCESS(200, "成功"),
+    OP_SUCCESS(201, "操作成功"),
+    OP_FAIL(202, "操作失败"),
 
     /* 默认失败 */
     COMMON_FAIL(999, "失败"),

@@ -17,4 +17,5 @@ import com.liao.system.vo.UserVo;
  */
 public interface TbUserService extends IService<TbUser> {
     public IPage<TbUser> findUserPage(Integer currentPage, Integer pageSize, UserVo userVo);
+
 }
