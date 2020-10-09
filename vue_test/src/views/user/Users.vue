@@ -43,7 +43,7 @@
           <el-form-item  style="padding-left: 40px">
             <el-button icon="el-icon-refresh" @click="resertUserVo">重置</el-button>
             <el-button type="primary" icon="el-icon-search" @click="getUserPageCondition(1,10)">查询</el-button>
-            <el-button type="success" icon="el-icon-plus">添加</el-button>
+            <el-button type="success" icon="el-icon-plus" @click="show">添加</el-button>
             <el-button type="info" icon="el-icon-download">导出</el-button>
           </el-form-item>
         </el-form>
@@ -75,7 +75,7 @@
             label="性别"
             width="60">
             <template slot-scope="scope">
-              {{scope.row.sex == 0 ? '男' : scope.row.sex == 1 ? '女' : '保密'}}
+              <el-tag type="success" size="mini">{{scope.row.sex == 0 ? '男' : scope.row.sex == 1 ? '女' : '保密'}}</el-tag>
             </template>
           </el-table-column>
           <el-table-column
@@ -129,6 +129,8 @@
           :total="total">
         </el-pagination>
       </el-card>
+      <!-- 新增编辑弹框子组件 -->
+      <add-or-update :addOrUpdateVisible="addOrUpdateVisible" @changeShow="showAddOrUpdate" ref="addOrUpdateRef"></add-or-update>
     </div>
 </template>
 
@@ -136,6 +138,8 @@
     import {userPage} from '../../api/userApi'
     import {findDeptAndCount} from "../../api/department";
     import {findUserPage} from '../../api/userApi'
+    // 引入子组件
+    import AddOrUpdate from '../user/AddUser'
 
     export default {
       name: "Users",
@@ -152,8 +156,14 @@
           total: 0,
           pageSize: 10,
           userList: [],
-          departments: []
+          departments: [],
+          // 控制新增编辑弹窗的显示与隐藏
+          addOrUpdateVisible: false
         }
+      },
+      // 使用子组件
+      components:{
+        AddOrUpdate
       },
       methods: {
         onSubmit() {
@@ -192,6 +202,18 @@
           this.currentPage = 1;
           this.pageSize = 10;
           this.getUserPageCondition(this.currentPage,this.pageSize);
+        },
+        // 按钮点击事件 显示新增编辑弹窗组件
+        show(){
+          this.addOrUpdateVisible = true
+        },
+        // 监听 子组件弹窗关闭后触发，有子组件调用
+        showAddOrUpdate(data){
+          if(data === 'false'){
+            this.addOrUpdateVisible = false
+          }else{
+            this.addOrUpdateVisible = true
+          }
         }
       },
       created() {
