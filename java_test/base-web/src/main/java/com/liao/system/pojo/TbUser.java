@@ -6,6 +6,8 @@ import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -33,6 +35,7 @@ public class TbUser implements Serializable {
     @ApiModelProperty(value = "用户名")
     private String username;
 
+    @ApiModelProperty(value = "昵称")
     private String nickname;
 
     @ApiModelProperty(value = "邮箱")
@@ -65,6 +68,8 @@ public class TbUser implements Serializable {
     @ApiModelProperty(value = "密码")
     private String password;
 
+    @ApiModelProperty(value = "生日")
+    @JsonFormat(pattern = "yyyy年MM月dd日", timezone = "GMT+8")
     private Date birth;
 
     @ApiModelProperty(value = "部门id")
@@ -73,6 +78,9 @@ public class TbUser implements Serializable {
     @ApiModelProperty(value = "是否删除")
     private Integer deleted;
 
+    /**
+     * 部门名称
+     */
     @TableField(exist = false)
     private String deptName;
 }
