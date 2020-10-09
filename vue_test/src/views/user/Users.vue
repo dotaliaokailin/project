@@ -41,9 +41,9 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item  style="padding-left: 40px">
-            <el-button icon="el-icon-refresh" @click="resertUserVo">重置</el-button>
+            <el-button icon="el-icon-refresh" @click="resetUserVo">重置</el-button>
             <el-button type="primary" icon="el-icon-search" @click="getUserPageCondition(1,10)">查询</el-button>
-            <el-button type="success" icon="el-icon-plus" @click="show">添加</el-button>
+            <el-button type="success" icon="el-icon-plus" @click="show('')">添加</el-button>
             <el-button type="info" icon="el-icon-download">导出</el-button>
           </el-form-item>
         </el-form>
@@ -94,6 +94,9 @@
             prop="birth"
             label="生日"
             width="180">
+            <template slot-scope="scope">
+              {{scope.row.birth}}
+            </template>
           </el-table-column>
           <el-table-column
             prop="email"
@@ -113,10 +116,12 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="操作">
-            <el-button type="primary" icon="el-icon-edit"></el-button>
+            label="操作" >
+            <template slot-scope="scope"><!-- 通过作用域插槽获取scope row信息-->
+            <el-button type="primary" icon="el-icon-edit" @click="show(scope.row)"></el-button>
             <el-button type="danger" icon="el-icon-delete"></el-button>
             <el-button type="warning" icon="el-icon-setting"></el-button>
+            </template>
           </el-table-column>
         </el-table>
         <el-pagination style="padding-top: 20px"
@@ -130,7 +135,7 @@
         </el-pagination>
       </el-card>
       <!-- 新增编辑弹框子组件 -->
-      <add-or-update :addOrUpdateVisible="addOrUpdateVisible" @changeShow="showAddOrUpdate" ref="addOrUpdateRef"></add-or-update>
+      <add-or-update :addOrUpdateVisible="addOrUpdateVisible" @changeShow="showAddOrUpdate" ref="addOrUpdateRef" :departments="departments" :title="title" :tbUser="editUserForm"></add-or-update>
     </div>
 </template>
 
@@ -139,8 +144,7 @@
     import {findDeptAndCount} from "../../api/department";
     import {findUserPage} from '../../api/userApi'
     // 引入子组件
-    import AddOrUpdate from '../user/AddUser'
-
+    import AddOrUpdate from '../user/AddUser';
     export default {
       name: "Users",
       data() {
@@ -158,12 +162,25 @@
           userList: [],
           departments: [],
           // 控制新增编辑弹窗的显示与隐藏
-          addOrUpdateVisible: false
+          addOrUpdateVisible: false,
+          title: '',
+          editUserForm:{
+            id: '',
+            username: '',
+            nickname: '',
+            email: '',
+            phoneNumber: '',
+            sex: '',
+            avatar: '',
+            birth: '',
+            password: '',
+            departmentId: ''
+          }
         }
       },
       // 使用子组件
       components:{
-        AddOrUpdate
+        AddOrUpdate,
       },
       methods: {
         onSubmit() {
@@ -193,7 +210,8 @@
           this.userList = data.data.userList;
           this.total = data.data.total;
         },
-        resertUserVo() {
+        //重置表单
+        resetUserVo() {
           this.userVo.departmentId = '';
           this.userVo.username = '';
           this.userVo.nickname = '';
@@ -204,15 +222,31 @@
           this.getUserPageCondition(this.currentPage,this.pageSize);
         },
         // 按钮点击事件 显示新增编辑弹窗组件
-        show(){
-          this.addOrUpdateVisible = true
+        show(row){
+          this.title = row == '' ? '新增用户' : '修改用户';
+          if(row != ''){
+            this.editUserForm = row;
+          }else {
+            this.editUserForm.id = '';
+            this.editUserForm.username = '';
+            this.editUserForm.nickname = '';
+            this.editUserForm.email = '';
+            this.editUserForm.phoneNumber = '';
+            this.editUserForm.sex = '';
+            this.editUserForm.avatar = '';
+            this.editUserForm.birth = '';
+            this.editUserForm.password = '';
+            this.editUserForm.departmentId = '';
+            this.getUserPageCondition(this.currentPage,this.pageSize);
+          }
+          this.addOrUpdateVisible = true;
         },
         // 监听 子组件弹窗关闭后触发，有子组件调用
         showAddOrUpdate(data){
           if(data === 'false'){
-            this.addOrUpdateVisible = false
+            this.addOrUpdateVisible = false;
           }else{
-            this.addOrUpdateVisible = true
+            this.addOrUpdateVisible = true;
           }
         }
       },

@@ -37,3 +37,16 @@ export const findUserPage = (currentPage, pageSize ,userVo) => {
     data: userVo
   });
 }
+
+/**
+ * 新增修改用户
+ * @param userVo
+ * @returns {AxiosPromise}
+ */
+export const saveOrUpdate = (tbUser) => {
+  return request({
+    url: '/system/tb-user/saveOrUpdate',
+    method: 'POST',
+    data: tbUser
+  });
+}
