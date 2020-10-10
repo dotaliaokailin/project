@@ -1,5 +1,8 @@
 package com.liao.system.pojo;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
+import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.metadata.BaseRowModel;
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
 
@@ -30,57 +33,88 @@ public class TbUser implements Serializable {
 
     @ApiModelProperty(value = "用户ID")
     @TableId(value = "id", type = IdType.AUTO)
+    @ExcelIgnore
     private Long id;
 
     @ApiModelProperty(value = "用户名")
+    @ExcelProperty(value = "用户名", index = 0)
     private String username;
 
     @ApiModelProperty(value = "昵称")
+    @ExcelProperty(value = "昵称", index = 1)
     private String nickname;
 
     @ApiModelProperty(value = "邮箱")
+    @ExcelProperty(value = "邮箱", index = 2)
     private String email;
 
     @ApiModelProperty(value = "头像")
+    @ExcelIgnore
     private String avatar;
 
     @ApiModelProperty(value = "联系电话")
+    @ExcelProperty(value = "联系电话", index = 3)
     private String phoneNumber;
 
     @ApiModelProperty(value = "状态 0锁定 1有效")
+    @ExcelIgnore
     private Integer status;
 
     @ApiModelProperty(value = "创建时间")
+    @ExcelIgnore
     private Date createTime;
 
     @ApiModelProperty(value = "修改时间")
+    @ExcelIgnore
     private Date modifiedTime;
 
     @ApiModelProperty(value = "性别 0男 1女 2保密")
+    @ExcelIgnore
     private Integer sex;
 
     @ApiModelProperty(value = "盐")
+    @ExcelIgnore
     private String salt;
 
     @ApiModelProperty(value = "0:超级管理员，1：系统用户")
+    @ExcelIgnore
     private Integer type;
 
     @ApiModelProperty(value = "密码")
+    @ExcelIgnore
     private String password;
 
     @ApiModelProperty(value = "生日")
     @JsonFormat(pattern = "yyyy年MM月dd日", timezone = "GMT+8")
+    @ExcelProperty(value = "生日", index = 4)
     private Date birth;
 
     @ApiModelProperty(value = "部门id")
+    @ExcelIgnore
     private Long departmentId;
 
     @ApiModelProperty(value = "是否删除")
+    @ExcelIgnore
     private Integer deleted;
 
     /**
      * 部门名称
      */
     @TableField(exist = false)
+    @ExcelProperty(value = "部门", index = 5)
     private String deptName;
+
+    /**
+     * 性别
+     */
+    @TableField(exist = false)
+    @ExcelProperty(value = "性别", index = 6)
+    private String sexName;
+
+    /**
+     * 启用禁用
+     */
+    @TableField(exist = false)
+    @ExcelProperty(value = "启用禁用", index = 7)
+    private String statusName;
 }

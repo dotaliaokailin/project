@@ -5,6 +5,10 @@ public enum ResultCodeEnum implements CustomResultCode{
     SUCCESS(200, "成功"),
     OP_SUCCESS(201, "操作成功"),
     OP_FAIL(202, "操作失败"),
+    DELETE_SUCCESS(203, "删除成功"),
+    DELETE_FAIL(204, "删除失败"),
+    EXPORT_SUCCESS(205, "导出成功"),
+    EXPORT_FAIL(206, "导出失败"),
 
     /* 默认失败 */
     COMMON_FAIL(999, "失败"),

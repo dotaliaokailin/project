@@ -1,7 +1,7 @@
 package com.liao.system.controller;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.liao.handler.BusinessException;
@@ -9,16 +9,19 @@ import com.liao.response.Result;
 import com.liao.response.ResultCodeEnum;
 import com.liao.system.pojo.TbUser;
 import com.liao.system.service.TbUserService;
+import com.liao.system.util.ExcelUtil;
 import com.liao.system.vo.UserVo;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.UUID;
 
 /**
  * <p>
@@ -98,7 +101,11 @@ public class TbUserController {
 
     }
 
-
+    /**
+     * 新增或修改用户
+     * @param tbUser
+     * @return
+     */
     @PostMapping("/saveOrUpdate")
     @ApiOperation(value = "用户新增修改", notes = "用户新增修改操作")
     public Result saveOrUpdate(@RequestBody TbUser tbUser){
@@ -107,6 +114,29 @@ public class TbUserController {
             return Result.ok().code(ResultCodeEnum.OP_SUCCESS.getCode()).message(ResultCodeEnum.OP_SUCCESS.getMessage());
         else
             throw new BusinessException(ResultCodeEnum.OP_FAIL.getCode(), ResultCodeEnum.OP_FAIL.getMessage());
+    }
+
+    /**
+     * 删除用户
+     * @param id
+     * @return
+     */
+    @GetMapping("/deleteUser")
+    @ApiOperation(value = "用户删除", notes = "用户删除操作")
+    public Result deleteUser(@RequestParam("id") Long id){
+        boolean flag = tbUserService.removeById(id);
+        if(flag)
+            return Result.ok().code(ResultCodeEnum.DELETE_SUCCESS.getCode()).message(ResultCodeEnum.DELETE_SUCCESS.getMessage());
+        else
+            throw new BusinessException(ResultCodeEnum.DELETE_FAIL.getCode(), ResultCodeEnum.DELETE_FAIL.getMessage());
+    }
+
+    /**
+     * 文件下载（失败了会返回一个有部分数据的Excel）
+     */
+    @GetMapping("/download")
+    public void download(HttpServletResponse response) throws IOException {
+        ExcelUtil.download(response, "用户列表", "用户列表" , tbUserService.exportUsers(), TbUser.class);
     }
 }
 

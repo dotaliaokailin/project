@@ -7,6 +7,8 @@ import com.liao.system.pojo.TbUser;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.liao.system.vo.UserVo;
 
+import java.util.List;
+
 /**
  * <p>
  * 用户表 服务类
@@ -18,4 +20,5 @@ import com.liao.system.vo.UserVo;
 public interface TbUserService extends IService<TbUser> {
     public IPage<TbUser> findUserPage(Integer currentPage, Integer pageSize, UserVo userVo);
 
+    public List<TbUser> exportUsers();
 }

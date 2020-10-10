@@ -11,6 +11,8 @@ import com.liao.system.vo.UserVo;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 /**
  * <p>
  * 用户表 服务实现类
@@ -23,7 +25,6 @@ import org.springframework.util.StringUtils;
 public class TbUserServiceImpl extends ServiceImpl<TbUserMapper, TbUser> implements TbUserService {
     @Override
     public IPage<TbUser> findUserPage(Integer currentPage, Integer pageSize, UserVo userVo) {
-        System.out.println("currentPage = [" + currentPage + "], pageSize = [" + pageSize + "], userVo = [" + userVo + "]");
         QueryWrapper<TbUser> queryWrapper = new QueryWrapper<>();
         if(null != userVo){
             if(null != userVo.getDepartmentId()){
@@ -42,7 +43,11 @@ public class TbUserServiceImpl extends ServiceImpl<TbUserMapper, TbUser> impleme
                 queryWrapper.eq("sex", userVo.getSex());
             }
         }
-        System.out.println(queryWrapper);
         return this.baseMapper.findUserPage(new Page<TbUser>(currentPage, pageSize), queryWrapper);
+    }
+
+    @Override
+    public List<TbUser> exportUsers() {
+        return this.baseMapper.exportUsers(new QueryWrapper<TbUser>());
     }
 }

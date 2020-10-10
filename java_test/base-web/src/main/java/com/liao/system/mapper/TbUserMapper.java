@@ -9,6 +9,8 @@ import com.liao.system.pojo.TbUser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * <p>
  * 用户表 Mapper 接口
@@ -19,4 +21,6 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface TbUserMapper extends BaseMapper<TbUser> {
     public IPage<TbUser> findUserPage(Page<TbUser> page, @Param(Constants.WRAPPER) QueryWrapper<TbUser> wrapper);
+
+    public List<TbUser> exportUsers(@Param(Constants.WRAPPER) QueryWrapper<TbUser> wrapper);
 }
