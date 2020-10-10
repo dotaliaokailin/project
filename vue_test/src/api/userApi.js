@@ -50,3 +50,39 @@ export const saveOrUpdate = (tbUser) => {
     data: tbUser
   });
 }
+
+/**
+ * 删除用户
+ * @param id
+ * @returns {AxiosPromise}
+ */
+export const deleteUser = (id) => {
+  return request({
+    url: '/system/tb-user/deleteUser',
+    method: 'GET',
+    params: {
+      id
+    }
+  });
+}
+
+/**
+ * 导出用户列表
+ * @returns {Promise<AxiosResponse<any> | never>}
+ */
+export const exportUsers = () => {
+  return request({
+    url: '/system/tb-user/download',
+    method: 'GET',
+    responseType: 'blob',
+  }).then((response) => {
+    let url = window.URL.createObjectURL(new Blob([response.data]));
+    let link = document.createElement("a");
+    link.style.display = "none";
+    link.href = url;
+    link.setAttribute("download",  decodeURI(response.headers['filename']));//浏览器下载文件，decodeURI解决中文乱码
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  });
+}

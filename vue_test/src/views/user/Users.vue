@@ -44,7 +44,7 @@
             <el-button icon="el-icon-refresh" @click="resetUserVo">重置</el-button>
             <el-button type="primary" icon="el-icon-search" @click="getUserPageCondition(1,10)">查询</el-button>
             <el-button type="success" icon="el-icon-plus" @click="show('')">添加</el-button>
-            <el-button type="info" icon="el-icon-download">导出</el-button>
+            <el-button type="info" icon="el-icon-download" @click="exportExcel">导出</el-button>
           </el-form-item>
         </el-form>
         <!-- table -->
@@ -119,7 +119,7 @@
             label="操作" >
             <template slot-scope="scope"><!-- 通过作用域插槽获取scope row信息-->
             <el-button type="primary" icon="el-icon-edit" @click="show(scope.row)"></el-button>
-            <el-button type="danger" icon="el-icon-delete"></el-button>
+            <el-button type="danger" icon="el-icon-delete" @click="del(scope.row.id, scope.row.username)"></el-button>
             <el-button type="warning" icon="el-icon-setting"></el-button>
             </template>
           </el-table-column>
@@ -142,7 +142,9 @@
 <script>
     import {userPage} from '../../api/userApi'
     import {findDeptAndCount} from "../../api/department";
-    import {findUserPage} from '../../api/userApi'
+    import {findUserPage} from '../../api/userApi';
+    import {deleteUser} from '../../api/userApi';
+    import {exportUsers} from '../../api/userApi';
     // 引入子组件
     import AddOrUpdate from '../user/AddUser';
     export default {
@@ -183,9 +185,6 @@
         AddOrUpdate,
       },
       methods: {
-        onSubmit() {
-          console.log('submit!');
-        },
         handleSizeChange(val) {
           this.pageSize = val;
           //this.getUserPage();
@@ -240,6 +239,29 @@
             this.getUserPageCondition(this.currentPage,this.pageSize);
           }
           this.addOrUpdateVisible = true;
+        },
+        //删除用户方法
+        async deleteUser(id){
+          const {data} = await deleteUser(id);
+          this.common.message(data.message, data.status ? this.common.messageType.success : this.common.messageType.error, this);
+          this.getUserPageCondition(this.currentPage,this.pageSize);
+        },
+        //删除用户
+        del(id, username) {
+          this.$confirm('此操作将永久删除该用户：' + username + ', 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: this.common.messageType.warning
+          }).then(() => {
+            this.deleteUser(id);
+          }).catch(() => {
+            this.common.message('已取消删除', this.common.messageType.info, this);
+          });
+        },
+        //导出excel
+        async exportExcel(){
+          this.common.message('导出中...', this.common.messageType.warning, this);
+          await exportUsers();
         },
         // 监听 子组件弹窗关闭后触发，有子组件调用
         showAddOrUpdate(data){

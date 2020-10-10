@@ -209,11 +209,7 @@ export default {
     //新增修改
     async saveOrUpdate() {
       const {data} = await saveOrUpdate(this.tbUser);
-      this.$message({
-        showClose: true,
-        message: data.message,
-        type: data.status ? 'success' : 'error'
-      });
+      this.common.message(data.message, data.status ? this.common.messageType.success : this.common.messageType.error, this);
       if(data.status){
         this.$emit('update:visible', false);
         // 子组件调用父组件方法，并传递参数

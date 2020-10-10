@@ -12,7 +12,10 @@ import VueAxios from 'vue-axios'; // vue-axios
 import store from './store';
 import moment from 'moment';
 import 'default-passive-events';
+/* 引入公共js*/
+import common from './assets/js/common.js'
 
+Vue.prototype.common=common;
 Vue.prototype.$moment = moment;
 // 直接使用 $axios 即可
 Vue.prototype.$axios = axios;
@@ -21,6 +24,7 @@ Vue.config.productionTip = false;
 Vue.use(ElementUI);
 Vue.use(global_css);
 Vue.use(VueAxios, axios);
+
 
 
 Vue.filter('moment', function (value, formatString) {
