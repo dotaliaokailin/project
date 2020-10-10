@@ -1,7 +1,6 @@
 package com.liao.system.controller;
 
 
-import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.liao.handler.BusinessException;
@@ -17,11 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.util.UUID;
 
 /**
  * <p>
