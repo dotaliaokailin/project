@@ -3,7 +3,7 @@
     <el-header>
       <div class="main_top_left_box">
         <img src="../assets/image/logo.gif">
-        <span class="main_top_left_title">我的博客</span>
+        <span class="main_top_left_title">管理后台</span>
       </div>
       <div class="main_top_right_box">
         <el-dropdown>

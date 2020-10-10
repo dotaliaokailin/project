@@ -214,7 +214,7 @@ export default {
         this.$emit('update:visible', false);
         // 子组件调用父组件方法，并传递参数
         this.$emit('changeShow','false');
-        this.$parent.getUserPageCondition(1, 10);
+        this.$parent.getUserPageCondition(this.$parent.currentPage,this.$parent.pageSize);
       }
     },
     // 上传成功后的回调函数

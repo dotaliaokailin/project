@@ -109,9 +109,12 @@
             width="120">
             <template slot-scope="scope">
               <el-switch
-                v-model="scope.row.status == 1"
+                v-model="scope.row.status"
                 active-color="#13ce66"
-                inactive-color="#ff4949">
+                inactive-color="#ff4949"
+                :active-value="1"
+                :inactive-value="0"
+                @change="changeStatus(scope.row)">
               </el-switch>
             </template>
           </el-table-column>
@@ -135,7 +138,7 @@
         </el-pagination>
       </el-card>
       <!-- 新增编辑弹框子组件 -->
-      <add-or-update :addOrUpdateVisible="addOrUpdateVisible" @changeShow="showAddOrUpdate" ref="addOrUpdateRef" :departments="departments" :title="title" :tbUser="editUserForm"></add-or-update>
+      <add-or-update :addOrUpdateVisible="addOrUpdateVisible" @changeShow="showAddOrUpdate" ref="addOrUpdateRef" :departments="departments" :title="title" :tbUser="tbUser"></add-or-update>
     </div>
 </template>
 
@@ -145,6 +148,7 @@
     import {findUserPage} from '../../api/userApi';
     import {deleteUser} from '../../api/userApi';
     import {exportUsers} from '../../api/userApi';
+    import {saveOrUpdate} from '../../api/userApi'
     // 引入子组件
     import AddOrUpdate from '../user/AddUser';
     export default {
@@ -166,7 +170,7 @@
           // 控制新增编辑弹窗的显示与隐藏
           addOrUpdateVisible: false,
           title: '',
-          editUserForm:{
+          tbUser:{
             id: '',
             username: '',
             nickname: '',
@@ -176,7 +180,8 @@
             avatar: '',
             birth: '',
             password: '',
-            departmentId: ''
+            departmentId: '',
+            status: ''
           }
         }
       },
@@ -185,6 +190,15 @@
         AddOrUpdate,
       },
       methods: {
+        //启用禁用
+        async changeStatus(row){
+          this.tbUser = row;
+          const {data} = await saveOrUpdate(this.tbUser);
+          this.common.message(data.message, data.status ? this.common.messageType.success : this.common.messageType.error, this);
+          if(data.status){
+            this.getUserPageCondition(this.currentPage,this.pageSize);
+          }
+        },
         handleSizeChange(val) {
           this.pageSize = val;
           //this.getUserPage();
@@ -224,18 +238,19 @@
         show(row){
           this.title = row == '' ? '新增用户' : '修改用户';
           if(row != ''){
-            this.editUserForm = row;
+            this.tbUser = row;
           }else {
-            this.editUserForm.id = '';
-            this.editUserForm.username = '';
-            this.editUserForm.nickname = '';
-            this.editUserForm.email = '';
-            this.editUserForm.phoneNumber = '';
-            this.editUserForm.sex = '';
-            this.editUserForm.avatar = '';
-            this.editUserForm.birth = '';
-            this.editUserForm.password = '';
-            this.editUserForm.departmentId = '';
+            this.tbUser.id = '';
+            this.tbUser.username = '';
+            this.tbUser.nickname = '';
+            this.tbUser.email = '';
+            this.tbUser.phoneNumber = '';
+            this.tbUser.sex = '';
+            this.tbUser.avatar = '';
+            this.tbUser.birth = '';
+            this.tbUser.password = '';
+            this.tbUser.departmentId = '';
+            this.tbUser.status = '';
             this.getUserPageCondition(this.currentPage,this.pageSize);
           }
           this.addOrUpdateVisible = true;
