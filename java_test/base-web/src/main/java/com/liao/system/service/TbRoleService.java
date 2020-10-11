@@ -12,5 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2020-09-28
  */
 public interface TbRoleService extends IService<TbRole> {
-
+    public TbRole selectById(Long id);
 }

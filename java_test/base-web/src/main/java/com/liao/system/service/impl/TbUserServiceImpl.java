@@ -24,6 +24,16 @@ import java.util.List;
 @Service
 public class TbUserServiceImpl extends ServiceImpl<TbUserMapper, TbUser> implements TbUserService {
     @Override
+    public TbUser selectByUsername(String username) {
+        return this.baseMapper.selectByUsername(username);
+    }
+
+    @Override
+    public TbUser selectById(Long id) {
+        return this.baseMapper.selectById(id);
+    }
+
+    @Override
     public IPage<TbUser> findUserPage(Integer currentPage, Integer pageSize, UserVo userVo) {
         QueryWrapper<TbUser> queryWrapper = new QueryWrapper<>();
         if(null != userVo){

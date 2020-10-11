@@ -6,6 +6,8 @@ import com.liao.system.service.TbUserRoleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  * 用户角色关联表 服务实现类
@@ -16,4 +18,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TbUserRoleServiceImpl extends ServiceImpl<TbUserRoleMapper, TbUserRole> implements TbUserRoleService {
+    @Override
+    public List<TbUserRole> listByUserId(Long userId) {
+        return this.baseMapper.listByUserId(userId);
+    }
 }

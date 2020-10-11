@@ -2,6 +2,7 @@ package com.liao.system.mapper;
 
 import com.liao.system.pojo.TbRole;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * <p>
@@ -12,5 +13,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2020-09-28
  */
 public interface TbRoleMapper extends BaseMapper<TbRole> {
-
+    @Select("select * from tb_role where id = #{id}")
+    public TbRole selectById(Long id);
 }

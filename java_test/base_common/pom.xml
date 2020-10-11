@@ -12,6 +12,12 @@
     <artifactId>base_common</artifactId>
 
     <dependencies>
+        <!-- security -->
+        <!--<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>-->
+
         <!-- controller -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -16,5 +16,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TbRoleServiceImpl extends ServiceImpl<TbRoleMapper, TbRole> implements TbRoleService {
-
+    @Override
+    public TbRole selectById(Long id) {
+        return this.baseMapper.selectById(id);
+    }
 }
