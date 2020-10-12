@@ -12,13 +12,6 @@ import java.io.IOException;
 public class AliossServiceImpl implements AliossService {
     @Autowired
     private OssUtil OssUtil;
-    /**
-     * 创建存储空间
-     */
-    @Override
-    public void createBucket() {
-        OssUtil.createBucket();
-    }
 
     /**
      * 上传文件

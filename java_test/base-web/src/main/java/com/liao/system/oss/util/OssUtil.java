@@ -47,17 +47,17 @@ public class OssUtil implements InitializingBean {
     /**
      * 创建存储空间
      */
-    public void createBucket() {
-        // 创建OSSClient实例。
-        OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
+    public void createBucket(OSS ossClient) {
         //判断是否存在存储空间
         if(ossClient.doesBucketExist(bucketName)){
             throw new RuntimeException("已存在OSS存储空间:" + bucketName);
         }
-        // 创建存储空间。
-        ossClient.createBucket(bucketName);
-        // 关闭OSSClient。
-        ossClient.shutdown();
+        CreateBucketRequest createBucketRequest = new CreateBucketRequest(bucketName);
+        // 设置存储空间的权限为公共读，默认是私有。
+        createBucketRequest.setCannedACL(CannedAccessControlList.PublicRead);
+        // 设置存储空间的存储类型为低频访问类型，默认是标准类型。
+        createBucketRequest.setStorageClass(StorageClass.IA);
+        ossClient.createBucket(createBucketRequest);
     }
     /**
      * 通过文件名判断并获取OSS服务文件上传时文件的contentType
@@ -138,16 +138,13 @@ public class OssUtil implements InitializingBean {
         //上传地址
         String uploadUrl = null;
         OSS ossClient = null;
-        String fileUrl = null;
+        String fileUrl = "";
         try {
             // 创建OSSClient实例。
             ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
             //判断是否存在存储空间
-            if(ossClient.doesBucketExist(bucketName)){
-                // 创建存储空间。
-                ossClient.createBucket(bucketName);
-                //设置bucket属性
-                ossClient.setBucketAcl(bucketName, CannedAccessControlList.PublicRead);
+            if(!ossClient.doesBucketExist(bucketName)){
+                createBucket(ossClient);
             }
             //获取上传的文件流
             InputStream inputStream = file.getInputStream();
@@ -190,6 +187,10 @@ public class OssUtil implements InitializingBean {
     public void download(String fileName) throws IOException {
         // 创建OSSClient实例。
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
+        //判断是否存在存储空间
+        if(!ossClient.doesBucketExist(bucketName)){
+            createBucket(ossClient);
+        }
         // 调用ossClient.getObject返回一个OSSObject实例，该实例包含文件内容及文件元信息。
         OSSObject ossObject = ossClient.getObject(bucketName, fileName);
         // 调用ossObject.getObjectContent获取文件输入流，可读取此输入流获取其内容。
@@ -215,6 +216,10 @@ public class OssUtil implements InitializingBean {
         try{
             // 创建OSSClient实例。
             OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
+            //判断是否存在存储空间
+            if(!ossClient.doesBucketExist(bucketName)){
+                createBucket(ossClient);
+            }
             // ossClient.listObjects返回ObjectListing实例，包含此次listObject请求的返回结果。
             ObjectListing objectListing = ossClient.listObjects(bucketName);
             // objectListing.getObjectSummaries获取所有文件的描述信息。
@@ -238,6 +243,10 @@ public class OssUtil implements InitializingBean {
         try{
             // 创建OSSClient实例。
             OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
+            //判断是否存在存储空间
+            if(!ossClient.doesBucketExist(bucketName)){
+                createBucket(ossClient);
+            }
             // 删除文件。
             ossClient.deleteObject(bucketName, fileName);
 

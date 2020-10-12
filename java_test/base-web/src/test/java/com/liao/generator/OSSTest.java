@@ -18,10 +18,6 @@ public class OSSTest {
         System.out.println(ossEntity.toString());
     }
 
-    @Test
-    public void createBucket(){
-        aliossService.createBucket();
-    };
 
     @Test
     public void listFile(){

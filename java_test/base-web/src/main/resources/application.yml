@@ -27,7 +27,7 @@ mybatis-plus:
 
 alioss:
   endpoint: oss-cn-hangzhou.aliyuncs.com
-  accessKeyId: LTAI4GFXpo4dUJsHTf4VMGTm
-  accessKeySecret: umX2fo7M24HTjDQJCtSu8a5yWhlbXU
-  bucketName: my-spring
+  accessKeyId: LTAI4G84x1gLGrhfBS57kWY6
+  accessKeySecret: yfHPQT0kvjRGFxBVqeuC9nZC904sjv
+  bucketName: my-spring-test
 
