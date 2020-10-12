@@ -24,3 +24,10 @@ mybatis-plus:
   mapper-locations: classpath*:/mapper/*.xml
   type-aliases-package: com.liao.system.pojo
 
+
+alioss:
+  endpoint: oss-cn-hangzhou.aliyuncs.com
+  accessKeyId: LTAI4GFXpo4dUJsHTf4VMGTm
+  accessKeySecret: umX2fo7M24HTjDQJCtSu8a5yWhlbXU
+  bucketName: my-spring
+

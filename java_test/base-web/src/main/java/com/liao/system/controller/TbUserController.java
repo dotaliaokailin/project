@@ -131,6 +131,7 @@ public class TbUserController {
      * 文件下载（失败了会返回一个有部分数据的Excel）
      */
     @GetMapping("/download")
+    @ApiOperation(value = "导出用户列表", notes = "导出用户列表操作")
     public void download(HttpServletResponse response) throws IOException {
         ExcelUtil.download(response, "用户列表", "用户列表" , tbUserService.exportUsers(), TbUser.class);
     }

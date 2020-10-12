@@ -33,6 +33,10 @@
         <knife4j.version>2.0.2</knife4j.version>
         <!-- easyExcel -->
         <easyexcel.version>2.2.6</easyexcel.version>
+        <!-- aliyun oss 对象存储-->
+        <alioss.vsrsion>3.10.2</alioss.vsrsion>
+        <!-- 日期转换格式 -->
+        <joda-time.version>2.10.1</joda-time.version>
     </properties>
 
     <dependencyManagement>
@@ -87,6 +91,19 @@
                 <version>${easyexcel.version}</version>
             </dependency>
 
+            <!-- aliyun oss 对象存储-->
+            <dependency>
+                <groupId>com.aliyun.oss</groupId>
+                <artifactId>aliyun-sdk-oss</artifactId>
+                <version>${alioss.vsrsion}</version>
+            </dependency>
+
+            <!-- 日期转换格式 -->
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${joda-time.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

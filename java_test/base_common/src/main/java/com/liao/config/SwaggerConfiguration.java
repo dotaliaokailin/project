@@ -27,7 +27,7 @@ public class SwaggerConfiguration {
                 .groupName("接口管理")
                 .select()
                 //这里指定Controller扫描包路径
-                .apis(RequestHandlerSelectors.basePackage("com.liao.system.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.liao.system"))
                 .paths(PathSelectors.any())
                 .build();
         return docket;
