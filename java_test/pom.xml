@@ -37,6 +37,8 @@
         <alioss.vsrsion>3.10.2</alioss.vsrsion>
         <!-- 日期转换格式 -->
         <joda-time.version>2.10.1</joda-time.version>
+        <!-- hutool工具 -->
+        <hutool.version>5.4.4</hutool.version>
     </properties>
 
     <dependencyManagement>
@@ -105,6 +107,12 @@
                 <version>${joda-time.version}</version>
             </dependency>
 
+            <!-- hutool工具-->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

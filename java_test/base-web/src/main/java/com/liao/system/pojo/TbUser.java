@@ -2,6 +2,7 @@ package com.liao.system.pojo;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.annotation.write.style.*;
 import com.alibaba.excel.metadata.BaseRowModel;
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
@@ -15,6 +16,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.IndexedColors;
 
 /**
  * <p>
@@ -24,6 +27,17 @@ import lombok.EqualsAndHashCode;
  * @author liao
  * @since 2020-09-28
  */
+// 头字体设置成20
+@HeadFontStyle(fontHeightInPoints = 20)
+// 头背景设置成红色 IndexedColors.RED.getIndex()
+@HeadStyle(fillPatternType = FillPatternType.SOLID_FOREGROUND, fillForegroundColor = 10)
+// 内容的背景设置成绿色 IndexedColors.LIGHT_GREEN.getIndex()
+@ContentStyle(fillPatternType = FillPatternType.SOLID_FOREGROUND, fillForegroundColor = 42)
+// 内容字体设置成18
+@ContentFontStyle(fontHeightInPoints = 18)
+@ContentRowHeight(30)
+@HeadRowHeight(20)
+@ColumnWidth(25)
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ApiModel(value="TbUser对象", description="用户表")

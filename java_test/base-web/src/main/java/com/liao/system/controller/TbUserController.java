@@ -1,23 +1,31 @@
 package com.liao.system.controller;
 
 
+import cn.hutool.core.util.ArrayUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.liao.handler.BusinessException;
 import com.liao.response.Result;
 import com.liao.response.ResultCodeEnum;
+import com.liao.system.pojo.TbRole;
 import com.liao.system.pojo.TbUser;
+import com.liao.system.pojo.TbUserRole;
+import com.liao.system.service.TbRoleService;
+import com.liao.system.service.TbUserRoleService;
 import com.liao.system.service.TbUserService;
-import com.liao.system.util.ExcelUtil;
 import com.liao.system.vo.UserVo;
+import com.liao.util.ExcelUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -34,6 +42,11 @@ import java.io.IOException;
 public class TbUserController {
     @Autowired
     private TbUserService tbUserService;
+    @Autowired
+    private TbUserRoleService tbUserRoleService;
+    @Autowired
+    private TbRoleService tbRoleService;
+
 
     /**
      * 查询所有用户
@@ -132,8 +145,28 @@ public class TbUserController {
      */
     @GetMapping("/download")
     @ApiOperation(value = "导出用户列表", notes = "导出用户列表操作")
-    public void download(HttpServletResponse response) throws IOException {
-        ExcelUtil.download(response, "用户列表", "用户列表" , tbUserService.exportUsers(), TbUser.class);
+    public void download(HttpServletResponse response){
+        try {
+            ExcelUtil.download(response, "用户列表", "用户列表" , tbUserService.exportUsers(), TbUser.class);
+        } catch (Exception e){
+            throw new BusinessException(ResultCodeEnum.EXPORT_FAIL.getCode(), ResultCodeEnum.EXPORT_FAIL.getMessage());
+        }
+    }
+
+    /**
+     * 初始化用户角色信息
+     */
+    @GetMapping("/userRoles")
+    @ApiOperation(value = "用户所有的角色", notes = "用户所有的角色的集合")
+    public Result userRoles(@RequestParam("id") Long id){
+        Map<String, Object> resultMap = new HashMap<>();
+        //用户角色表数据转换成long[]数组，用hutool工具转成Long[],Arrays转成List<Long>
+        List<Long> roleIds = Arrays.asList(ArrayUtil.wrap(tbUserRoleService.listByUserId(id).stream().mapToLong(ur -> ur.getRoleId()).toArray()));
+        //用户拥有的角色信息
+        resultMap.put("userRoleIds", roleIds);
+        //用户未拥有的角色信息
+        resultMap.put("roles", tbRoleService.list());
+        return Result.ok().data(resultMap);
     }
 }
 
