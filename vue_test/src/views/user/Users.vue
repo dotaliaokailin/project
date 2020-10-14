@@ -123,7 +123,7 @@
             <template slot-scope="scope"><!-- 通过作用域插槽获取scope row信息-->
             <el-button type="primary" icon="el-icon-edit" @click="show(scope.row)"></el-button>
             <el-button type="danger" icon="el-icon-delete" @click="del(scope.row.id, scope.row.username)"></el-button>
-            <el-button type="warning" icon="el-icon-setting"></el-button>
+            <el-button type="warning" icon="el-icon-setting" @click="showRole(scope.row.id,scope.row.username)"></el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -138,7 +138,9 @@
         </el-pagination>
       </el-card>
       <!-- 新增编辑弹框子组件 -->
-      <add-or-update :addOrUpdateVisible="addOrUpdateVisible" @changeShow="showAddOrUpdate" ref="addOrUpdateRef" :departments="departments" :title="title" :tbUser="tbUser"></add-or-update>
+      <add-or-update :addOrUpdateVisible="addOrUpdateVisible" @changeShow="showAddOrUpdate" :departments="departments" :title="title" :tbUser="tbUser"></add-or-update>
+      <!-- 编辑用户角色弹框子组件 -->
+      <user-role :userRoleVisible="userRoleVisible" @changeShow="showUserRole" :userRoleId="userRoleId" :userRoleName="userRoleName"></user-role>
     </div>
 </template>
 
@@ -151,6 +153,7 @@
     import {saveOrUpdate} from '../../api/userApi'
     // 引入子组件
     import AddOrUpdate from '../user/AddUser';
+    import UserRole from '../user/UserRole';
     export default {
       name: "Users",
       data() {
@@ -169,6 +172,10 @@
           departments: [],
           // 控制新增编辑弹窗的显示与隐藏
           addOrUpdateVisible: false,
+          // 控制用户角色操作的显示与隐藏
+          userRoleVisible: false,
+          userRoleId: 0,
+          userRoleName: '',
           title: '',
           tbUser:{
             id: '',
@@ -188,6 +195,7 @@
       // 使用子组件
       components:{
         AddOrUpdate,
+        UserRole,
       },
       methods: {
         //启用禁用
@@ -255,10 +263,20 @@
           }
           this.addOrUpdateVisible = true;
         },
+        //操作用户的角色
+        showRole(id, username){
+          this.userRoleVisible = true;
+          this.userRoleId = id;
+          this.userRoleName = '('+ username+')角色管理';
+        },
         //删除用户方法
         async deleteUser(id){
           const {data} = await deleteUser(id);
-          this.common.message(data.message, data.status ? this.common.messageType.success : this.common.messageType.error, this);
+          if(data.status){
+            this.Message.success(data.message);
+          }else{
+            this.Message.error(data.message);
+          }
           this.getUserPageCondition(this.currentPage,this.pageSize);
         },
         //删除用户
@@ -266,24 +284,32 @@
           this.$confirm('此操作将永久删除该用户：' + username + ', 是否继续?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
-            type: this.common.messageType.warning
+            type: 'warning'
           }).then(() => {
             this.deleteUser(id);
           }).catch(() => {
-            this.common.message('已取消删除', this.common.messageType.info, this);
+            this.Message.info('已取消删除');
           });
         },
         //导出excel
         async exportExcel(){
-          this.common.message('导出中...', this.common.messageType.warning, this);
+          this.Message.warning('导出中...');
           await exportUsers();
         },
-        // 监听 子组件弹窗关闭后触发，有子组件调用
+        // 监听 修改用户 子组件弹窗关闭后触发，有子组件调用
         showAddOrUpdate(data){
           if(data === 'false'){
             this.addOrUpdateVisible = false;
           }else{
             this.addOrUpdateVisible = true;
+          }
+        },
+        // 监听 用户角色子组件弹窗关闭后触发，有子组件调用
+        showUserRole(data){
+          if(data === 'false'){
+            this.userRoleVisible = false;
+          }else{
+            this.userRoleVisible = true;
           }
         }
       },

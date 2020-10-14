@@ -1,4 +1,5 @@
-import request from '../utils/request'
+import request from '../utils/request';
+import { Message} from 'element-ui';
 
 /**
  * (已弃用)
@@ -34,7 +35,8 @@ export const findUserPage = (currentPage, pageSize ,userVo) => {
       currentPage,
       pageSize
     },
-    data: userVo
+    data: userVo,
+    headers: {'showLoading': false} //请求头加上这个不显示loading
   });
 }
 
@@ -84,5 +86,17 @@ export const exportUsers = () => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  }).catch(function (error) {
+    Message.error(error);
+  });
+}
+
+export const userRoles = (id) => {
+  return request({
+    url: '/system/tb-user/userRoles',
+    method: 'GET',
+    params: {
+      id
+    },
   });
 }

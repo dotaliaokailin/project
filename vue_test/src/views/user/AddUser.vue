@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="addUser">
     <el-dialog v-bind="$attrs" v-on="$listeners" @open="onOpen" @close="onClose" :title="title" :visible.sync="showDialog" v-if="showDialog">
       <el-row :gutter="15">
         <el-form ref="elForm" :model="tbUser" :rules="rules" size="medium" label-width="100px">
@@ -209,7 +209,11 @@ export default {
     //新增修改
     async saveOrUpdate() {
       const {data} = await saveOrUpdate(this.tbUser);
-      this.common.message(data.message, data.status ? this.common.messageType.success : this.common.messageType.error, this);
+      if(data.status){
+        this.Message.success(data.message);
+      }else{
+        this.Message.error(data.message);
+      }
       if(data.status){
         this.$emit('update:visible', false);
         // 子组件调用父组件方法，并传递参数
