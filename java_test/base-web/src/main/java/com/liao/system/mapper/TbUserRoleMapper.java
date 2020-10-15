@@ -18,4 +18,7 @@ public interface TbUserRoleMapper extends BaseMapper<TbUserRole> {
 
     @Select("select * from tb_user_role where user_id = #{userId}")
     public List<TbUserRole> listByUserId(Long userId);
+
+    @Select("delete from tb_user_role where user_id = #{userId}")
+    public void removeByUserId(Long userId);
 }

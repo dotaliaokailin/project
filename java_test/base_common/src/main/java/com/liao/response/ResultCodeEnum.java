@@ -11,6 +11,8 @@ public enum ResultCodeEnum implements CustomResultCode{
     EXPORT_FAIL(206, "导出失败"),
     UPLOAD_SUCCESS(207, "上传成功"),
     UPLOAD_FAIL(208, "上传失败"),
+    AUTHORIZATION_SUCCESS(209, "授权成功"),
+    AUTHORIZATION_FAIL(210, "授权失败"),
 
     /* 默认失败 */
     COMMON_FAIL(999, "失败"),

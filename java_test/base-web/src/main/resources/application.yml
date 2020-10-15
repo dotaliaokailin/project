@@ -11,7 +11,7 @@ spring:
     time-zone: GMT+8
 
 server:
-  port: 8081
+  port: 9091
 
 mybatis-plus:
   configuration:

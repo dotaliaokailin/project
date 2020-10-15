@@ -18,6 +18,7 @@ import com.liao.util.ExcelUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -167,6 +168,25 @@ public class TbUserController {
         //用户未拥有的角色信息
         resultMap.put("roles", tbRoleService.list());
         return Result.ok().data(resultMap);
+    }
+
+    /**
+     * 操作用户角色
+     */
+    @PostMapping("/addUserRoles")
+    @ApiOperation(value = "操作用户角色", notes = "操作用户角色接口")
+    public Result addUserRoles(@RequestBody Long[] list, @RequestParam("id") Long id){
+        try {
+            tbUserRoleService.removeByUserId(id);
+            for (int i = 0; i < list.length; i++) {
+                tbUserRoleService.save(new TbUserRole(id, list[i]));
+            }
+        }catch (Exception e){
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            throw new BusinessException(ResultCodeEnum.AUTHORIZATION_FAIL.getCode(), ResultCodeEnum.AUTHORIZATION_FAIL.getMessage());
+        }
+        return Result.ok().code(ResultCodeEnum.AUTHORIZATION_SUCCESS.getCode()).message(ResultCodeEnum.AUTHORIZATION_SUCCESS.getMessage());
     }
 }
 

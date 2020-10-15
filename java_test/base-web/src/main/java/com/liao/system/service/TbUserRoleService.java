@@ -14,5 +14,17 @@ import java.util.List;
  * @since 2020-09-28
  */
 public interface TbUserRoleService extends IService<TbUserRole> {
+    /**
+     * 根据用户ID查询用户角色数据
+     * @param userId
+     * @return
+     */
     public List<TbUserRole> listByUserId(Long userId);
+
+    /**
+     * 根据用户ID删除用户角色数据
+     * @param userId
+     */
+    public void removeByUserId(Long userId);
+
 }

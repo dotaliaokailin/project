@@ -3,8 +3,10 @@ package com.liao.system.pojo;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * <p>
@@ -14,6 +16,8 @@ import lombok.EqualsAndHashCode;
  * @author liao
  * @since 2020-09-28
  */
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ApiModel(value="TbUserRole对象", description="用户角色关联表")
