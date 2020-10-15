@@ -146,7 +146,7 @@
 
 <script>
     import {userPage} from '../../api/userApi'
-    import {findDeptAndCount} from "../../api/department";
+    import {findDeptAndCount} from "../../api/departmentApi";
     import {findUserPage} from '../../api/userApi';
     import {deleteUser} from '../../api/userApi';
     import {exportUsers} from '../../api/userApi';

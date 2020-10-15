@@ -3,6 +3,8 @@ import Router from 'vue-router';
 import Login from '../views/Login';
 import Main from '../views/Main';
 import Users from '../views/user/Users';
+import Roles from '../views/role/roles';
+import Welcome from '../views/user/Welcome';
 Vue.use(Router);
 
 const router =  new Router({
@@ -20,13 +22,23 @@ const router =  new Router({
     },
     {
       path: '/main',
-      name: 'Main',
+      name: '首页',
       component: Main,
       children: [
         {
+          path: '/welcome',
+          name: '欢迎页面',
+          component: Welcome
+        },
+        {
           path: '/users',
-          name: 'Users',
+          name: '用户管理',
           component: Users
+        },
+        {
+          path: '/roles',
+          name: '角色管理',
+          component: Roles
         }
       ]
     }

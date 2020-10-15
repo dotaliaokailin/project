@@ -31,6 +31,8 @@
 </template>
 
 <script>
+    import {asyncRoutes} from "../router";
+
     export default {
       name: "Login",
       data() {

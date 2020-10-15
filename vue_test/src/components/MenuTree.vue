@@ -1,12 +1,12 @@
 <template>
     <div>
       <el-submenu :index="item.id+''" v-for="item in menuList" :key="item.id+''" v-if="item.children.length > 0" :disabled="item.disabled">
-      <template slot="title">
-        <i :class="item.icon"></i>
-        <span slot="title">{{item.menuName}}</span>
-      </template>
-      <MenuTree :menuList="item.children"></MenuTree>
-    </el-submenu>
+        <template slot="title">
+          <i :class="item.icon"></i>
+          <span slot="title">{{item.menuName}}</span>
+        </template>
+        <MenuTree :menuList="item.children"></MenuTree>
+      </el-submenu>
       <el-menu-item v-else :index="item.url+''" :key="item.url+''" :disabled="item.disabled" :route="item.url">
         <i :class="item.icon"></i>
         <span slot="title">{{item.menuName}}</span>

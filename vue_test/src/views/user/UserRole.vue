@@ -66,7 +66,6 @@
           this.$emit('changeShow','false');
         },
         async handelConfirm() {
-          console.log(this.haveRoles);
           const {data} = await addUserRoles(this.haveRoles, this.userRoleId);
           if(data.status){
             this.$emit('update:visible', false);
@@ -85,6 +84,7 @@
               this.roles.push({
                 label: roles.roleName,
                 key: roles.id,
+                disabled: roles.status == 1 ? false : true
               });
             });
           }
