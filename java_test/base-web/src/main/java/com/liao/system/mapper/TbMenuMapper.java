@@ -2,6 +2,9 @@ package com.liao.system.mapper;
 
 import com.liao.system.pojo.TbMenu;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +15,11 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2020-09-28
  */
 public interface TbMenuMapper extends BaseMapper<TbMenu> {
-
+    /**
+     * 根据父级菜单ID拿到所有的子菜单
+     * @param parentId
+     * @return
+     */
+    @Select("select * from tb_menu where parent_id = #{parentId} and type = #{type}")
+    public List<TbMenu> findMenuByParentId(Long parentId, Integer type);
 }

@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
@@ -35,6 +36,13 @@ public class TbMenuController {
     @ApiOperation(value = "所有菜单信息", notes = "获取所有菜单信息")
     public Result menus(){
         return Result.ok().data("menus",tbMenuService.list());
+    }
+
+    @GetMapping("/menuTree")
+    @ApiOperation(value = "所有菜单树信息", notes = "获取所有菜单树信息")
+    public Result menuTree(){
+        List<TbMenu> tbMenus = tbMenuService.menuTree();
+        return Result.ok().data("menuTree",tbMenuService.menuTree());
     }
 }
 

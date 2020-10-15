@@ -2,12 +2,15 @@ package com.liao.system.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+import java.util.List;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 /**
  * <p>
@@ -17,6 +20,9 @@ import lombok.EqualsAndHashCode;
  * @author liao
  * @since 2020-09-28
  */
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ApiModel(value="TbMenu对象", description="菜单表")
@@ -61,5 +67,7 @@ public class TbMenu implements Serializable {
     @ApiModelProperty(value = "0:不展开，1：展开")
     private Integer open;
 
-
+    @TableField(exist = false)
+    @ApiModelProperty(value = "子菜单集合")
+    private List<TbMenu> children;
 }
