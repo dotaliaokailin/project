@@ -4,8 +4,9 @@ import _ from 'lodash';
 
 //const s6语法
 const instance = axios.create({
-  baseURL: 'http://localhost:8081',
+  baseURL: 'http://localhost:9091',
   timeout: 40000,
+  headers: {'loadingTarget': '.el-main'}//指定某元素区域+loading
 });
 
 //loading对象
@@ -21,7 +22,8 @@ function showLoading(target) {
   if (needLoadingRequestCount === 0 && !loading) {
     loading = Loading.service({
       lock: true,
-      text: "Loading...",
+      text: 'Loading',
+      spinner: 'el-icon-loading',
       background: 'rgba(255, 255, 255, 0.5)',
       target: target || "body"
     });

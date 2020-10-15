@@ -42,7 +42,7 @@
           </el-form-item>
           <el-form-item  style="padding-left: 40px">
             <el-button icon="el-icon-refresh" @click="resetUserVo">重置</el-button>
-            <el-button type="primary" icon="el-icon-search" @click="getUserPageCondition(1,10)">查询</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="selectUserVo">查询</el-button>
             <el-button type="success" icon="el-icon-plus" @click="show('')">添加</el-button>
             <el-button type="info" icon="el-icon-download" @click="exportExcel">导出</el-button>
           </el-form-item>
@@ -122,7 +122,7 @@
             label="操作" >
             <template slot-scope="scope"><!-- 通过作用域插槽获取scope row信息-->
             <el-button type="primary" icon="el-icon-edit" @click="show(scope.row)"></el-button>
-            <el-button type="danger" icon="el-icon-delete" @click="del(scope.row.id, scope.row.username)"></el-button>
+            <el-button type="danger" icon="el-icon-delete" @click="del(scope.row, scope.$index)"></el-button>
             <el-button type="warning" icon="el-icon-setting" @click="showRole(scope.row.id,scope.row.username)"></el-button>
             </template>
           </el-table-column>
@@ -202,9 +202,11 @@
         async changeStatus(row){
           this.tbUser = row;
           const {data} = await saveOrUpdate(this.tbUser);
-          this.common.message(data.message, data.status ? this.common.messageType.success : this.common.messageType.error, this);
           if(data.status){
+            this.Message.success(data.message);
             this.getUserPageCondition(this.currentPage,this.pageSize);
+          }else{
+            this.Message.error(data.message);
           }
         },
         handleSizeChange(val) {
@@ -230,6 +232,12 @@
           const {data} = await findUserPage(currentPage, pageSize, this.userVo);
           this.userList = data.data.userList;
           this.total = data.data.total;
+        },
+        //查询
+        selectUserVo(){
+          this.currentPage = 1;
+          this.pageSize = 10;
+          this.getUserPageCondition(this.currentPage,this.pageSize);
         },
         //重置表单
         resetUserVo() {
@@ -270,23 +278,23 @@
           this.userRoleName = '('+ username+')角色管理';
         },
         //删除用户方法
-        async deleteUser(id){
+        async deleteUser(id, index){
           const {data} = await deleteUser(id);
           if(data.status){
             this.Message.success(data.message);
+            this.userList.splice(index, 1);//删除v-model userList 的某列
           }else{
             this.Message.error(data.message);
           }
-          this.getUserPageCondition(this.currentPage,this.pageSize);
         },
         //删除用户
-        del(id, username) {
-          this.$confirm('此操作将永久删除该用户：' + username + ', 是否继续?', '提示', {
+        del(row, index) {
+          this.$confirm('此操作将永久删除该用户：' + row.username + ', 是否继续?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            this.deleteUser(id);
+            this.deleteUser(row.id, index);
           }).catch(() => {
             this.Message.info('已取消删除');
           });

@@ -1,19 +1,26 @@
 <template>
   <div>
     <el-dialog v-bind="$attrs" v-on="$listeners" @open="onOpen" @close="onClose" :title="userRoleName" :visible.sync="showDialog" v-if="showDialog" center>
-      <el-transfer
-        filterable
-        filter-placeholder="请输入角色名称"
-        v-model="haveRoles"
-        :titles="['全部角色','拥有角色']"
-        :data="roles">
-      </el-transfer>
+      <span>
+        <el-transfer
+          filterable
+          filter-placeholder="请输入角色名称"
+          v-model="haveRoles"
+          :titles="['全部角色','拥有角色']"
+          :data="roles">
+       </el-transfer>
+      </span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="onClose">取消分配</el-button>
+        <el-button type="primary" @click="handelConfirm">确定分配</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-    import {userRoles} from '../../api/userApi'
+    import {userRoles} from '../../api/userApi';
+    import {addUserRoles} from '../../api/userApi';
     export default {
       name: "UserRole",
       props: {
@@ -58,17 +65,17 @@
           // 子组件调用父组件方法，并传递参数
           this.$emit('changeShow','false');
         },
-        handelConfirm() {
-          this.$refs['elForm'].validate(valid => {
-            if (!valid) return
-            this.saveOrUpdate();
-          })
-        },
-        //新增修改
-        saveOrUpdate() {
+        async handelConfirm() {
+          console.log(this.haveRoles);
+          const {data} = await addUserRoles(this.haveRoles, this.userRoleId);
+          if(data.status){
             this.$emit('update:visible', false);
             // 子组件调用父组件方法，并传递参数
             this.$emit('changeShow','false');
+            this.Message.success(data.message);
+          }else{
+            this.Message.error(data.message);
+          }
         },
         async userRoles(id) {
           const {data} = await userRoles(id);
@@ -88,6 +95,6 @@
 
 <style scoped lang="less">
   .el-transfer {
-    padding-left: 169px;
+    padding-left: 165px;
   }
 </style>

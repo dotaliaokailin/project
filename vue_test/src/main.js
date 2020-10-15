@@ -4,14 +4,15 @@ import Vue from 'vue';
 import App from './App';
 import router from './router';
 import qs from 'qs';
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
-import global_css from './assets/css/global.css';
+import ElementUI from 'element-ui';//element ui
+import 'element-ui/lib/theme-chalk/index.css';//element ui css
+import global_css from './assets/css/global.css';//全局CSS
 import axios from "axios";  //axios
 import VueAxios from 'vue-axios'; // vue-axios
 import store from './store';
-import moment from 'moment';
+import moment from 'moment';//时间
 import 'default-passive-events';
+import $ from 'jquery';
 
 Vue.prototype.Message=ElementUI.Message;
 Vue.prototype.$moment = moment;

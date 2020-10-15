@@ -35,8 +35,7 @@ export const findUserPage = (currentPage, pageSize ,userVo) => {
       currentPage,
       pageSize
     },
-    data: userVo,
-    headers: {'showLoading': false} //请求头加上这个不显示loading
+    data: userVo
   });
 }
 
@@ -91,6 +90,11 @@ export const exportUsers = () => {
   });
 }
 
+/**
+ * 查询用户权限及所有用户列表
+ * @param id
+ * @returns {AxiosPromise}
+ */
 export const userRoles = (id) => {
   return request({
     url: '/system/tb-user/userRoles',
@@ -98,5 +102,17 @@ export const userRoles = (id) => {
     params: {
       id
     },
+    headers: {'loadingTarget': '.el-transfer'}//指定某元素区域+loading
+  });
+}
+
+export const addUserRoles = (list, id) => {
+  return request({
+    url: '/system/tb-user/addUserRoles',
+    method: 'POST',
+    params: {
+      id
+    },
+    data: list
   });
 }
