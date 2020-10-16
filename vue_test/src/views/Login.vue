@@ -22,8 +22,8 @@
             </div>
           </el-form-item>
           <el-form-item class="login_btn">
-            <el-button type="primary" @click="submitForm('loginForm')">登录</el-button>
-            <el-button @click="resetForm('loginForm')">重置</el-button>
+            <el-button type="primary" @click="submitForm('loginForm')" icon="el-icon-mobile-phone">登录</el-button>
+            <el-button @click="resetForm('loginForm')" icon="el-icon-refresh">重置</el-button>
           </el-form-item>
         </el-form>
       </div>
