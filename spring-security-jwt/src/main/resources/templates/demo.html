@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+登陆账号：<span sec:authentication="name"></span><br>
+登陆账号：<span sec:authentication="principal.username"></span><br>
+登录密码：<span sec:authentication="principal.password"></span><br>
+凭证：<span sec:authentication="credentials"></span><br>
+权限和角色：<span sec:authentication="authorities"></span><br>
+客户端地址：<span sec:authentication="details.remoteAddress"></span><br>
+sessionId：<span sec:authentication="details.sessionId"></span><br>
+<hr/>
+通过权限判断
+<button sec:authorize="hasAuthority('insert')">新增</button>
+<button sec:authorize="hasAuthority('update')">修改</button>
+<button sec:authorize="hasAuthority('delete')">删除</button>
+<button sec:authorize="hasAuthority('select')">查看</button>
+<hr/>
+通过角色判断
+<button sec:authorize="hasRole('admin')">新增</button>
+<button sec:authorize="hasRole('admin')">修改</button>
+<button sec:authorize="hasRole('admin')">删除</button>
+<button sec:authorize="hasRole('user')">查看</button>
+</body>
+</html>

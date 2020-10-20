@@ -1,15 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
 <head>
     <meta charset="UTF-8">
-    <title>登录页面</title>
+    <title>新登录页面</title>
 </head>
 <body>
     <form action="/login" method="post">
+        <!--解决csrf问题-->
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}" th:if="${_csrf}"/>
         用户名：<input type="text" name="username"/><br>
         密码:<input type="password" name="password"/><br>
-<!--        用户名：<input type="text" name="loginname"/>-->
-<!--        密码:<input type="password" name="pwd"/>-->
         记住我:<input type="checkbox" name="remember-me"/>
         <button type="submit">登录</button><br>
     </form>

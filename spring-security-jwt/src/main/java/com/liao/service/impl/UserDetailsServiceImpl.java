@@ -29,6 +29,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         String password = passwordEncoder.encode("123456");
         System.out.println("password = [" + password + "]");
         //权限，角色大小写名，角色的话要在前面加ROLE_
-        return new User(username, password, AuthorityUtils.commaSeparatedStringToAuthorityList("admin,user,ROLE_adminRole,/main.html"));
+        return new User(username, password, AuthorityUtils.commaSeparatedStringToAuthorityList("admin,user,ROLE_admin,/main.html,ROLE_user,insert,update"));
     }
 }
