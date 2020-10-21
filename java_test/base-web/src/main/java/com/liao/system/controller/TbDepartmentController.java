@@ -36,7 +36,7 @@ public class TbDepartmentController {
     public Result findDeptAndCount(){
         List<TbDepartment> departments = tbDepartmentService.findDeptAndCount();
         if(null == departments || departments.size() <= 0){
-            throw new BusinessException(ResultCodeEnum.NO_FOUND_DEPARTMENTS.getCode(), ResultCodeEnum.NO_FOUND_DEPARTMENTS.getMessage());
+            throw new BusinessException(ResultCodeEnum.DEPARTMENT_NOT_EXIST.getCode(), ResultCodeEnum.DEPARTMENT_NOT_EXIST.getMessage());
         }
         return Result.ok().data("departments", departments);
     }

@@ -1,4 +1,4 @@
-//package com.liao.system.service.auth;
+//package com.liao.system.service.config;
 //
 //import com.liao.system.pojo.TbRole;
 //import com.liao.system.pojo.TbUser;

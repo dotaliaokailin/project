@@ -1,4 +1,4 @@
-//package com.liao.auth;
+//package com.liao.config;
 //
 //import com.liao.system.service.auth.UserDetailsServiceImpl;
 //import org.springframework.beans.factory.annotation.Autowired;

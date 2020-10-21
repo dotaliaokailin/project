@@ -1,5 +1,14 @@
 package com.liao.response;
-
+/**
+ * @Author: NieChangan
+ * @Description: 返回码定义
+ * 规定:
+ * #200表示成功
+ * #1001～1999 区间表示参数错误
+ * #2001～2999 区间表示用户错误
+ * #3001～3999 区间表示接口异常
+ * #后面对什么的操作自己在这里注明就行了
+ */
 public enum ResultCodeEnum implements CustomResultCode{
     /* 成功 */
     SUCCESS(200, "成功"),
@@ -33,18 +42,16 @@ public enum ResultCodeEnum implements CustomResultCode{
     USER_ACCOUNT_NOT_EXIST(2007, "账号不存在"),
     USER_ACCOUNT_ALREADY_EXIST(2008, "账号已存在"),
     USER_ACCOUNT_USE_BY_OTHERS(2009, "账号下线"),
+    USER_ACCOUNT_NO_FOUND_PAGE(2010, "用户数据不存在"),
 
     /*部门错误*/
     DEPARTMENT_NOT_EXIST(3007, "部门不存在"),
     DEPARTMENT_ALREADY_EXIST(3008, "部门已存在"),
 
     /* 业务错误 */
-    NO_PERMISSION(3001, "没有权限"),
+    NO_PERMISSION(3001, "没有权限");
 
     /*异常错误*/
-    NO_FOUND_USER_EXCEPTION(9000, "用户不存在"),
-    NO_FOUND_USER_PAGE_EXCEPTION(9001, "用户数据为空"),
-    NO_FOUND_DEPARTMENTS(9100, "部门不存在");
 
     private Integer code;
     private String message;

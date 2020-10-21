@@ -71,7 +71,7 @@ public class TbUserController {
         if(null != user)
             return Result.ok().data("user", user);
         else
-            throw new BusinessException(ResultCodeEnum.NO_FOUND_USER_EXCEPTION.getCode(), ResultCodeEnum.NO_FOUND_USER_EXCEPTION.getMessage());
+            throw new BusinessException(ResultCodeEnum.USER_ACCOUNT_NOT_EXIST.getCode(), ResultCodeEnum.USER_ACCOUNT_NOT_EXIST.getMessage());
 
     }
 
@@ -88,7 +88,7 @@ public class TbUserController {
        if(null != page)
            return Result.ok().data("total",page.getTotal()).data("userList", page.getRecords());
        else
-           throw new BusinessException(ResultCodeEnum.NO_FOUND_USER_PAGE_EXCEPTION.getCode(), ResultCodeEnum.NO_FOUND_USER_PAGE_EXCEPTION.getMessage());
+           throw new BusinessException(ResultCodeEnum.USER_ACCOUNT_NO_FOUND_PAGE.getCode(), ResultCodeEnum.USER_ACCOUNT_NO_FOUND_PAGE.getMessage());
 
    }
 
@@ -107,9 +107,20 @@ public class TbUserController {
         if(null != page)
             return Result.ok().data("total",page.getTotal()).data("userList", page.getRecords());
         else
-            throw new BusinessException(ResultCodeEnum.NO_FOUND_USER_PAGE_EXCEPTION.getCode(), ResultCodeEnum.NO_FOUND_USER_PAGE_EXCEPTION.getMessage());
+            throw new BusinessException(ResultCodeEnum.USER_ACCOUNT_NO_FOUND_PAGE.getCode(), ResultCodeEnum.USER_ACCOUNT_NO_FOUND_PAGE.getMessage());
 
     }
+
+    @GetMapping("/findUserById")
+    @ApiOperation(value = "根据用户ID查询用户接口", notes = "根据用户ID查询用户")
+    public Result findUserById(@RequestParam("id") Long id){
+        TbUser tbUser = tbUserService.getBaseMapper().selectById(id);
+        if(null != tbUser){
+            return Result.ok().data("tbUser", tbUser);
+        }else {
+            throw new BusinessException(ResultCodeEnum.USER_ACCOUNT_NOT_EXIST.getCode(), ResultCodeEnum.USER_ACCOUNT_NOT_EXIST.getMessage());
+        }
+    };
 
     /**
      * 新增或修改用户
@@ -119,7 +130,7 @@ public class TbUserController {
     @PostMapping("/saveOrUpdate")
     @ApiOperation(value = "用户新增修改", notes = "用户新增修改操作")
     public Result saveOrUpdate(@RequestBody TbUser tbUser){
-        boolean flag = tbUserService.saveOrUpdate(tbUser);
+        boolean flag = tbUserService.saveOrUpdateUser(tbUser);
         if(flag)
             return Result.ok().code(ResultCodeEnum.OP_SUCCESS.getCode()).message(ResultCodeEnum.OP_SUCCESS.getMessage());
         else

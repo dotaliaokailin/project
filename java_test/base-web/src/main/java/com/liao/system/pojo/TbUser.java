@@ -4,6 +4,7 @@ import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.*;
 import com.alibaba.excel.metadata.BaseRowModel;
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
 
@@ -76,10 +77,12 @@ public class TbUser implements Serializable {
 
     @ApiModelProperty(value = "创建时间")
     @ExcelIgnore
+    @TableField(fill = FieldFill.INSERT)//自动填充，mybatis-plus
     private Date createTime;
 
     @ApiModelProperty(value = "修改时间")
     @ExcelIgnore
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date modifiedTime;
 
     @ApiModelProperty(value = "性别 0男 1女 2保密")

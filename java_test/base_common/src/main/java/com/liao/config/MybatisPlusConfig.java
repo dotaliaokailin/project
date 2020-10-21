@@ -1,7 +1,6 @@
 package com.liao.config;
 
 import com.baomidou.mybatisplus.annotation.DbType;
-import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import org.springframework.context.annotation.Bean;
@@ -16,13 +15,6 @@ public class MybatisPlusConfig {
         //指定mysql数据库
         mybatisPlusInterceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
         return mybatisPlusInterceptor;
-    }
-
-    @Bean
-    public GlobalConfig globalConfig() {
-        GlobalConfig globalConfig = new GlobalConfig();
-        globalConfig.setMetaObjectHandler(new UpdateRelatedFieldsMetaHandler());
-        return globalConfig;
     }
 }
 
