@@ -39,6 +39,17 @@ export const findUserPage = (currentPage, pageSize ,userVo) => {
   });
 }
 
+export const findUserById = (id) =>{
+  return request({
+    url: '/system/tb-user/findUserById',
+    method: 'GET',
+    params:{
+      id
+    }
+  });
+}
+
+
 /**
  * 新增修改用户
  * @param userVo

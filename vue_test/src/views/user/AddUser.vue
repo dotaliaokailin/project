@@ -7,7 +7,7 @@
             <!-- 用户头像 -->
             <el-form-item label="用户头像">
               <!-- 头衔缩略图 -->
-              <pan-thumb :image="image"/>
+              <pan-thumb :image="tbUser.avatar"/>
               <!-- 文件上传按钮 -->
               <el-button type="primary" icon="el-icon-upload" @click="imagecropperShow=true">更换头像
               </el-button>
@@ -22,7 +22,7 @@
                 :width="300"
                 :height="300"
                 :key="imagecropperKey"
-                :url="'/ossservice/upload/uploadImgFile'"
+                :url="'/oss/uploadImgFile'"
                 field="file"
                 @close="closeImage"
                 @crop-upload-success="cropSuccess"/>
@@ -93,148 +93,163 @@
   import ImageCropper from '../../components/ImageCropper';
   import PanThumb from '../../components/PanThumb';
   import {saveOrUpdate} from '../../api/userApi'
-export default {
-  name: 'AddUser',
-  inheritAttrs: false,
-  components: {
-    ImageCropper,
-    PanThumb
-  },
-  // 接受父组件传递的值
-  props:{
-    addOrUpdateVisible:{
-      type: Boolean,
-      default: false
+  import {deleteImg} from "../../api/ossApi";
+
+  export default {
+    name: 'AddUser',
+    inheritAttrs: false,
+    components: {
+      ImageCropper,
+      PanThumb
     },
-    departments:{
-      type: Array,
-      default: []
-    },
-    title:{
-      type: String,
-      default: ''
-    },
-    tbUser: {
-      type: Object,
-      default: null
-    }
-  },
-  data() {
-    return {
-      // 控制弹出框显示隐藏
-      showDialog:false,
-      imagecropperShow: false, // 是否显示上传组件
-      imagecropperKey: 0, // 上传组件id
-      image: 'https://wpimg.wallstcn.com/577965b9-bb9e-4e02-9f0c-095b41417191',
-      rules: {
-        avatar:[{
-          required: true,
-          message: '请选择头像',
-          trigger: 'blur'
-        }],
-        username: [{
-          required: true,
-          message: '请输入用户名',
-          trigger: 'blur'
-        }],
-        departmentId: [{
-          required: true,
-          message: '请输入部门',
-          trigger: 'blur'
-        }],
-        nickname: [{
-          required: true,
-          message: '请输入昵称',
-          trigger: 'blur'
-        }],
-        password: [{
-          required: true,
-          message: '请输入密码',
-          trigger: 'blur'
-        }],
-        sex: [{
-          required: true,
-          message: '性别不能为空',
-          trigger: 'change'
-        }],
-        email: [{
-          required: true,
-          message: '请输入邮箱',
-          trigger: 'blur'
-        }],
-        phoneNumber: [{
-          required: true,
-          message: '请输入手机号',
-          trigger: 'blur'
-        }],
-        birth: [{
-          required: true,
-          message: '请选择生日',
-          trigger: 'change'
-        }],
+    // 接受父组件传递的值
+    props:{
+      addOrUpdateVisible:{
+        type: Boolean,
+        default: false
       },
-      avatarAction: 'https://jsonplaceholder.typicode.com/posts/',
-      avatarList: [],
-      sexOptions: [{
-        "label": "男",
-        "value": 0
-      }, {
-        "label": "女",
-        "value": 1
-      }],
-    }
-  },
-  computed: {},
-  watch:{
-    // 监听 addOrUpdateVisible 改变
-    addOrUpdateVisible(oldVal,newVal){
-      this.showDialog = this.addOrUpdateVisible
-    },
-  },
-  created() {},
-  mounted() {},
-  methods: {
-    onOpen() {},
-    onClose() {
-      this.$refs['elForm'].resetFields();
-      // 子组件调用父组件方法，并传递参数
-      this.$emit('changeShow','false');
-    },
-    handelConfirm() {
-      this.$refs['elForm'].validate(valid => {
-        if (!valid) return
-        this.saveOrUpdate();
-      })
-    },
-    //新增修改
-    async saveOrUpdate() {
-      const {data} = await saveOrUpdate(this.tbUser);
-      if(data.status){
-        this.Message.success(data.message);
-      }else{
-        this.Message.error(data.message);
+      departments:{
+        type: Array,
+        default: []
+      },
+      title:{
+        type: String,
+        default: ''
+      },
+      tbUser: {
+        type: Object,
+        default: null
       }
-      if(data.status){
-        this.$emit('update:visible', false);
+    },
+    data() {
+      return {
+        // 控制弹出框显示隐藏
+        showDialog:false,
+        imagecropperShow: false, // 是否显示上传组件
+        imagecropperKey: 0, // 上传组件id
+        image: 'https://wpimg.wallstcn.com/577965b9-bb9e-4e02-9f0c-095b41417191',
+        rules: {
+          avatar:[{
+            required: true,
+            message: '请选择头像',
+            trigger: 'blur'
+          }],
+          username: [{
+            required: true,
+            message: '请输入用户名',
+            trigger: 'blur'
+          }],
+          departmentId: [{
+            required: true,
+            message: '请输入部门',
+            trigger: 'blur'
+          }],
+          nickname: [{
+            required: true,
+            message: '请输入昵称',
+            trigger: 'blur'
+          }],
+          password: [{
+            required: true,
+            message: '请输入密码',
+            trigger: 'blur'
+          }],
+          sex: [{
+            required: true,
+            message: '性别不能为空',
+            trigger: 'change'
+          }],
+          email: [{
+            required: true,
+            message: '请输入邮箱',
+            trigger: 'blur'
+          }],
+          phoneNumber: [{
+            required: true,
+            message: '请输入手机号',
+            trigger: 'blur'
+          }],
+          birth: [{
+            required: true,
+            message: '请选择生日',
+            trigger: 'change'
+          }],
+        },
+        avatarAction: 'https://jsonplaceholder.typicode.com/posts/',
+        avatarList: [],
+        sexOptions: [{
+          "label": "男",
+          "value": 0
+        }, {
+          "label": "女",
+          "value": 1
+        }],
+      }
+    },
+    computed: {},
+    watch:{
+      // 监听 addOrUpdateVisible 改变
+      addOrUpdateVisible(oldVal,newVal){
+        this.showDialog = this.addOrUpdateVisible
+      },
+    },
+    created() {},
+    mounted() {},
+    methods: {
+      onOpen() {},
+      onClose() {
+        this.$refs['elForm'].resetFields();
         // 子组件调用父组件方法，并传递参数
         this.$emit('changeShow','false');
-        this.$parent.getUserPageCondition(this.$parent.currentPage,this.$parent.pageSize);
+        //删除旧图片
+        if(this.title == '新增用户'){
+          this.deleteImg(this.tbUser.avatar);
+        }
+      },
+      handelConfirm() {
+        this.$refs['elForm'].validate(valid => {
+          if (!valid) return
+          this.saveOrUpdate();
+        })
+      },
+      //新增修改
+      async saveOrUpdate() {
+        const {data} = await saveOrUpdate(this.tbUser);
+        if(data.status){
+          this.$message.success(data.message);
+        }else{
+          this.$message.error(data.message);
+        }
+        if(data.status){
+          this.$emit('update:visible', false);
+          // 子组件调用父组件方法，并传递参数
+          this.$emit('changeShow','false');
+          this.$parent.getDeptAndCount();
+          this.$parent.getUserPageCondition(this.$parent.currentPage,this.$parent.pageSize);
+        }
+      },
+      // 上传成功后的回调函数
+      cropSuccess(data) {
+        //拿到旧的图片地址
+        let oldImg = this.tbUser.avatar;
+        this.imagecropperShow = false
+        this.tbUser.avatar = data.data.url;
+        // 上传成功后，重新打开上传组件时初始化组件，否则显示上一次的上传结果
+        this.imagecropperKey = this.imagecropperKey + 1
+        //删除旧图片
+        this.deleteImg(oldImg);
+      },
+      // 关闭上传组件
+      closeImage() {
+        this.imagecropperShow = false
+        // 上传失败后，重新打开上传组件时初始化组件，否则显示上一次的上传结果
+        this.imagecropperKey = this.imagecropperKey + 1
+      },
+      //删除旧图片
+      async deleteImg(oldImg){
+        const {data} = await deleteImg(oldImg);
       }
-    },
-    // 上传成功后的回调函数
-    cropSuccess(data) {
-      this.imagecropperShow = false
-      this.image = data.url;
-      // 上传成功后，重新打开上传组件时初始化组件，否则显示上一次的上传结果
-      this.imagecropperKey = this.imagecropperKey + 1
-    },
-    // 关闭上传组件
-    closeImage() {
-      this.imagecropperShow = false
-      // 上传失败后，重新打开上传组件时初始化组件，否则显示上一次的上传结果
-      this.imagecropperKey = this.imagecropperKey + 1
     }
-  }
 }
 
 </script>

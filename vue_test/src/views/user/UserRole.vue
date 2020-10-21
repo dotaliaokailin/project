@@ -19,8 +19,7 @@
 </template>
 
 <script>
-    import {userRoles} from '../../api/userApi';
-    import {addUserRoles} from '../../api/userApi';
+    import {userRoles, addUserRoles} from '../../api/userApi';
     export default {
       name: "UserRole",
       props: {
@@ -71,9 +70,9 @@
             this.$emit('update:visible', false);
             // 子组件调用父组件方法，并传递参数
             this.$emit('changeShow','false');
-            this.Message.success(data.message);
+            this.$message.success(data.message);
           }else{
-            this.Message.error(data.message);
+            this.$message.error(data.message);
           }
         },
         async userRoles(id) {

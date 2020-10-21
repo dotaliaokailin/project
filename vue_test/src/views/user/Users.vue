@@ -121,7 +121,7 @@
           <el-table-column
             label="操作" >
             <template slot-scope="scope"><!-- 通过作用域插槽获取scope row信息-->
-            <el-button type="primary" icon="el-icon-edit" @click="show(scope.row)"></el-button>
+            <el-button type="primary" icon="el-icon-edit" @click="show(scope.row.id)"></el-button>
             <el-button type="danger" icon="el-icon-delete" @click="del(scope.row, scope.$index)"></el-button>
             <el-button type="warning" icon="el-icon-setting" @click="showRole(scope.row.id,scope.row.username)"></el-button>
             </template>
@@ -145,12 +145,8 @@
 </template>
 
 <script>
-    import {userPage} from '../../api/userApi'
     import {findDeptAndCount} from "../../api/departmentApi";
-    import {findUserPage} from '../../api/userApi';
-    import {deleteUser} from '../../api/userApi';
-    import {exportUsers} from '../../api/userApi';
-    import {saveOrUpdate} from '../../api/userApi'
+    import {findUserPage, findUserById, deleteUser, exportUsers, saveOrUpdate, userPage} from '../../api/userApi';
     // 引入子组件
     import AddOrUpdate from '../user/AddUser';
     import UserRole from '../user/UserRole';
@@ -203,10 +199,10 @@
           this.tbUser = row;
           const {data} = await saveOrUpdate(this.tbUser);
           if(data.status){
-            this.Message.success(data.message);
+            this.$message.success(data.message);
             this.getUserPageCondition(this.currentPage,this.pageSize);
           }else{
-            this.Message.error(data.message);
+            this.$message.error(data.message);
           }
         },
         handleSizeChange(val) {
@@ -250,11 +246,18 @@
           this.pageSize = 10;
           this.getUserPageCondition(this.currentPage,this.pageSize);
         },
+        //根据ID查询用户
+        async findUserById(id){
+          const {data} = await findUserById(id);
+          if(data.status){
+            this.tbUser = data.data.tbUser
+          }
+        },
         // 按钮点击事件 显示新增编辑弹窗组件
-        show(row){
-          this.title = row == '' ? '新增用户' : '修改用户';
-          if(row != ''){
-            this.tbUser = row;
+        show(id){
+          this.title = id == '' ? '新增用户' : '修改用户';
+          if(id != ''){
+            this.findUserById(id);
           }else {
             this.tbUser.id = '';
             this.tbUser.username = '';
@@ -267,7 +270,6 @@
             this.tbUser.password = '';
             this.tbUser.departmentId = '';
             this.tbUser.status = '';
-            this.getUserPageCondition(this.currentPage,this.pageSize);
           }
           this.addOrUpdateVisible = true;
         },
@@ -281,10 +283,15 @@
         async deleteUser(id, index){
           const {data} = await deleteUser(id);
           if(data.status){
-            this.Message.success(data.message);
+            this.$message.success(data.message);
+            // this.$notify.success({
+            //   title: "操作成功",
+            //   message: data.message
+            // });
             this.userList.splice(index, 1);//删除v-model userList 的某列
+            this.getDeptAndCount();
           }else{
-            this.Message.error(data.message);
+            this.$message.error(data.message);
           }
         },
         //删除用户
@@ -296,12 +303,12 @@
           }).then(() => {
             this.deleteUser(row.id, index);
           }).catch(() => {
-            this.Message.info('已取消删除');
+            this.$message.info('已取消删除');
           });
         },
         //导出excel
         async exportExcel(){
-          this.Message.warning('导出中...');
+          this.$message.warning('导出中...');
           await exportUsers();
         },
         // 监听 修改用户 子组件弹窗关闭后触发，有子组件调用

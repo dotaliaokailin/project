@@ -14,7 +14,6 @@ import moment from 'moment';//时间
 import 'default-passive-events';
 import $ from 'jquery';
 
-Vue.prototype.Message=ElementUI.Message;
 Vue.prototype.$moment = moment;
 // 直接使用 $axios 即可
 Vue.prototype.$axios = axios;

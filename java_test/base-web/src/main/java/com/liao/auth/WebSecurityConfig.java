@@ -1,4 +1,4 @@
-package com.liao.config;//package com.liao.system.config;
+//package com.liao.auth;
 //
 //import com.liao.system.service.auth.UserDetailsServiceImpl;
 //import org.springframework.beans.factory.annotation.Autowired;
@@ -18,21 +18,21 @@ package com.liao.config;//package com.liao.system.config;
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 //public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //    /**
-//     * 重写的认证流程
+//    * 重写的认证流程
 //     */
 //    @Autowired
 //    private UserDetailsServiceImpl userDetailsService;
 //
 //    /**
-//     * 密码加密
+//    * 密码加密
 //     */
 //    @Autowired
 //    private PasswordEncoder passwordEncoder;
 //
 //    @Bean
 //    public PasswordEncoder passwordEncoder(){
-//        //使用 hash 的加密方式  加密 + 加盐
-//        return new BCryptPasswordEncoder();
+//       //使用 hash 的加密方式  加密 + 加盐
+//       return new BCryptPasswordEncoder();
 //    }
 //
 //    @Override
