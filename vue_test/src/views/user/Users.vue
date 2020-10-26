@@ -1,7 +1,7 @@
 <template>
     <div class="users-container">
       <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 10px; padding-bottom: 10px; font-size: 12px">
-        <el-breadcrumb-item :to="{ path: '/main' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/welcome' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item>系统管理</el-breadcrumb-item>
         <el-breadcrumb-item>用户管理</el-breadcrumb-item>
       </el-breadcrumb>
@@ -119,7 +119,8 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="操作" >
+            label="操作"
+            width="280">
             <template slot-scope="scope"><!-- 通过作用域插槽获取scope row信息-->
             <el-button type="primary" icon="el-icon-edit" @click="show(scope.row.id)"></el-button>
             <el-button type="danger" icon="el-icon-delete" @click="del(scope.row, scope.$index)"></el-button>

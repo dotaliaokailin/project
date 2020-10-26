@@ -1,3 +1,4 @@
+/*部门api*/
 import request from '../utils/request'
 
 export const findDeptAndCount = () => {
