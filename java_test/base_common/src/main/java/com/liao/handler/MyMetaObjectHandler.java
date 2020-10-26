@@ -22,7 +22,7 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     public void insertFill(MetaObject metaObject) {
         log.info("start insert fill ....");
         this.strictInsertFill(metaObject, "createTime", Date.class, new Date()); // 起始版本 3.3.3(推荐使用)
-        this.strictInsertFill(metaObject, "modifiedTime", Date.class, new Date()); // 起始版本 3.3.3(推荐)
+        //this.strictInsertFill(metaObject, "modifiedTime", Date.class, new Date()); // 起始版本 3.3.3(推荐)
     }
 
     /**

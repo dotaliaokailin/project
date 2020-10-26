@@ -25,9 +25,11 @@ public interface TbUserMapper extends BaseMapper<TbUser> {
 
     public List<TbUser> exportUsers(@Param(Constants.WRAPPER) QueryWrapper<TbUser> wrapper);
 
-    @Select("select * from tb_user where username = #{username}")
+    @Select("select * from tb_user where username = #{username} limit 1")
     public TbUser selectByUsername(String username);
 
     @Select("select * from tb_user where id = #{id}")
     public TbUser selectById(Long id);
+
+    public TbUser findUserById(Long id);
 }

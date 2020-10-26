@@ -52,4 +52,9 @@ public interface TbUserService extends IService<TbUser> {
      * @return Boolean
      */
     public Boolean saveOrUpdateUser(TbUser tbUser);
+
+    /**
+     * 查询用户
+     */
+    public TbUser findUserById(Long id);
 }

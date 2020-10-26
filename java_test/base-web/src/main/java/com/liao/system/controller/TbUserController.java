@@ -88,7 +88,7 @@ public class TbUserController {
        if(null != page)
            return Result.ok().data("total",page.getTotal()).data("userList", page.getRecords());
        else
-           throw new BusinessException(ResultCodeEnum.USER_ACCOUNT_NO_FOUND_PAGE.getCode(), ResultCodeEnum.USER_ACCOUNT_NO_FOUND_PAGE.getMessage());
+           throw new BusinessException(ResultCodeEnum.USER_ACCOUNT_NOT_FOUND_PAGE.getCode(), ResultCodeEnum.USER_ACCOUNT_NOT_FOUND_PAGE.getMessage());
 
    }
 
@@ -107,14 +107,14 @@ public class TbUserController {
         if(null != page)
             return Result.ok().data("total",page.getTotal()).data("userList", page.getRecords());
         else
-            throw new BusinessException(ResultCodeEnum.USER_ACCOUNT_NO_FOUND_PAGE.getCode(), ResultCodeEnum.USER_ACCOUNT_NO_FOUND_PAGE.getMessage());
+            throw new BusinessException(ResultCodeEnum.USER_ACCOUNT_NOT_FOUND_PAGE.getCode(), ResultCodeEnum.USER_ACCOUNT_NOT_FOUND_PAGE.getMessage());
 
     }
 
     @GetMapping("/findUserById")
     @ApiOperation(value = "根据用户ID查询用户接口", notes = "根据用户ID查询用户")
     public Result findUserById(@RequestParam("id") Long id){
-        TbUser tbUser = tbUserService.getBaseMapper().selectById(id);
+        TbUser tbUser = tbUserService.findUserById(id);
         if(null != tbUser){
             return Result.ok().data("tbUser", tbUser);
         }else {

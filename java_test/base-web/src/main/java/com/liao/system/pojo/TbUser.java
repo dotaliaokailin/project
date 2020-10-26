@@ -82,7 +82,7 @@ public class TbUser implements Serializable {
 
     @ApiModelProperty(value = "修改时间")
     @ExcelIgnore
-    @TableField(fill = FieldFill.INSERT_UPDATE)
+    @TableField(fill = FieldFill.UPDATE)
     private Date modifiedTime;
 
     @ApiModelProperty(value = "性别 0男 1女 2保密")

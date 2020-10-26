@@ -42,14 +42,17 @@ public enum ResultCodeEnum implements CustomResultCode{
     USER_ACCOUNT_NOT_EXIST(2007, "账号不存在"),
     USER_ACCOUNT_ALREADY_EXIST(2008, "账号已存在"),
     USER_ACCOUNT_USE_BY_OTHERS(2009, "账号下线"),
-    USER_ACCOUNT_NO_FOUND_PAGE(2010, "用户数据不存在"),
+    USER_ACCOUNT_NOT_FOUND_PAGE(2010, "用户数据不存在"),
 
     /*部门错误*/
     DEPARTMENT_NOT_EXIST(3007, "部门不存在"),
     DEPARTMENT_ALREADY_EXIST(3008, "部门已存在"),
 
     /* 业务错误 */
-    NO_PERMISSION(3001, "没有权限");
+    NO_PERMISSION(3001, "没有权限"),
+
+    /* 角色错误*/
+    ROLE_NOT_FOUND_PAGE(4001, "角色数据不存在");
 
     /*异常错误*/
 

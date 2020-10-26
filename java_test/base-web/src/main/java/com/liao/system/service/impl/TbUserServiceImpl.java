@@ -54,10 +54,9 @@ public class TbUserServiceImpl extends ServiceImpl<TbUserMapper, TbUser> impleme
     @Override
     public Boolean saveOrUpdateUser(TbUser tbUser) {
         //根据用户名查询用户
-        LambdaQueryWrapper<TbUser> LambdaQueryWrapper = new LambdaQueryWrapper<TbUser>().eq(TbUser::getUsername, tbUser.getUsername());
         TbUser selectUser = null;
         try{
-            selectUser = this.baseMapper.selectOne(LambdaQueryWrapper);
+            selectUser = this.selectByUsername(tbUser.getUsername());
         }catch (Exception e){//之前老数据有重复账户，点击更新的时候会报这个错误
             throw new BusinessException(ResultCodeEnum.USER_ACCOUNT_ALREADY_EXIST.getCode(), ResultCodeEnum.USER_ACCOUNT_ALREADY_EXIST.getMessage());
         }
@@ -83,6 +82,16 @@ public class TbUserServiceImpl extends ServiceImpl<TbUserMapper, TbUser> impleme
             //tbUser.setPassword(passwordEncoder.encode(tbUser.getPassword()));
         }
         return this.saveOrUpdate(tbUser);
+    }
+
+    /**
+     * 查询用户
+     *
+     * @param id
+     */
+    @Override
+    public TbUser findUserById(Long id) {
+        return this.baseMapper.findUserById(id);
     }
 
     @Override
