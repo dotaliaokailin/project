@@ -12,5 +12,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2020-09-28
  */
 public interface TbRoleMenuService extends IService<TbRoleMenu> {
-
+    /**
+     * 根据角色ID删除关联的菜单
+     * @param roleId
+     */
+    void deleteByRoleId(Long roleId);
 }

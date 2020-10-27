@@ -27,4 +27,9 @@ public interface TbUserRoleService extends IService<TbUserRole> {
      */
     public void removeByUserId(Long userId);
 
+    /**
+     * 根据角色ID删除信息
+     * @param id
+     */
+    void deleteByRoleId(Long roleId);
 }

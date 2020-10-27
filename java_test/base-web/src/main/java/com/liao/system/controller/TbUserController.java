@@ -18,6 +18,8 @@ import com.liao.util.ExcelUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
@@ -186,6 +188,7 @@ public class TbUserController {
      */
     @PostMapping("/addUserRoles")
     @ApiOperation(value = "操作用户角色", notes = "操作用户角色接口")
+    @Transactional(propagation = Propagation.NESTED)
     public Result addUserRoles(@RequestBody Long[] list, @RequestParam("id") Long id){
         try {
             tbUserRoleService.removeByUserId(id);

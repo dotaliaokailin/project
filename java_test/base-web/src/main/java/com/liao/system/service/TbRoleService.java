@@ -3,6 +3,7 @@ package com.liao.system.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.liao.system.pojo.TbRole;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.liao.system.vo.RoleVo;
 
 /**
  * <p>
@@ -28,4 +29,18 @@ public interface TbRoleService extends IService<TbRole> {
      * @return
      */
     Page<TbRole> findRolePage(Integer currentPage, Integer pageSize, String roleName);
+
+    /**
+     * 新增修改角色信息
+     * @param tbRole
+     * @return
+     */
+    Boolean saveOrUpdateRole(TbRole tbRole);
+
+    /**
+     * 根据角色名称查询角色
+     * @param roleName
+     * @return
+     */
+    TbRole findRoleByRoleName(String roleName);
 }

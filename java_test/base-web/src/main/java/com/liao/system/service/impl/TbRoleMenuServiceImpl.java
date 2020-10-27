@@ -17,4 +17,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class TbRoleMenuServiceImpl extends ServiceImpl<TbRoleMenuMapper, TbRoleMenu> implements TbRoleMenuService {
 
+    @Override
+    public void deleteByRoleId(Long roleId) {
+        this.baseMapper.deleteByRoleId(roleId);
+    }
 }

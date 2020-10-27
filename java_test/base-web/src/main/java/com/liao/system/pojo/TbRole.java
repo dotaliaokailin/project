@@ -1,7 +1,10 @@
 package com.liao.system.pojo;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
@@ -35,9 +38,11 @@ public class TbRole implements Serializable {
     private String remark;
 
     @ApiModelProperty(value = "创建时间")
+    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
 
     @ApiModelProperty(value = "修改时间")
+    @TableField(fill = FieldFill.UPDATE)
     private Date modifiedTime;
 
     @ApiModelProperty(value = "是否可用,0:不可用，1：可用")

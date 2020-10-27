@@ -20,4 +20,7 @@ public interface TbRoleMapper extends BaseMapper<TbRole> {
     public TbRole selectById(Long id);
 
     Page<TbRole> findRolePage(Page<TbRole> tbRolePage, QueryWrapper<TbRole> queryWrapper);
+
+    @Select("select r.id, r.role_name, r.status, r.remark from tb_role r where r.role_name = #{roleName}")
+    TbRole findRoleByRoleName(String roleName);
 }

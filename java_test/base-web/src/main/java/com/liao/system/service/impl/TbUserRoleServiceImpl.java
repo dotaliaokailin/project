@@ -32,4 +32,13 @@ public class TbUserRoleServiceImpl extends ServiceImpl<TbUserRoleMapper, TbUserR
     public void removeByUserId(Long userId) {
         this.baseMapper.removeByUserId(userId);
     }
+
+    /**
+     * 根据角色ID删除信息
+     * @param id
+     */
+    @Override
+    public void deleteByRoleId(Long roleId) {
+        this.baseMapper.deleteByRoleId(roleId);
+    }
 }

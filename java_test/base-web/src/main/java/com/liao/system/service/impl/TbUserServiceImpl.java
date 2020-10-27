@@ -1,11 +1,10 @@
 package com.liao.system.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.liao.system.enu.User.UserStatusEnum;
-import com.liao.system.enu.User.UserTypeEnum;
+import com.liao.system.enu.user.UserStatusEnum;
+import com.liao.system.enu.user.UserTypeEnum;
 import com.liao.handler.BusinessException;
 import com.liao.response.ResultCodeEnum;
 import com.liao.system.pojo.TbUser;
@@ -13,13 +12,10 @@ import com.liao.system.mapper.TbUserMapper;
 import com.liao.system.service.TbUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.liao.system.vo.UserVo;
-import org.apache.ibatis.exceptions.TooManyResultsException;
-import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
