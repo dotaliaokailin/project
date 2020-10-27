@@ -77,7 +77,6 @@
           path = '/welcome';
           this.$router.push('/welcome');
         }
-        console.log(path);
         this.activePath = path;
         this.getMenuDate();
       }

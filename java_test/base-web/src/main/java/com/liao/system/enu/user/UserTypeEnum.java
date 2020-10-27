@@ -1,4 +1,4 @@
-package com.liao.system.enu.User;
+package com.liao.system.enu.user;
 
 /**
  * 用户类型枚举
