@@ -9,12 +9,16 @@ import com.liao.system.pojo.TbRole;
 import com.liao.system.service.TbRoleMenuService;
 import com.liao.system.service.TbRoleService;
 import com.liao.system.service.TbUserRoleService;
+import com.liao.util.ExcelUtil;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * <p>
@@ -26,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/system/tb-role")
+@Api(value = "角色模块", tags = "角色接口")
 public class TbRoleController {
     @Autowired
     private TbRoleService tbRoleService;
@@ -79,6 +84,16 @@ public class TbRoleController {
             //设置手动回滚
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             throw new BusinessException(ResultCodeEnum.DELETE_FAIL.getCode(), ResultCodeEnum.DELETE_FAIL.getMessage());
+        }
+    }
+
+    @GetMapping("/exportExcel")
+    @ApiOperation(value = "导出角色信息表Excel", notes = "导出角色信息表Excel接口")
+    public void exportExcel(HttpServletResponse response){
+        try {
+            ExcelUtil.download(response, "角色列表", "角色列表" , tbRoleService.exportExcel(), TbRole.class);
+        } catch (Exception e){
+            throw new BusinessException(ResultCodeEnum.EXPORT_FAIL.getCode(), ResultCodeEnum.EXPORT_FAIL.getMessage());
         }
     }
 }

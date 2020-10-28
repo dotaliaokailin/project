@@ -6,6 +6,8 @@ import com.liao.system.service.TbRoleMenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  * 角色菜单关联表 服务实现类
@@ -20,5 +22,15 @@ public class TbRoleMenuServiceImpl extends ServiceImpl<TbRoleMenuMapper, TbRoleM
     @Override
     public void deleteByRoleId(Long roleId) {
         this.baseMapper.deleteByRoleId(roleId);
+    }
+
+    /**
+     * 根据角色ID查询关联的菜单
+     *
+     * @param roleId
+     */
+    @Override
+    public List<TbRoleMenu> getMenuByRoleId(Long roleId) {
+        return this.baseMapper.getMenuByRoleId(roleId);
     }
 }

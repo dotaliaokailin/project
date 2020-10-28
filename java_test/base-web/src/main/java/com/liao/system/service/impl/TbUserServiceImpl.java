@@ -29,8 +29,7 @@ import java.util.UUID;
  */
 @Service
 public class TbUserServiceImpl extends ServiceImpl<TbUserMapper, TbUser> implements TbUserService {
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
+
     @Override
     public TbUser selectByUsername(String username) {
         return this.baseMapper.selectByUsername(username);

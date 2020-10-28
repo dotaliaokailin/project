@@ -20,6 +20,6 @@ public interface TbMenuMapper extends BaseMapper<TbMenu> {
      * @param parentId
      * @return
      */
-    @Select("select * from tb_menu where parent_id = #{parentId} and type = #{type}")
-    public List<TbMenu> findMenuByParentId(Long parentId, Integer type);
+    @Select("select * from tb_menu where parent_id = #{parentId} order by order_num")
+    public List<TbMenu> findMenuByParentId(Long parentId);
 }

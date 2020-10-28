@@ -1,6 +1,7 @@
 package com.liao.system.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.liao.handler.BusinessException;
 import com.liao.response.Result;
 import com.liao.response.ResultCodeEnum;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -39,6 +41,17 @@ public class TbDepartmentController {
             throw new BusinessException(ResultCodeEnum.DEPARTMENT_NOT_EXIST.getCode(), ResultCodeEnum.DEPARTMENT_NOT_EXIST.getMessage());
         }
         return Result.ok().data("departments", departments);
+    }
+
+    @ApiOperation(value = "部门分页查询", notes = "部门分页查询接口")
+    @GetMapping("/getDeptPage")
+    public Result getDeptPage(@RequestParam("currentPage") Integer currentPage, @RequestParam("pageSize") Integer pageSize, @RequestParam(value = "name", required = false) String name){
+        IPage<TbDepartment> deptPage = tbDepartmentService.getDeptPage(currentPage, pageSize, name);
+        if(null != deptPage){
+            return Result.ok().data("deptList", deptPage);
+        }else{
+            throw new BusinessException(ResultCodeEnum.DEPARTMENT_NOT_EXIST_PAGE.getCode(), ResultCodeEnum.DEPARTMENT_NOT_EXIST_PAGE.getMessage());
+        }
     }
 }
 

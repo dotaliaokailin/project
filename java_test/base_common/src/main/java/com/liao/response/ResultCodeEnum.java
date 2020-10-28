@@ -47,13 +47,15 @@ public enum ResultCodeEnum implements CustomResultCode{
     /*部门错误*/
     DEPARTMENT_NOT_EXIST(3007, "部门不存在"),
     DEPARTMENT_ALREADY_EXIST(3008, "部门已存在"),
+    DEPARTMENT_NOT_EXIST_PAGE(3009, "部门数据不存在"),
 
     /* 业务错误 */
     NO_PERMISSION(3001, "没有权限"),
 
     /* 角色错误*/
     ROLE_NOT_FOUND_PAGE(4001, "角色数据不存在"),
-    ROLE_ALREADY_EXIST( 4002, "角色已存在");
+    ROLE_ALREADY_EXIST( 4002, "角色已存在"),
+    ROLE_NO_FOUND_MENU(4003, "角色菜单未找到");
 
     /*异常错误*/
 

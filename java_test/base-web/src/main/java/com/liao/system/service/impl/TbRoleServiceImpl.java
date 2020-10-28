@@ -13,6 +13,8 @@ import com.liao.system.vo.RoleVo;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 /**
  * <p>
  * 角色表 服务实现类
@@ -54,7 +56,7 @@ public class TbRoleServiceImpl extends ServiceImpl<TbRoleMapper, TbRole> impleme
         }catch (Exception e){
             throw new BusinessException(ResultCodeEnum.ROLE_NOT_FOUND_PAGE.getCode(), ResultCodeEnum.ROLE_NOT_FOUND_PAGE.getMessage());
         }
-        if(null != role.getId() && role.getId() > 0){//修改
+        if(null != role.getId() && role.getId() >= 0){//修改
             TbRole selectById = this.baseMapper.selectById(role.getId());
             //修改时角色信息不存在
             if(null == selectById){
@@ -75,5 +77,15 @@ public class TbRoleServiceImpl extends ServiceImpl<TbRoleMapper, TbRole> impleme
     @Override
     public TbRole findRoleByRoleName(String roleName) {
         return this.baseMapper.findRoleByRoleName(roleName);
+    }
+
+    /**
+     * 导出excel
+     *
+     * @return
+     */
+    @Override
+    public List<TbRole> exportExcel() {
+        return this.baseMapper.exportExcel();
     }
 }

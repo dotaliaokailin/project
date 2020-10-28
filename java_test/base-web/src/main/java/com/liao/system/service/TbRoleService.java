@@ -5,6 +5,8 @@ import com.liao.system.pojo.TbRole;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.liao.system.vo.RoleVo;
 
+import java.util.List;
+
 /**
  * <p>
  * 角色表 服务类
@@ -43,4 +45,10 @@ public interface TbRoleService extends IService<TbRole> {
      * @return
      */
     TbRole findRoleByRoleName(String roleName);
+
+    /**
+     * 导出excel
+     * @return
+     */
+    List<TbRole> exportExcel();
 }

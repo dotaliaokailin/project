@@ -1,5 +1,6 @@
 package com.liao.system.pojo;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 
 import java.beans.Transient;
@@ -8,6 +9,8 @@ import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -40,10 +43,14 @@ public class TbDepartment implements Serializable {
     @ApiModelProperty(value = "办公室地点")
     private String address;
 
+    @TableField(fill = FieldFill.INSERT)
     @ApiModelProperty(value = "创建时间")
+    @JsonFormat(pattern = "yyyy年MM月dd日", timezone = "GMT+8")
     private Date createTime;
 
+    @TableField(fill = FieldFill.UPDATE)
     @ApiModelProperty(value = "修改时间")
+    @JsonFormat(pattern = "yyyy年MM月dd日", timezone = "GMT+8")
     private Date modifiedTime;
 
     @ApiModelProperty(value = "系主任id，关联用户表")

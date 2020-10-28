@@ -70,4 +70,8 @@ public class TbMenu implements Serializable {
     @TableField(exist = false)
     @ApiModelProperty(value = "子菜单集合")
     private List<TbMenu> children;
+
+    @TableField(exist = false)
+    @ApiModelProperty(value = "是否禁用")
+    private Boolean disabled;
 }

@@ -3,6 +3,8 @@ package com.liao.system.service;
 import com.liao.system.pojo.TbRoleMenu;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 角色菜单关联表 服务类
@@ -17,4 +19,10 @@ public interface TbRoleMenuService extends IService<TbRoleMenu> {
      * @param roleId
      */
     void deleteByRoleId(Long roleId);
+
+    /**
+     * 根据角色ID查询关联的菜单
+     * @param roleId
+     */
+    List<TbRoleMenu> getMenuByRoleId(Long roleId);
 }

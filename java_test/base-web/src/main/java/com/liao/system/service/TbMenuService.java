@@ -18,14 +18,18 @@ public interface TbMenuService extends IService<TbMenu> {
     /**
      *  通过父级菜单ID及菜单类型查询子菜单集合
      * @param parentId  父级菜单ID
-     * @param type 类型 0菜单 1按钮
      * @return
      */
-    public List<TbMenu> findMenusByParentId(Long parentId, Integer type);
+    public List<TbMenu> findMenusByParentId(Long parentId);
 
     /**
      * 返回菜单树
      */
     public List<TbMenu> menuTree();
+
+    /**
+     * 返回菜单和按钮树
+     */
+    public List<TbMenu> menuButtonTree();
 
 }

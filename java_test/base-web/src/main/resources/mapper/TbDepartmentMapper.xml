@@ -2,6 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.liao.system.mapper.TbDepartmentMapper">
     <select id="findDeptAndCount" resultType="TbDepartment">
-        select d.id, d.`name`, IFNULL((select count(*) from tb_user u where u.department_id = d.id and u.deleted = 0 GROUP BY department_id),0) as deptCount FROM tb_department d;
+        select d.id, d.`name`, IFNULL((select count(*) from tb_user u where u.department_id = d.id and u.deleted = 0 GROUP BY department_id),0) as deptCount FROM tb_department d
+    </select>
+
+    <select id="getDeptPage" resultType="TbDepartment">
+        select *, IFNULL((select count(*) from tb_user u where u.department_id = d.id and u.deleted = 0 GROUP BY department_id),0) as deptCount FROM tb_department d ${ew.customSqlSegment}
     </select>
 </mapper>
