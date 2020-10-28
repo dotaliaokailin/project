@@ -3,7 +3,8 @@ import Router from 'vue-router';
 import Login from '../views/Login';
 import Main from '../views/Main';
 import Users from '../views/user/Users';
-import Roles from '../views/role/roles';
+import Roles from '../views/role/Roles';
+import Departments from '../views/depaetment/Departments';
 import Welcome from '../views/user/Welcome';
 Vue.use(Router);
 
@@ -39,6 +40,11 @@ const router =  new Router({
           path: '/roles',
           name: '角色管理',
           component: Roles
+        },
+        {
+          path: '/departments',
+          name: '部门管理',
+          component: Departments
         }
       ]
     }

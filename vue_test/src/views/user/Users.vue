@@ -25,13 +25,13 @@
             </el-select>
           </el-form-item>
           <el-form-item label="用户名" >
-            <el-input v-model="userVo.username" placeholder="请输入用户名"></el-input>
+            <el-input v-model="userVo.username" placeholder="请输入用户名" clearable></el-input>
           </el-form-item>
           <el-form-item label="昵称" >
-            <el-input v-model="userVo.nickname" placeholder="请输入昵称"></el-input>
+            <el-input v-model="userVo.nickname" placeholder="请输入昵称" clearable></el-input>
           </el-form-item>
           <el-form-item label="邮箱" >
-            <el-input v-model="userVo.email" placeholder="请输入邮箱"></el-input>
+            <el-input v-model="userVo.email" placeholder="请输入邮箱" clearable></el-input>
           </el-form-item>
           <el-form-item label="性别" >
             <el-radio-group v-model="userVo.sex">
@@ -51,7 +51,7 @@
         <el-table
           :data="userList"
           border
-          height="620"
+          height="630"
           style="width: 100%">
           <el-table-column
             prop="id"
@@ -120,11 +120,11 @@
           </el-table-column>
           <el-table-column
             label="操作"
-            width="280">
+            width="300">
             <template slot-scope="scope"><!-- 通过作用域插槽获取scope row信息-->
-            <el-button type="primary" icon="el-icon-edit" @click="show(scope.row.id)"></el-button>
-            <el-button type="danger" icon="el-icon-delete" @click="del(scope.row, scope.$index)"></el-button>
-            <el-button type="warning" icon="el-icon-setting" @click="showRole(scope.row.id,scope.row.username)"></el-button>
+            <el-button type="primary" size="small" icon="el-icon-edit" @click="show(scope.row.id)">修改</el-button>
+            <el-button type="danger" size="small" icon="el-icon-delete" @click="del(scope.row, scope.$index)">删除</el-button>
+            <el-button type="warning" size="small" icon="el-icon-setting" @click="showRole(scope.row.id,scope.row.username)">授权</el-button>
             </template>
           </el-table-column>
         </el-table>

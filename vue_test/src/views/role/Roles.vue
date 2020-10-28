@@ -8,18 +8,18 @@
       <!-- body -->
       <el-card class="roles-box-card">
         <el-row>
-          <el-input placeholder="请输入角色名查询" v-model="roleName" class="input-with-select">
+          <el-input placeholder="请输入角色名查询" v-model="roleName" class="input-with-select" clearable>
             <el-button slot="append" icon="el-icon-search" @click="getRolePage(1, pageSize, roleName)"></el-button>
           </el-input>
           <el-button style="margin-left: 10px" icon="el-icon-refresh" @click="reset">重置</el-button>
-          <el-button type="primary" style="margin-left: 10px" icon="el-icon-plus" @click="show(0)">添加</el-button>
-          <el-button type="info" style="margin-left: 10px" icon="el-icon-download">导出</el-button>
+          <el-button type="primary" style="margin-left: 10px" icon="el-icon-plus" @click="show(-1)">添加</el-button>
+          <el-button type="info" style="margin-left: 10px" icon="el-icon-download" @click="exportExcel">导出</el-button>
         </el-row>
         <!-- table -->
         <el-table
           :data="roleList"
           border
-          height="620"
+          height="626"
           style="width: 100%; margin-top: 20px; margin-bottom: 20px;">
           <el-table-column
             prop="id"
@@ -52,16 +52,17 @@
             </template>
           </el-table-column>
           <el-table-column
+            width="600"
             prop="remark"
             label="备注">
           </el-table-column>
           <el-table-column
             label="操作"
-            width="380">
+            width="317">
             <template slot-scope="scope"><!-- 通过作用域插槽获取scope row信息-->
-              <el-button type="warning" icon="el-icon-setting">授权</el-button>
-              <el-button type="primary" icon="el-icon-edit" @click="show(scope.row.id)">编辑</el-button>
-              <el-button type="danger" icon="el-icon-delete" @click="del(scope.row, scope.$index)">删除</el-button>
+              <el-button type="warning" size="small" icon="el-icon-setting" @click="authorizationRole(scope.row.id)">授权</el-button>
+              <el-button type="primary" size="small" icon="el-icon-edit" @click="show(scope.row.id)">编辑</el-button>
+              <el-button type="danger" size="small" icon="el-icon-delete" @click="del(scope.row, scope.$index)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -79,19 +80,22 @@
       </el-card>
       <!-- 新增编辑弹框子组件 -->
       <add-role :addOrUpdateVisible="addOrUpdateVisible" @changeShow="showAddOrUpdate"  :id="id"></add-role>
+      <!-- 授权弹框子组件 -->
+      <auth-role :authVisible="authVisible" @changeShow="authRoleShow"  :id="id"></auth-role>
     </div>
 </template>
 
 <script>
-    import {findRolePage, saveOrUpdate, deleteRole} from "../../api/roleApi";
+    import {findRolePage, saveOrUpdate, deleteRole, exportRoles} from "../../api/roleApi";
     //引入子组件
     import AddRole from  "../role/AddRole";
-    import {deleteUser} from "../../api/userApi";
+    import AuthRole from "../role/AuthRole";
 
     export default {
       name: "Role",
       components: {
         AddRole,
+        AuthRole
       },
       methods: {
         handleSizeChange(val) {
@@ -102,12 +106,25 @@
           this.currentPage = val;
           this.getRolePage(this.currentPage, this.pageSize, this.roleName);
         },
+        //授权弹出框
+        authorizationRole(id){
+          this.id = id;
+          this.authVisible = true;
+        },
+        // 监听 子组件弹窗关闭后触发，有子组件调用
+        authRoleShow(data){
+          if(data === 'false'){
+            this.authVisible = false;
+          }else{
+            this.authVisible = true;
+          }
+        },
         // 按钮点击事件 显示新增编辑弹窗组件
         show(id){
           this.id = id;
           this.addOrUpdateVisible = true;
         },
-        // 监听 修改用户 子组件弹窗关闭后触发，有子组件调用
+        // 监听 子组件弹窗关闭后触发，有子组件调用
         showAddOrUpdate(data){
           if(data === 'false'){
             this.addOrUpdateVisible = false;
@@ -169,6 +186,11 @@
             this.$message.error(data.message);
           }
         },
+        //导出excel
+        async exportExcel(){
+          this.$message.warning('导出中...');
+          await exportRoles();
+        },
       },
       data(){
         return {
@@ -178,7 +200,8 @@
           total: 0,
           roleList: [],
           addOrUpdateVisible: false,
-          id: 0,
+          authVisible: false,
+          id: -1,
         }
       },
       created() {

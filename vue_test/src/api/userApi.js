@@ -114,7 +114,7 @@ export const userRoles = (id) => {
     params: {
       id
     },
-    headers: {'loadingTarget': '.el-transfer'}//指定某元素区域+loading
+    headers: {'loadingTarget': '.el-dialog__body'}//指定某元素区域+loading
   });
 }
 

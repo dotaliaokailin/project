@@ -35,15 +35,16 @@
       },
       id:{
         type: Number,
-        default: 0
+        default: -1
       }
     },
     data() {
       return {
         // 控制弹出框显示隐藏
         showDialog:false,
+        title: '',
         role: {
-          id: 0,
+          id: -1,
           roleName: "",
           remark: "",
         },
@@ -67,8 +68,11 @@
       addOrUpdateVisible(oldVal,newVal){
         this.showDialog = this.addOrUpdateVisible;
         //监听到 addOrUpdateVisible === True 和 id > 0 时查询用户
-        if(this.addOrUpdateVisible && this.id > 0){
+        if(this.addOrUpdateVisible && this.id >= 0){
           this.getRoleById(this.id);
+          this.title = "修改角色信息";
+        }else{
+          this.title = "新增角色信息";
         }
       },
     },
@@ -100,7 +104,7 @@
         }
         if(data.status){
           this.role = {
-            id: 0,
+            id: -1,
             roleName: "",
             remark: "",
           };
