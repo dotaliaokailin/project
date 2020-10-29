@@ -8,7 +8,7 @@
         </el-form-item>
         <el-form-item label="备注" prop="remark">
           <el-input v-model="role.remark" type="textarea" placeholder="请输入备注"
-            :autosize="{minRows: 4, maxRows: 4}" :style="{width: '100%'}" :maxlength="255"></el-input>
+            :autosize="{minRows: 4, maxRows: 4}" :style="{width: '100%'}" :maxlength="255" show-word-limit></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer">
@@ -28,10 +28,6 @@
       addOrUpdateVisible:{
         type: Boolean,
         default: false
-      },
-      title:{
-        type: String,
-        default: ''
       },
       id:{
         type: Number,

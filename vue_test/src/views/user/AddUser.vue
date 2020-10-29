@@ -30,7 +30,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="用户名" prop="username">
-              <el-input v-model="tbUser.username" placeholder="请输入用户名" clearable :style="{width: '100%'}">
+              <el-input v-model="tbUser.username" placeholder="请输入用户名" clearable :style="{width: '100%'}" show-word-limit :maxlength="20">
               </el-input>
             </el-form-item>
           </el-col>
@@ -44,13 +44,13 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="昵称" prop="nickname">
-              <el-input v-model="tbUser.nickname" placeholder="请输入昵称" clearable :style="{width: '100%'}">
+              <el-input v-model="tbUser.nickname" placeholder="请输入昵称" clearable :style="{width: '100%'}" show-word-limit :maxlength="20" >
               </el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="密码" prop="password">
-              <el-input v-model="tbUser.password" placeholder="请输入密码" clearable :style="{width: '100%'}">
+              <el-input v-model="tbUser.password" placeholder="请输入密码" clearable :style="{width: '100%'}" show-word-limit :minlength="6" :maxlength="18">
               </el-input>
             </el-form-item>
           </el-col>
@@ -64,14 +64,14 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="邮箱" prop="email">
-              <el-input v-model="tbUser.email" placeholder="请输入邮箱" clearable :style="{width: '100%'}">
+              <el-input v-model="tbUser.email" placeholder="请输入邮箱" clearable :style="{width: '100%'}" show-word-limit :maxlength="30" >
               </el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="手机号" prop="phoneNumber">
               <el-input v-model="tbUser.phoneNumber" placeholder="请输入手机号" clearable
-                :style="{width: '100%'}"></el-input>
+                :style="{width: '100%'}" show-word-limit :maxlength="11" ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">

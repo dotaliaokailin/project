@@ -73,7 +73,7 @@
           <el-table-column
             prop="sex"
             label="性别"
-            width="60">
+            width="50">
             <template slot-scope="scope">
               <el-tag type="success" size="mini">{{scope.row.sex == 0 ? '男' : scope.row.sex == 1 ? '女' : '保密'}}</el-tag>
             </template>
@@ -87,7 +87,7 @@
             sortable
             prop="deptName"
             label="部门"
-            width="180">
+            width="190">
           </el-table-column>
           <el-table-column
             sortable
@@ -95,18 +95,19 @@
             label="生日"
             width="180">
             <template slot-scope="scope">
-              {{scope.row.birth}}
+              <i class="el-icon-time"></i>
+              <span style="margin-left: 10px">{{ scope.row.birth }}</span>
             </template>
           </el-table-column>
           <el-table-column
             prop="email"
             label="邮箱"
-            width="180">
+            width="215">
           </el-table-column>
           <el-table-column
             prop="status"
             label="启用/禁用"
-            width="120">
+            width="85">
             <template slot-scope="scope">
               <el-switch
                 v-model="scope.row.status"

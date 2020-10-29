@@ -1,35 +1,52 @@
 <template>
   <div>
-    <el-form ref="elForm" :model="deptList" :rules="rules" size="medium" label-width="100px">
-      <el-form-item label="部门名称" prop="name">
-        <el-input v-model="deptList.name" placeholder="请输入部门名称" :maxlength="20" clearable
-          :style="{width: '100%'}"></el-input>
-      </el-form-item>
-      <el-form-item label="部门电话" prop="phone">
-        <el-input v-model="deptList.phone" placeholder="请输入部门电话" :maxlength="11" clearable
-          :style="{width: '100%'}"></el-input>
-      </el-form-item>
-      <el-form-item label="部门地址" prop="address">
-        <el-input v-model="deptList.address" type="textarea" placeholder="请输入部门地址" :maxlength="255"
-          :autosize="{minRows: 4, maxRows: 4}" :style="{width: '100%'}"></el-input>
-      </el-form-item>
-      <el-form-item size="large">
-        <el-button type="primary" @click="submitForm">提交</el-button>
-        <el-button @click="resetForm">重置</el-button>
-      </el-form-item>
-    </el-form>
+    <el-dialog v-bind="$attrs" v-on="$listeners" @open="onOpen" @close="onClose" :title="title" :visible.sync="showDialog" v-if="showDialog">
+      <el-form ref="elForm" :model="dept" :rules="rules" size="medium" label-width="100px">
+        <el-form-item label="部门名称" prop="name">
+          <el-input v-model="dept.name" placeholder="请输入部门名称" :maxlength="20" clearable show-word-limit
+            :style="{width: '100%'}"></el-input>
+        </el-form-item>
+        <el-form-item label="部门电话" prop="phone">
+          <el-input v-model="dept.phone" placeholder="请输入部门电话" :maxlength="11" clearable show-word-limit
+            :style="{width: '100%'}"></el-input>
+        </el-form-item>
+        <el-form-item label="部门地址" prop="address">
+          <el-input v-model="dept.address" type="textarea" placeholder="请输入部门地址" :maxlength="255"
+            :autosize="{minRows: 4, maxRows: 4}" :style="{width: '100%'}" show-word-limit></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer">
+        <el-button @click="onClose">取消</el-button>
+        <el-button type="primary" @click="handelConfirm">确定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
+import {getDeptById, saveOrUpdate} from "../../api/departmentApi";
 export default {
+  name: 'AddDepartment',
+  inheritAttrs: false,
   components: {},
-  props: [],
+  props: {
+    addOrUpdateVisible:{
+      type: Boolean,
+      default: false
+    },
+    id:{
+      type: Number,
+      default: 0
+    }
+  },
   data() {
     return {
-      deptList: {
-        name: undefined,
-        phone: undefined,
-        address: undefined,
+      title: '',
+      showDialog: false,
+      dept: {
+        id: 0,
+        name: '',
+        phone: '',
+        address: '',
       },
       rules: {
         name: [],
@@ -47,19 +64,68 @@ export default {
     }
   },
   computed: {},
-  watch: {},
+  watch: {
+    // 监听 addOrUpdateVisible 改变
+    addOrUpdateVisible(oldVal,newVal){
+      this.showDialog = this.addOrUpdateVisible;
+      //监听到 addOrUpdateVisible === True 和 id > 0 时查询用户
+      if(this.addOrUpdateVisible && this.id > 0){
+        this.findDeptById(this.id);
+        this.title = "修改部门信息";
+      }else{
+        this.title = "新增部门信息";
+      }
+    },
+  },
   created() {},
   mounted() {},
   methods: {
-    submitForm() {
+    onOpen() {
+    },
+    onClose() {
+      this.$refs['elForm'].resetFields();
+      // 子组件调用父组件方法，并传递参数
+      this.$emit('changeShow','false');
+    },
+    handelConfirm() {
       this.$refs['elForm'].validate(valid => {
         if (!valid) return
-        // TODO 提交表单
+        this.saveOrUpdate();
       })
     },
-    resetForm() {
-      this.$refs['elForm'].resetFields()
+    //新增修改
+    async saveOrUpdate(){
+      const {data} = await saveOrUpdate(this.dept);
+      if(data.status){
+        this.$message.success(data.message);
+      }else{
+        this.$message.error(data.message);
+      }
+      if(data.status){
+        this.dept = {
+          id: 0,
+          name: '',
+          phone: '',
+          address: '',
+        };
+        this.$emit('update:visible', false);
+        // 子组件调用父组件方法，并传递参数
+        this.$emit('changeShow','false');
+        this.$parent.getDeptPage(this.$parent.currentPage,this.$parent.pageSize,this.$parent.roleName);
+      }
     },
+    //根据ID查询用户信息
+    async findDeptById(id){
+      const {data} = await getDeptById(id);
+      if(data.status){
+        this.dept.id = data.data.dept.id;
+        this.dept.name = data.data.dept.name;
+        this.dept.phone = data.data.dept.phone;
+        this.dept.address = data.data.dept.address;
+      }else{
+        this.$message.error(data.message);
+      }
+    }
   }
 }
 

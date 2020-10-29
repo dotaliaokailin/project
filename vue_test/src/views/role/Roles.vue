@@ -35,11 +35,15 @@
             prop="createTime"
             label="创建时间"
             width="180">
+            <template slot-scope="scope">
+              <i class="el-icon-time"></i>
+              <span style="margin-left: 10px">{{ scope.row.createTime }}</span>
+            </template>
           </el-table-column>
           <el-table-column
             prop="status"
             label="启用/禁用"
-            width="180">
+            width="85">
             <template slot-scope="scope">
               <el-switch
                 v-model="scope.row.status"
@@ -52,7 +56,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            width="600"
+            width="695"
             prop="remark"
             label="备注">
           </el-table-column>
