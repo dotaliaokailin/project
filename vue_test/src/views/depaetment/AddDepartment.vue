@@ -39,6 +39,26 @@ export default {
     }
   },
   data() {
+    //手机校验
+    let checkPhone = (rule, value, callback) => {
+      const phoneReg = /^1[34578]\d{9}$$/;
+      if (!value) {
+        return callback(new Error("请输入部门电话"));
+      }
+      setTimeout(() => {
+        // Number.isInteger是es6验证数字是否为整数的方法,实际输入的数字总是识别成字符串
+        // 所以在前面加了一个+实现隐式转换
+        if (!Number.isInteger(+value)) {
+          callback(new Error("请输入数字值"));
+        } else {
+          if (phoneReg.test(value)) {
+            callback();
+          } else {
+            callback(new Error("电话号码格式不正确"));
+          }
+        }
+      }, 100);
+    };
     return {
       title: '',
       showDialog: false,
@@ -52,7 +72,7 @@ export default {
         name: [],
         phone: [{
           required: true,
-          message: '请输入部门电话',
+          validator: checkPhone,
           trigger: 'blur'
         }],
         address: [{
