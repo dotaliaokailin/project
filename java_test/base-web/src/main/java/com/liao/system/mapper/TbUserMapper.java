@@ -9,6 +9,7 @@ import com.liao.system.pojo.TbUser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -32,4 +33,7 @@ public interface TbUserMapper extends BaseMapper<TbUser> {
     public TbUser selectById(Long id);
 
     public TbUser findUserById(Long id);
+
+    @Update("update tb_user set department_id = null where department_id = #{deptId} ")
+    void resetDeptById(Long deptId);
 }

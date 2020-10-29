@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.liao.system.mapper.TbUserMapper">
     <select id="findUserPage" resultType="TbUser">
-        select u.id,u.username,u.nickname,u.sex,u.phone_number,d.`name` as deptName,u.birth,u.email,u.`status`,u.department_id,u.password from tb_user u INNER JOIN tb_department d on u.department_id = d.id ${ew.customSqlSegment} and u.deleted = 0
+        select u.id,u.username,u.nickname,u.sex,u.phone_number,d.`name` as deptName,u.birth,u.email,u.`status`,u.department_id,u.password from tb_user u LEFT JOIN tb_department d on u.department_id = d.id  ${ew.customSqlSegment}
     </select>
 
     <select id="exportUsers" resultType="TbUser">

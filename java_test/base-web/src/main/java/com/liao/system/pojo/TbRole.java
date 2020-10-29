@@ -10,6 +10,8 @@ import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -58,6 +60,7 @@ public class TbRole implements Serializable {
     @ApiModelProperty(value = "创建时间")
     @TableField(fill = FieldFill.INSERT)
     @ExcelProperty(value = "创建时间", index = 2)
+    @JsonFormat(pattern = "yyyy年MM月dd日", timezone = "GMT+8")
     private Date createTime;
 
     @ApiModelProperty(value = "修改时间")

@@ -8,4 +8,8 @@
     <select id="getDeptPage" resultType="TbDepartment">
         select *, IFNULL((select count(*) from tb_user u where u.department_id = d.id and u.deleted = 0 GROUP BY department_id),0) as deptCount FROM tb_department d ${ew.customSqlSegment}
     </select>
+
+    <select id="exportExcel" resultType="TbDepartment">
+        select *, IFNULL((select count(*) from tb_user u where u.department_id = d.id and u.deleted = 0 GROUP BY department_id),0) as deptCount, tu.username as username from tb_department d left join tb_user tu on d.mgr_id = tu.id
+    </select>
 </mapper>

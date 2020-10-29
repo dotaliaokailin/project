@@ -452,7 +452,7 @@ CREATE TABLE `tb_department` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL COMMENT '系名',
   `phone` varchar(20) NOT NULL COMMENT '系办公电话',
-  `address` varchar(20) DEFAULT NULL COMMENT '办公室地点',
+  `address` varchar(255) DEFAULT NULL COMMENT '办公室地点',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `modified_time` datetime DEFAULT NULL COMMENT '修改时间',
   `mgr_id` bigint(20) DEFAULT NULL COMMENT '系主任id，关联用户表',

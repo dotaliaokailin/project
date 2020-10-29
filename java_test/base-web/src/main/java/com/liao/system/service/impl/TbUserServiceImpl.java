@@ -89,9 +89,20 @@ public class TbUserServiceImpl extends ServiceImpl<TbUserMapper, TbUser> impleme
         return this.baseMapper.findUserById(id);
     }
 
+    /**
+     * 根据部门ID清空人员信息的部门ID
+     *
+     * @param id
+     */
+    @Override
+    public void resetDeptById(Long id) {
+        this.baseMapper.resetDeptById(id);
+    }
+
     @Override
     public IPage<TbUser> findUserPage(Integer currentPage, Integer pageSize, UserVo userVo) {
         QueryWrapper<TbUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("deleted", 0);
         if(null != userVo){
             if(null != userVo.getDepartmentId()){
                 queryWrapper.eq("department_id", userVo.getDepartmentId());

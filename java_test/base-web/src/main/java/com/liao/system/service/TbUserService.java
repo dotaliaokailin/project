@@ -57,4 +57,10 @@ public interface TbUserService extends IService<TbUser> {
      * 查询用户
      */
     public TbUser findUserById(Long id);
+
+    /**
+     * 根据部门ID清空人员信息的部门ID
+     * @param id
+     */
+    void resetDeptById(Long id);
 }

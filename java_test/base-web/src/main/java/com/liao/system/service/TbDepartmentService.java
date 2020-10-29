@@ -24,4 +24,17 @@ public interface TbDepartmentService extends IService<TbDepartment> {
      * 部门分页查询
      */
     public IPage<TbDepartment> getDeptPage(Integer currentPage, Integer pageSize, String name);
+
+    /**
+     * 新增修改部门信息
+     * @param tbDepartment
+     * @return
+     */
+    boolean savoOrUpdateDept(TbDepartment tbDepartment);
+
+    /**
+     * 导出部门信息Excel
+     * @return
+     */
+    List<TbDepartment> exportExcel();
 }
