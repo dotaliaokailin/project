@@ -5,6 +5,7 @@ import Main from '../views/Main';
 import Users from '../views/user/Users';
 import Roles from '../views/role/Roles';
 import Departments from '../views/depaetment/Departments';
+import Menus from  '../views/menu/Menus';
 import Welcome from '../views/user/Welcome';
 Vue.use(Router);
 
@@ -45,6 +46,11 @@ const router =  new Router({
           path: '/departments',
           name: '部门管理',
           component: Departments
+        },
+        {
+          path: '/menus',
+          name: '角色管理',
+          component: Menus
         }
       ]
     }
