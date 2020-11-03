@@ -12,7 +12,7 @@
   "dependencies": {
     "axios": "^0.20.0",
     "default-passive-events": "^2.0.0",
-    "element-ui": "^2.13.2",
+    "element-ui": "^2.14.0",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
     "qs": "^6.9.4",

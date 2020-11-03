@@ -31,7 +31,7 @@
 </template>
 
 <script>
-    import {asyncRoutes} from "../router";
+    import {login} from "../api/userApi";
 
     export default {
       name: "Login",
@@ -58,12 +58,16 @@
         };
       },
       methods: {
+        async toLogin(){
+          const {data} = await login(this.username, this.password);
+          console.log(data);
+        },
         submitForm(formName) {
           this.$refs[formName].validate((valid) => {
             if (valid) {
+              this.toLogin();
               this.$router.push('/main');
             } else {
-              console.log('error submit!!');
               return false;
             }
           });

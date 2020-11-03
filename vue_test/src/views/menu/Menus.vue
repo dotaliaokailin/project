@@ -7,108 +7,113 @@
       </el-breadcrumb>
       <el-card class="users-box-card">
         <el-input
+          :style="{width: '30%',marginRight: '10px'}"
+          clearable
           placeholder="输入关键字进行过滤"
           v-model="filterText">
         </el-input>
+        <el-button type="primary" icon="el-icon-plus" @click="show(0, true)">父级</el-button>
+        <el-button type="info" icon="el-icon-download">导出</el-button>
         <p>菜单权限树</p>
         <el-tree
-          class="filter-tree"
           :data="data"
           :props="defaultProps"
+          accordion
           show-checkbox
-          default-expand-all
+          :expand-on-click-node="false"
           :filter-node-method="filterNode"
           ref="tree">
           <span class="custom-tree-node" slot-scope="{ node, data }">
-            <span>
+            <span class="left_span">
               <span>
-                <i class="el-icon-search"></i>
+                <i :class="data.icon"></i>
               </span>
-              <span style="margin: 0px 10px;">{{ node.label }}</span>
-              <span style="color: #b5b5b5; font-size: 13px">
-                <el-tag type="success" size="mini" effect="plain">
-                  菜单
+              <span style="margin: 0px 10px; font-size: 14px">{{ node.label }}</span>
+              <span style="color: #b5b5b5; font-size: 12px">
+                <el-tag :type="data.type ==0 ? 'success' : 'warning'" size="mini" effect="plain">
+                  {{data.type == 0 ? '菜单' : '权限['+data.perms+']'}}
                 </el-tag>
               </span>
             </span>
-            <span style="float: right">
-              <button type="button" class="el-button el-button--text el-button--mini">
+            <span class="right_span">
+              <button type="button" class="el-button el-button--text el-button--mini" @click="show(data.id, false)">
                 <span>
                   <i class="el-icon-edit"></i>编辑
                 </span>
               </button>
-              <button type="button" class="el-button el-button--text el-button--mini">
+              <button type="button" class="el-button el-button--text el-button--mini" @click="show(data.id, true)">
                 <span>
-                  <i class="el-icon-edit"></i>编辑
+                  <i class="el-icon-plus"></i>添加
                 </span>
               </button>
               <button type="button" class="el-button el-button--text el-button--mini">
                 <span>
-                  <i class="el-icon-edit"></i>编辑
+                  <i class="el-icon-delete"></i>删除
                 </span>
               </button>
             </span>
           </span>
         </el-tree>
       </el-card>
+      <!-- 新增编辑弹框子组件 -->
+      <add-menu :addOrUpdateVisible="addOrUpdateVisible" @changeShow="showAddOrUpdate"  :id="id" :flag="flag"></add-menu>
     </div>
 </template>
 
 <script>
+    import {menuButtonTree} from "../../api/menuApi";
+    import AddMenu from  "../menu/AddMenu";
     export default {
       name: "Menus",
+      components: {
+        AddMenu
+      },
       watch: {
         filterText(val) {
           this.$refs.tree.filter(val);
         }
       },
       methods: {
+        // 按钮点击事件 显示新增编辑弹窗组件
+        show(id, flag){
+          this.id = id;
+          this.flag = flag;
+          this.addOrUpdateVisible = true;
+        },
+        // 监听 子组件弹窗关闭后触发，有子组件调用
+        showAddOrUpdate(data){
+          if(data === 'false'){
+            this.addOrUpdateVisible = false;
+          }else{
+            this.addOrUpdateVisible = true;
+          }
+        },
         filterNode(value, data) {
           if (!value) return true;
-          return data.label.indexOf(value) !== -1;
+          return data.menuName.indexOf(value) !== -1;
+        },
+        async menuButtonTree(){
+          const {data} = await menuButtonTree();
+          if(data.status){
+            this.data = data.data.menuButtonTree;
+          }else {
+            this.$message.error(data.message);
+          }
         }
+      },
+      created(){
+        this.menuButtonTree();
       },
       data() {
         return {
           filterText: '',
-          data: [{
-            id: 1,
-            label: '一级 1',
-            children: [{
-              id: 4,
-              label: '二级 1-1',
-              children: [{
-                id: 9,
-                label: '三级 1-1-1'
-              }, {
-                id: 10,
-                label: '三级 1-1-2'
-              }]
-            }]
-          }, {
-            id: 2,
-            label: '一级 2',
-            children: [{
-              id: 5,
-              label: '二级 2-1'
-            }, {
-              id: 6,
-              label: '二级 2-2'
-            }]
-          }, {
-            id: 3,
-            label: '一级 3',
-            children: [{
-              id: 7,
-              label: '二级 3-1'
-            }, {
-              id: 8,
-              label: '二级 3-2'
-            }]
-          }],
+          data: [],
+          id: 0,
+          flag: true,
+          addOrUpdateVisible: false,
           defaultProps: {
             children: 'children',
-            label: 'label'
+            label: 'menuName',
           }
         };
       }
@@ -121,6 +126,17 @@
     padding: 0;
     height: 100%;
     width: 100%;
+    .custom-tree-node{
+      box-sizing: border-box;
+      width: 100%;
+      .left_span{
+        justify-content: left;
+      }
+      .right_span{
+        float: right;
+        justify-content:flex-end;
+      }
+    }
   }
 
 </style>

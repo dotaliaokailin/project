@@ -6,7 +6,7 @@ import _ from 'lodash';
 const instance = axios.create({
   baseURL: 'http://localhost:9091',
   timeout: 40000,
-  headers: {'loadingTarget': '.el-main'}//指定某元素区域+loading
+  headers: {'loadingTarget': '.el-main', "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Credentials":true}//指定某元素区域+loading
 });
 
 //loading对象

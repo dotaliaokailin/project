@@ -2,6 +2,19 @@
 import request from '../utils/request';
 import { Message} from 'element-ui';
 
+export const login = (username, password) => {
+  return request({
+    url: '/login',
+    method: 'POST',
+    params: {
+      username,
+      password
+    },
+    xhrFields: {withCredentials: true},
+    crossDomain: true,
+    headers: {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Credentials":true}
+  });
+}
 /**
  * (已弃用)
  * 分页查询用户
