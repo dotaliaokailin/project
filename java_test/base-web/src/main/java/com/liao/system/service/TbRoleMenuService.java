@@ -1,5 +1,6 @@
 package com.liao.system.service;
 
+import com.liao.system.pojo.TbMenu;
 import com.liao.system.pojo.TbRoleMenu;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -25,4 +26,5 @@ public interface TbRoleMenuService extends IService<TbRoleMenu> {
      * @param roleId
      */
     List<TbRoleMenu> getMenuByRoleId(Long roleId);
+
 }

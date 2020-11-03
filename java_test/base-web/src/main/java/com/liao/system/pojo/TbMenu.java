@@ -1,5 +1,6 @@
 package com.liao.system.pojo;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
 
@@ -55,9 +56,11 @@ public class TbMenu implements Serializable {
     @ApiModelProperty(value = "排序")
     private Long orderNum;
 
+    @TableField(fill = FieldFill.INSERT)
     @ApiModelProperty(value = "创建时间")
     private Date createTime;
 
+    @TableField(fill = FieldFill.UPDATE)
     @ApiModelProperty(value = "修改时间")
     private Date modifiedTime;
 
@@ -74,4 +77,12 @@ public class TbMenu implements Serializable {
     @TableField(exist = false)
     @ApiModelProperty(value = "是否禁用")
     private Boolean disabled;
+
+    @TableField(exist = false)
+    @ApiModelProperty(value = "父级菜单名称")
+    private String parentName;
+
+    @TableField(exist = false)
+    @ApiModelProperty(value = "新增或者修改，新增 true, 修改false")
+    private Boolean flag;
 }

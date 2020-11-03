@@ -39,10 +39,18 @@
         <joda-time.version>2.10.1</joda-time.version>
         <!-- hutool工具 -->
         <hutool.version>5.4.4</hutool.version>
+        <!-- JSONObject-->
+        <fastjson-version>1.2.70</fastjson-version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!-- JSONObject-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson-version}</version>
+            </dependency>
             <!-- mybatis-plus -->
             <dependency>
                 <groupId>com.baomidou</groupId>

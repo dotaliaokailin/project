@@ -55,7 +55,12 @@ public enum ResultCodeEnum implements CustomResultCode{
     /* 角色错误*/
     ROLE_NOT_FOUND_PAGE(4001, "角色数据不存在"),
     ROLE_ALREADY_EXIST( 4002, "角色已存在"),
-    ROLE_NO_FOUND_MENU(4003, "角色菜单未找到");
+    ROLE_NO_FOUND_MENU(4003, "角色菜单未找到"),
+
+    /* 菜单错误*/
+    MENU_NOT_FOUND_PAGE(5001, "菜单树不存在"),
+    MENU_NOT_FOUND(5002, "菜单数据不存在"),
+    MENU_ALREADY_FOUND(5003, "菜单名称已存在");
 
     /*异常错误*/
 
