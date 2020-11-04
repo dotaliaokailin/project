@@ -13,8 +13,34 @@
     <properties>
         <!-- jwt-->
         <jwt-version>0.7.0</jwt-version>
+        <!-- kaptcha验证码-->
+        <kaptcha-version>2.3.2</kaptcha-version>
     </properties>
     <dependencies>
+        <!-- kaptcha验证码-->
+        <dependency>
+            <groupId>com.github.penggle</groupId>
+            <artifactId>kaptcha</artifactId>
+            <version>${kaptcha-version}</version>
+        </dependency>
+
+        <!--  redis -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <!-- commons-pool2 对象池依赖-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+
+        <!-- jackson-databind -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
         <!-- JSONObject -->
         <dependency>
             <groupId>com.alibaba</groupId>

@@ -41,10 +41,18 @@
         <hutool.version>5.4.4</hutool.version>
         <!-- JSONObject-->
         <fastjson-version>1.2.70</fastjson-version>
+        <!-- jackson-databind -->
+        <jackson-databind-version>2.11.3</jackson-databind-version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!-- jackson-databind -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson-databind-version}</version>
+            </dependency>
             <!-- JSONObject-->
             <dependency>
                 <groupId>com.alibaba</groupId>

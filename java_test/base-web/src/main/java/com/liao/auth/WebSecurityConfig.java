@@ -58,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //.anyRequest().authenticated()
                 .and()
                 //设置登录页面
-                .formLogin().loginPage("http://localhost:9090")
+                .formLogin().loginPage("/login")
                 .defaultSuccessUrl("http://localhost:9090/main").permitAll()
                 .and()
                 //设置登出页面
