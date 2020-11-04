@@ -52,6 +52,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         //跨域
         http.csrf().disable();
+        // 解决不允许显示在iframe的问题
+        http.headers().frameOptions().disable();
+        http.headers().httpStrictTransportSecurity().disable();
         //设置http的认证方式
         http.authorizeRequests()
                 //任何请求都要被认证
@@ -63,5 +66,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 //设置登出页面
                 .logout().logoutSuccessUrl("http://localhost:9090").permitAll();
+
     }
 }

@@ -17,6 +17,16 @@
         <kaptcha-version>2.3.2</kaptcha-version>
     </properties>
     <dependencies>
+        <!-- druid -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+        </dependency>
+
         <!-- kaptcha验证码-->
         <dependency>
             <groupId>com.github.penggle</groupId>
