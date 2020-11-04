@@ -13,7 +13,7 @@
           v-model="filterText">
         </el-input>
         <el-button type="primary" icon="el-icon-plus" @click="show(0, true)">父级</el-button>
-        <el-button type="info" icon="el-icon-download">导出</el-button>
+        <el-button type="info" icon="el-icon-download" @click="exportMenus()">导出</el-button>
         <p>菜单权限树</p>
         <el-tree
           :data="data"
@@ -46,7 +46,7 @@
                   <i class="el-icon-plus"></i>添加
                 </span>
               </button>
-              <button type="button" class="el-button el-button--text el-button--mini">
+              <button type="button" class="el-button el-button--text el-button--mini" @click="del(data.id, data.menuName)">
                 <span>
                   <i class="el-icon-delete"></i>删除
                 </span>
@@ -61,7 +61,7 @@
 </template>
 
 <script>
-    import {menuButtonTree} from "../../api/menuApi";
+    import {menuButtonTree, deleteById, exportMenus} from "../../api/menuApi";
     import AddMenu from  "../menu/AddMenu";
     export default {
       name: "Menus",
@@ -74,6 +74,27 @@
         }
       },
       methods: {
+        async deleteMenu(id){
+          const {data} = await deleteById(id);
+          if(data.status){
+            this.$message.info(data.message);
+            this.menuButtonTree();
+          }else{
+            this.$message.error(data.message);
+          }
+        },
+        //删除菜单
+        del(id, menuName){
+          this.$confirm('此操作将永久删除菜单：' + menuName + ', 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.deleteMenu(id);
+          }).catch(() => {
+            this.$message.info('已取消删除');
+          });
+        },
         // 按钮点击事件 显示新增编辑弹窗组件
         show(id, flag){
           this.id = id;
@@ -99,6 +120,10 @@
           }else {
             this.$message.error(data.message);
           }
+        },
+        async exportMenus(){
+          this.$message.warning("导出中...");
+          await exportMenus();
         }
       },
       created(){
