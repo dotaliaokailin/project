@@ -6,13 +6,18 @@ import com.liao.response.Result;
 import com.liao.response.ResultCodeEnum;
 import com.liao.system.pojo.TbMenu;
 import com.liao.system.service.TbMenuService;
+import com.liao.system.service.TbRoleMenuService;
+import com.liao.util.ExcelUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -29,6 +34,8 @@ import java.util.List;
 public class TbMenuController {
     @Autowired
     private TbMenuService tbMenuService;
+    @Autowired
+    private TbRoleMenuService tbRoleMenuService;
 
     @GetMapping("/menus")
     @ApiOperation(value = "所有菜单信息", notes = "获取所有菜单信息")
@@ -70,7 +77,7 @@ public class TbMenuController {
         }
     }
 
-    @PostMapping("saveOrUpdate")
+    @PostMapping("/saveOrUpdate")
     @ApiOperation(value = "新增修改菜单信息接口", notes = "新增修改菜单信息")
     public Result saveOrUpdate(@RequestBody TbMenu tbMenu){
         Boolean flag = tbMenuService.saveOrUpdateMenu(tbMenu);
@@ -78,6 +85,35 @@ public class TbMenuController {
             return Result.ok().code(ResultCodeEnum.OP_SUCCESS.getCode()).message(ResultCodeEnum.OP_SUCCESS.getMessage());
         }else{
             throw new BusinessException(ResultCodeEnum.OP_FAIL.getCode(), ResultCodeEnum.OP_FAIL.getMessage());
+        }
+    }
+
+    @GetMapping("/deleteById")
+    @ApiOperation(value = "根据DI删除菜单接口", notes = "根据DI删除菜单")
+    @Transactional(propagation = Propagation.NESTED)
+    public Result deleteById(@RequestParam("id") Long id){
+        List<TbMenu> childMenus = tbMenuService.findMenusByParentId(id);
+        if(!CollectionUtils.isEmpty(childMenus)){
+            throw new BusinessException(ResultCodeEnum.MENU_CHILDREN_HAS_EXIST.getCode(), ResultCodeEnum.MENU_CHILDREN_HAS_EXIST.getMessage());
+        }
+        try{
+            tbMenuService.removeById(id);
+            tbRoleMenuService.deleteByMenuId(id);
+            return Result.ok().code(ResultCodeEnum.DELETE_SUCCESS.getCode()).message(ResultCodeEnum.DELETE_SUCCESS.getMessage());
+        }catch (Exception e){
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            throw new BusinessException(ResultCodeEnum.DELETE_FAIL.getCode(), ResultCodeEnum.DELETE_FAIL.getMessage());
+        }
+    }
+
+    @GetMapping("/exportExcel")
+    @ApiOperation(value = "导出菜单信息Excel接口", notes = "导出菜单信息Excel")
+    public void exportExcel(HttpServletResponse response){
+        try {
+            ExcelUtil.download(response, "菜单列表", "菜单列表" , tbMenuService.exportExcel(), TbMenu.class);
+        } catch (Exception e){
+            throw new BusinessException(ResultCodeEnum.EXPORT_FAIL.getCode(), ResultCodeEnum.EXPORT_FAIL.getMessage());
         }
     }
 }

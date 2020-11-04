@@ -33,4 +33,14 @@ public class TbRoleMenuServiceImpl extends ServiceImpl<TbRoleMenuMapper, TbRoleM
     public List<TbRoleMenu> getMenuByRoleId(Long roleId) {
         return this.baseMapper.getMenuByRoleId(roleId);
     }
+
+    /**
+     * 根据菜单ID删除关联的角色
+     *
+     * @param id
+     */
+    @Override
+    public void deleteByMenuId(Long menuId) {
+        this.baseMapper.deleteByMenuId(menuId);
+    }
 }

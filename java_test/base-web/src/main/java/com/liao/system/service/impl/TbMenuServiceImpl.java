@@ -110,6 +110,16 @@ public class TbMenuServiceImpl extends ServiceImpl<TbMenuMapper, TbMenu> impleme
     }
 
     /**
+     * 导出菜单信息Excel
+     *
+     * @return
+     */
+    @Override
+    public List<TbMenu> exportExcel() {
+        return this.baseMapper.exportExcel();
+    }
+
+    /**
      * 拼接菜单树
      * @param parentMenus
      * @param type 菜单类型 0菜单 1按钮

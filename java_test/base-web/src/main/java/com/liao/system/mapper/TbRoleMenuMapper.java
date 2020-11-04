@@ -26,4 +26,7 @@ public interface TbRoleMenuMapper extends BaseMapper<TbRoleMenu> {
 
     @Select("select * from tb_role_menu where role_id = #{roleId}")
     List<TbRoleMenu> getMenuByRoleId(Long roleId);
+
+    @Delete("delete from tb_role_menu where menu_id = #{menuId}")
+    void deleteByMenuId(Long menuId);
 }

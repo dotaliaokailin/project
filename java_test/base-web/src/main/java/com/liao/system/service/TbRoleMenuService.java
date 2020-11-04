@@ -27,4 +27,9 @@ public interface TbRoleMenuService extends IService<TbRoleMenu> {
      */
     List<TbRoleMenu> getMenuByRoleId(Long roleId);
 
+    /**
+     * 根据菜单ID删除关联的角色
+     * @param id
+     */
+    void deleteByMenuId(Long menuId);
 }

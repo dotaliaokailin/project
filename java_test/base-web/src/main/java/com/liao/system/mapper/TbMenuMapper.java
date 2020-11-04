@@ -31,4 +31,7 @@ public interface TbMenuMapper extends BaseMapper<TbMenu> {
 
     @Select("select m.id, m.menu_name, m.parent_id, m.perms, m.available, m.order_num, m.icon, m.open, m.type, m.url from tb_menu m where menu_name = #{menuName} limit 1")
     TbMenu getMenuByName(String menuName);
+
+    @Select("select *,(select m.menu_name from tb_menu where id = m.parent_id) as parentName from tb_menu m")
+    List<TbMenu> exportExcel();
 }

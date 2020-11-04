@@ -60,7 +60,8 @@ public enum ResultCodeEnum implements CustomResultCode{
     /* 菜单错误*/
     MENU_NOT_FOUND_PAGE(5001, "菜单树不存在"),
     MENU_NOT_FOUND(5002, "菜单数据不存在"),
-    MENU_ALREADY_FOUND(5003, "菜单名称已存在");
+    MENU_ALREADY_FOUND(5003, "菜单名称已存在"),
+    MENU_CHILDREN_HAS_EXIST(5004, "请先删除子菜单");
 
     /*异常错误*/
 

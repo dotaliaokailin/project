@@ -49,4 +49,10 @@ public interface TbMenuService extends IService<TbMenu> {
      * @param tbMenu
      */
     Boolean saveOrUpdateMenu(TbMenu tbMenu);
+
+    /**
+     * 导出菜单信息Excel
+     * @return
+     */
+    List<TbMenu> exportExcel();
 }
