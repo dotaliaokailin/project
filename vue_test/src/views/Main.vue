@@ -75,7 +75,7 @@
         let path = window.sessionStorage.getItem("activePath");
         if(path == '/main'){//如果跳main页面则跳到首页welcome
           path = '/welcome';
-          this.$router.push('/welcome');
+          //this.$router.push('/welcome');
         }
         this.activePath = path;
         this.getMenuDate();
