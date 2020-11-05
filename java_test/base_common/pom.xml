@@ -12,7 +12,7 @@
     <artifactId>base_common</artifactId>
     <properties>
         <!-- jwt-->
-        <jwt-version>0.7.0</jwt-version>
+        <jwt-version>0.9.1</jwt-version>
         <!-- kaptcha验证码-->
         <kaptcha-version>2.3.2</kaptcha-version>
     </properties>
