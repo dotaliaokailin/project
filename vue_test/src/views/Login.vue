@@ -18,7 +18,8 @@
           <el-form-item prop="verificationCode">
             <div class="verificationCode_box">
               <el-input v-model="loginForm.verificationCode" prefix-icon="el-icon-mobile-phone" placeholder="验证码" class="verficationCode"></el-input>
-              <img src="../assets/image/verificationCode.gif" class="verficationCode_img">
+              <!--<img src="../assets/image/verificationCode.gif" class="verficationCode_img">-->
+              <img style="margin-left: 50px;" alt="验证码" onclick="this.src='http://localhost:9091/defaultKaptcha?d=' + new Date()*1" src="http://localhost:9091/defaultKaptcha" />
             </div>
           </el-form-item>
           <el-form-item class="login_btn">
@@ -31,7 +32,7 @@
 </template>
 
 <script>
-    import {asyncRoutes} from "../router";
+    import {login, checkCode} from "../api/userApi";
 
     export default {
       name: "Login",
@@ -58,12 +59,28 @@
         };
       },
       methods: {
+        async checkCode(){
+          const {data} = await checkCode(this.loginForm.verificationCode);
+          if(data.status){
+            this.toLogin();
+          }else{
+            this.$message.error(data.message);
+          }
+        },
+        async toLogin(){
+          const {data} = await login(this.loginForm.username, this.loginForm.password);
+          console.log(data);
+          if(data.status){
+            this.$router.push('/main');
+          }else{
+            this.$message.error(data.message);
+          }
+        },
         submitForm(formName) {
           this.$refs[formName].validate((valid) => {
             if (valid) {
-              this.$router.push('/main');
+              this.checkCode();
             } else {
-              console.log('error submit!!');
               return false;
             }
           });

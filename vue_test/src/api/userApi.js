@@ -2,6 +2,35 @@
 import request from '../utils/request';
 import { Message} from 'element-ui';
 
+export const login = (username, password) => {
+  return request({
+    url: '/login',
+    method: 'POST',
+    params: {
+      username,
+      password
+    },
+    xhrFields: {withCredentials: true},
+    crossDomain: true,
+    headers: {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Credentials":true}
+  });
+}
+
+/**
+ * 校验验证码
+ */
+export const checkCode = (code) => {
+  return request({
+    url: '/checkCode',
+    method: 'GET',
+    params: {
+      code
+    },
+    headers: {'showLoading': false} //请求头加上这个不显示loading
+  });
+}
+
+
 /**
  * (已弃用)
  * 分页查询用户
@@ -118,6 +147,12 @@ export const userRoles = (id) => {
   });
 }
 
+/**
+ * 添加用户角色
+ * @param list
+ * @param id
+ * @returns {AxiosPromise}
+ */
 export const addUserRoles = (list, id) => {
   return request({
     url: '/system/tb-user/addUserRoles',

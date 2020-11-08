@@ -32,4 +32,27 @@ public interface TbMenuService extends IService<TbMenu> {
      */
     public List<TbMenu> menuButtonTree();
 
+    /**
+     * 通过角色ID返回菜单权限
+     */
+    public List<TbMenu> getMenuByRoleId(Long roleId);
+
+    /**
+     * 根据ID查询菜单信息
+     * @param id
+     * @return
+     */
+    TbMenu getMenuById(Long id);
+
+    /**
+     * 新增修改菜单信息
+     * @param tbMenu
+     */
+    Boolean saveOrUpdateMenu(TbMenu tbMenu);
+
+    /**
+     * 导出菜单信息Excel
+     * @return
+     */
+    List<TbMenu> exportExcel();
 }

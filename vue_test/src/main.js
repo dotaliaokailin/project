@@ -13,6 +13,7 @@ import store from './store';
 import moment from 'moment';//时间
 import 'default-passive-events';
 import $ from 'jquery';
+import BaiduMap from 'vue-baidu-map';//百度地图
 
 Vue.prototype.$moment = moment;
 // 直接使用 $axios 即可
@@ -22,6 +23,9 @@ Vue.config.productionTip = false;
 Vue.use(ElementUI);
 Vue.use(global_css);
 Vue.use(VueAxios, axios);
+Vue.use(BaiduMap, {
+  ak: 'DmXuOc8B0W7kWxByttUBoDIF0jzeIQT7'
+})
 
 
 
