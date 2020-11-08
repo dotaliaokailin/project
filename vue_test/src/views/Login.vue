@@ -96,7 +96,7 @@
   //登录容器
   .login_container{
     height: 100%;
-    background-color: #ffe6e9;
+y    background-color: #000003;
     //登录盒子
     .login_box{
       height: 400px;
