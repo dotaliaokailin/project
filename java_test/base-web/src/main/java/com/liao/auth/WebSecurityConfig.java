@@ -86,8 +86,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/captcha.jpg**").permitAll()
                 // 服务监控
                 .antMatchers("/actuator/**").permitAll()
+                //验证码
+                .antMatchers("/defaultKaptcha").permitAll()
+                .antMatchers("/checkCode").permitAll()
                 // 其他所有请求需要身份认证
-                //.anyRequest().authenticated()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin().successHandler(new SuccessHandler())
                 ;
 
     }

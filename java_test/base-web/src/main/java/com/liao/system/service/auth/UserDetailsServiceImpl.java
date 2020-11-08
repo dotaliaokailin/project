@@ -68,7 +68,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         System.out.println("authorities = [" + authorities + "]");
         tbUser.setAuthorities(authorities);
         System.out.println("tbUser = [" + tbUser + "]");
-        return tbUser;
-        //return new User(tbUser.getUsername(), tbUser.getPassword(), authorities);
+        //return tbUser;
+        return new User(tbUser.getUsername(), tbUser.getPassword(), authorities);
     }
 }
