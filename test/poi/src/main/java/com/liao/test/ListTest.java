@@ -26,7 +26,7 @@ public class ListTest {
      * 交集
      */
     @Test
-    public void diff(){
+    public void inter(){
         boolean b = list1.retainAll(list2);
         System.out.println(list1); // c
         System.out.println(list2); // e f c
@@ -36,7 +36,7 @@ public class ListTest {
      * 差集
      */
     @Test
-    public void inter(){
+    public void diff(){
         boolean b = list1.removeAll(list2);
         System.out.println(list1); // a b
         System.out.println(list2); // e f c
