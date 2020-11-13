@@ -90,7 +90,7 @@ mybatis-plus:
 
 #阿里云对象存储
 alioss:
-  endpoint: oss-cn-hangzhou.aliyuncs.com
-  accessKeyId: LTAI4G84x1gLGrhfBS57kWY6
-  accessKeySecret: yfHPQT0kvjRGFxBVqeuC9nZC904sjv
-  bucketName: my-spring-test
+  endpoint:
+  accessKeyId:
+  accessKeySecret:
+  bucketName:
