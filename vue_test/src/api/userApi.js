@@ -1,6 +1,7 @@
 /*用户api*/
 import request from '../utils/request';
 import { Message} from 'element-ui';
+import router from '../router';
 
 export const login = (username, password) => {
   return request({
@@ -10,9 +11,13 @@ export const login = (username, password) => {
       username,
       password
     },
-    xhrFields: {withCredentials: true},
-    crossDomain: true,
-    headers: {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Credentials":true}
+  }).then((response) => {
+    if(response.headers.token != undefined){
+      window.localStorage.setItem("token",response.headers.token);
+      router.push('/main');
+    }else{
+      Message.error(response.data);
+    }
   });
 }
 

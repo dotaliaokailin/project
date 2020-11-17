@@ -59,6 +59,7 @@
         };
       },
       methods: {
+        //校验验证码
         async checkCode(){
           const {data} = await checkCode(this.loginForm.verificationCode);
           if(data.status){
@@ -67,15 +68,11 @@
             this.$message.error(data.message);
           }
         },
+        //登陆方法
         async toLogin(){
-          const {data} = await login(this.loginForm.username, this.loginForm.password);
-          console.log(data);
-          if(data.status){
-            this.$router.push('/main');
-          }else{
-            this.$message.error(data.message);
-          }
+          await login(this.loginForm.username, this.loginForm.password);
         },
+        //提交表单
         submitForm(formName) {
           this.$refs[formName].validate((valid) => {
             if (valid) {
@@ -85,6 +82,7 @@
             }
           });
         },
+        //重置表单
         resetForm(formName) {
           this.$refs[formName].resetFields();
         }

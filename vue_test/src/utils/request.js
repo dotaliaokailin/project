@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Message,Loading } from 'element-ui';
 import _ from 'lodash';
+import router from '../router';
 
 //const s6语法
 const instance = axios.create({
@@ -49,6 +50,7 @@ let toHideLoading = _.debounce(()=>{
 
 //添加请求拦截器
 instance.interceptors.request.use(config => {
+  config.headers.Authorization = window.localStorage.getItem("token");
   //判断当前请求是否设置了不显示Loading
   if(config.headers.showLoading !== false){
     showLoading(config.headers.loadingTarget);
