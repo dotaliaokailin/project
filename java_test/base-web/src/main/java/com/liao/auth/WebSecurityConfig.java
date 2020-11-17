@@ -2,6 +2,7 @@ package com.liao.auth;
 
 import com.liao.system.service.auth.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,8 +13,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity //开启Spring Security
@@ -25,12 +30,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
-    /**
-    * 密码加密
-     */
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @Bean
     public PasswordEncoder passwordEncoder(){
        //使用 hash 的加密方式  加密 + 加盐
@@ -41,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         //改用自己重写的userDetailsService
         //speing security明确规定数据库中密码必须加密
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Override
@@ -56,12 +55,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/swagger-resources", // 用来获取api-docs的URI
                 "/swagger-resources/configuration/security", // 安全选项
                 "/swagger-resources/**",
-                "/webjars/**");
+                "/webjars/**",
+                "/doc.html");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
         // 禁用 csrf, 由于使用的是JWT，我们这里不需要csrf
         http.cors().and().csrf().disable()
                 // 解决不允许显示在iframe的问题
@@ -92,8 +91,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 其他所有请求需要身份认证
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().successHandler(new SuccessHandler())
+                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
+                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
+                // 不需要session
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 ;
+    }
 
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        return source;
     }
 }

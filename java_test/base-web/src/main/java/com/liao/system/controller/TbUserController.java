@@ -18,6 +18,7 @@ import com.liao.util.ExcelUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -57,6 +58,7 @@ public class TbUserController {
      */
     @GetMapping("/findUsers")
     @ApiOperation(value = "用户列表", notes = "查询所有用户列表")
+    @PreAuthorize("hasRole('测试用户')")
     public Result findUsers(){
         return Result.ok().data("users", tbUserService.list());
     }

@@ -41,7 +41,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println("username = [" + username + "]");
         if(StringUtils.isEmpty(username)){
             throw new RuntimeException("用户名不能为空");
         }
@@ -49,13 +48,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if(null == tbUser){
             throw new UsernameNotFoundException(String.format("%s用户不存在", username));
         }
-        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         List<TbUserRole> roles = tbUserRoleService.listByUserId(tbUser.getId());
         if(!CollectionUtils.isEmpty(roles)){
             roles.forEach(role -> {
                 //用户权限
                 TbRole tbRole = tbRoleService.selectById(role.getRoleId());
-                authorities.add(new SimpleGrantedAuthority(tbRole.getRoleName()));
+                authorities.add(new SimpleGrantedAuthority("ROLE_"+tbRole.getRoleName()));
                 //菜单
                 List<TbMenu> menus = tbMenuService.getMenuByRoleId(tbRole.getId());
                 if(!CollectionUtils.isEmpty(menus)){
@@ -65,10 +64,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 }
             });
         }
-        System.out.println("authorities = [" + authorities + "]");
         tbUser.setAuthorities(authorities);
         System.out.println("tbUser = [" + tbUser + "]");
-        //return tbUser;
-        return new User(tbUser.getUsername(), tbUser.getPassword(), authorities);
+        return tbUser;
+        //return new User(tbUser.getUsername(), tbUser.getPassword(), authorities);
     }
 }

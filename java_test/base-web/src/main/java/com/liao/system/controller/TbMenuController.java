@@ -11,6 +11,7 @@ import com.liao.util.ExcelUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -45,6 +46,7 @@ public class TbMenuController {
 
     @GetMapping("/menuTree")
     @ApiOperation(value = "所有菜单树信息", notes = "获取所有菜单树信息")
+    @PreAuthorize("hasRole('测试用户')")
     public Result menuTree(){
         List<TbMenu> tbMenus = tbMenuService.menuTree();
         if(!CollectionUtils.isEmpty(tbMenus)){
