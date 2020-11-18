@@ -1,10 +1,10 @@
 package com.liao.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.liao.response.Result;
-import com.liao.response.ResultCodeEnum;
+import com.liao.provider.ApplicationContextProvider;
 import com.liao.system.pojo.TbUser;
 import com.liao.util.JWTTokenUtil;
+import com.liao.util.RedisUtil;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,18 +16,20 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * jwt过滤认证方式
  */
+
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private AuthenticationManager authenticationManager;
 
+    private RedisUtil redisUtil;
+
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
+        this.redisUtil = ApplicationContextProvider.getBean(RedisUtil.class);
         //这里要调用/login不然跳不到spring security得login页面
         super.setFilterProcessesUrl("/login");
     }
@@ -59,6 +61,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setHeader("Access-Control-Expose-Headers", "token");
         // 按照jwt的规定，最后请求的格式应该是 `Bearer token`
         response.setHeader("token", JWTTokenUtil.TOKEN_PREFIX + token);
+        //存放redis
+        redisUtil.sSetAndTime("token", 3600, token);
     }
 
     // 这是验证失败时候调用的方法

@@ -8,6 +8,7 @@ import com.liao.system.service.TbMenuService;
 import com.liao.system.service.TbRoleService;
 import com.liao.system.service.TbUserRoleService;
 import com.liao.system.service.TbUserService;
+import com.liao.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,9 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -33,6 +32,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private TbUserRoleService tbUserRoleService;
     @Autowired
     private TbMenuService tbMenuService;
+    @Autowired
+    private RedisUtil redisUtil;
     /**
      * 通过用户名查询用户信息
      * @param username
@@ -50,6 +51,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         List<TbUserRole> roles = tbUserRoleService.listByUserId(tbUser.getId());
+        Set<TbMenu> menuSet = new HashSet<>();
         if(!CollectionUtils.isEmpty(roles)){
             roles.forEach(role -> {
                 //用户权限
@@ -60,13 +62,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 if(!CollectionUtils.isEmpty(menus)){
                     menus.forEach(menu -> {
                         authorities.add(new SimpleGrantedAuthority(menu.getPerms()));
+                        menuSet.add(menu);
                     });
                 }
             });
         }
+        redisUtil.sSetAndTime("menu:"+tbUser.getUsername(), 3600,menuSet);
         tbUser.setAuthorities(authorities);
-        System.out.println("tbUser = [" + tbUser + "]");
         return tbUser;
-        //return new User(tbUser.getUsername(), tbUser.getPassword(), authorities);
     }
 }

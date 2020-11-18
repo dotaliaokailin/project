@@ -8,6 +8,8 @@ import com.liao.system.pojo.TbMenu;
 import com.liao.system.service.TbMenuService;
 import com.liao.system.service.TbRoleMenuService;
 import com.liao.util.ExcelUtil;
+import com.liao.util.JWTTokenUtil;
+import com.liao.util.RedisUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +20,10 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -37,6 +41,8 @@ public class TbMenuController {
     private TbMenuService tbMenuService;
     @Autowired
     private TbRoleMenuService tbRoleMenuService;
+    @Autowired
+    private RedisUtil redisUtil;
 
     @GetMapping("/menus")
     @ApiOperation(value = "所有菜单信息", notes = "获取所有菜单信息")
@@ -47,7 +53,11 @@ public class TbMenuController {
     @GetMapping("/menuTree")
     @ApiOperation(value = "所有菜单树信息", notes = "获取所有菜单树信息")
     @PreAuthorize("hasRole('测试用户')")
-    public Result menuTree(){
+    public Result menuTree(HttpServletRequest request){
+        //String header = request.getHeader(JWTTokenUtil.TOKEN_HEADER);
+        //String token = header.replace(JWTTokenUtil.TOKEN_PREFIX, "");
+        //String username = JWTTokenUtil.getUsername(token);
+        //Set<Object> tbMenus = redisUtil.sGet("menu:" + username);
         List<TbMenu> tbMenus = tbMenuService.menuTree();
         if(!CollectionUtils.isEmpty(tbMenus)){
             return Result.ok().data("menuTree",tbMenus);

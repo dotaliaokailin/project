@@ -35,6 +35,7 @@ public enum ResultCodeEnum implements CustomResultCode{
     PARAM_NOT_COMPLETE(1004, "参数缺失"),
 
     /* 用户错误 */
+    USER_TOKEN_EXPIRATION(2000, "token已过期，请重新登陆"),
     USER_NOT_LOGIN(2001, "用户未登录"),
     USER_ACCOUNT_EXPIRED(2002, "账号已过期"),
     USER_CREDENTIALS_ERROR(2003, "密码错误"),
