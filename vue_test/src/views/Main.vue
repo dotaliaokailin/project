@@ -6,12 +6,12 @@
         <span class="main_top_left_title">管理后台</span>
       </div>
       <div class="main_top_right_box">
-        <el-dropdown>
+        <el-dropdown @command="handleCommand">
           <img src="../assets/image/logo.gif">
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-house">系统首页</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-ship">交流讨论</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-switch-button">注销</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-house" command="1">系统首页</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-ship" command="2">交流讨论</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-switch-button" command="3">注销</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -38,6 +38,7 @@
 <script>
     import {menuTree} from '../api/menuApi';
     import MenuTree from '../components/MenuTree';//菜单树
+    import {logout} from '../api/userApi';
     export default {
       name: "Main",
       data(){
@@ -54,6 +55,12 @@
         MenuTree
       },
       methods: {
+        handleCommand(command) {
+          if(command == 3){
+            logout();
+            this.$message('成功登出');
+          }
+        },
         handleOpen(key, keyPath) {
           //console.log(key, keyPath);
         },

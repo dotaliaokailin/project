@@ -21,6 +21,17 @@ export const login = (username, password) => {
   });
 }
 
+export const logout = () => {
+  return request({
+    url: '/logout',
+    method: 'GET',
+  }).then((response) => {
+    window.localStorage.removeItem("token");
+    router.push('/login');
+  });
+}
+
+
 /**
  * 校验验证码
  */

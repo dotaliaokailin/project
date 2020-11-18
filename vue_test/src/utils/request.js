@@ -72,6 +72,10 @@ instance.interceptors.response.use(
     if(response.config.headers.showLoading !== false){
       hideLoading();
     }
+    if(response.data.code == 2000){
+      window.localStorage.removeItem("token");
+      router.push("/login");
+    }
     return response;
   },
   error => {
@@ -80,9 +84,14 @@ instance.interceptors.response.use(
       hideLoading();
     }
     if(error.response && error.response.data && error.response.data.message) {
-      var jsonObj = JSON.parse(error.response.data.message);
+      let jsonObj = JSON.parse(error.response.data.message);
       Message.error(jsonObj.message);
     }else{
+      if(error.response.data.status == 403){
+        window.localStorage.removeItem("token");
+        router.push("/login");
+        return;
+      }
       Message.error(error.message);
     }
     return Promise.reject(error);
