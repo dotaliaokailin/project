@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -117,6 +119,28 @@ public class TbMenuServiceImpl extends ServiceImpl<TbMenuMapper, TbMenu> impleme
     @Override
     public List<TbMenu> exportExcel() {
         return this.baseMapper.exportExcel();
+    }
+
+    /**
+     * 根据用户菜单过滤菜单树
+     *
+     * @param tbMenus
+     * @param menus
+     * @return
+     */
+    @Override
+    public List<TbMenu> filterMenuTree(List<TbMenu> tbMenus, Set<Long> menus) {
+        if(CollectionUtils.isEmpty(menus)){
+            return null;
+        }
+        List<TbMenu> menuList = tbMenus.stream().filter(tbMenu -> menus.contains(tbMenu.getId())).collect(Collectors.toList());
+        menuList.forEach(c -> {
+            List<TbMenu> children = c.getChildren();
+            if(!CollectionUtils.isEmpty(children)){
+                c.setChildren(this.filterMenuTree(children, menus));
+            }
+        });
+        return menuList;
     }
 
     /**

@@ -1,12 +1,15 @@
 package com.liao.system.controller;
 
 
+import cn.hutool.core.util.ArrayUtil;
 import com.liao.handler.BusinessException;
 import com.liao.response.Result;
 import com.liao.response.ResultCodeEnum;
 import com.liao.system.pojo.TbMenu;
-import com.liao.system.service.TbMenuService;
-import com.liao.system.service.TbRoleMenuService;
+import com.liao.system.pojo.TbRole;
+import com.liao.system.pojo.TbUser;
+import com.liao.system.pojo.TbUserRole;
+import com.liao.system.service.*;
 import com.liao.util.ExcelUtil;
 import com.liao.util.JWTTokenUtil;
 import com.liao.util.RedisUtil;
@@ -14,16 +17,21 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -42,7 +50,12 @@ public class TbMenuController {
     @Autowired
     private TbRoleMenuService tbRoleMenuService;
     @Autowired
-    private RedisUtil redisUtil;
+    private TbUserRoleService tbUserRoleService;
+    @Autowired
+    private TbRoleService tbRoleService;
+    @Autowired
+    private TbUserService tbUserService;
+
 
     @GetMapping("/menus")
     @ApiOperation(value = "所有菜单信息", notes = "获取所有菜单信息")
@@ -52,15 +65,30 @@ public class TbMenuController {
 
     @GetMapping("/menuTree")
     @ApiOperation(value = "所有菜单树信息", notes = "获取所有菜单树信息")
-    @PreAuthorize("hasRole('测试用户')")
+    @PreAuthorize("hasRole('普通用户')")
     public Result menuTree(HttpServletRequest request){
-        //String header = request.getHeader(JWTTokenUtil.TOKEN_HEADER);
-        //String token = header.replace(JWTTokenUtil.TOKEN_PREFIX, "");
-        //String username = JWTTokenUtil.getUsername(token);
-        //Set<Object> tbMenus = redisUtil.sGet("menu:" + username);
         List<TbMenu> tbMenus = tbMenuService.menuTree();
         if(!CollectionUtils.isEmpty(tbMenus)){
-            return Result.ok().data("menuTree",tbMenus);
+            TbUser tbUser = tbUserService.selectByUsername(JWTTokenUtil.getUsername(request.getHeader(JWTTokenUtil.TOKEN_HEADER).replace(JWTTokenUtil.TOKEN_PREFIX,"")));
+            List<TbUserRole> roles = tbUserRoleService.listByUserId(tbUser.getId());
+            Set<Long> menuSet = new HashSet<>();
+            Set<String> buttonSet = new HashSet<>();
+            if(!CollectionUtils.isEmpty(roles)){
+                roles.forEach(role -> {
+                    //菜单
+                    List<TbMenu> menus = tbMenuService.getMenuByRoleId(tbRoleService.selectById(role.getRoleId()).getId());
+                    if(!CollectionUtils.isEmpty(menus)){
+                        menus.forEach(menu -> {
+                            if("0".equals(menu.getType())){
+                                menuSet.add(menu.getId());//菜单
+                            }else{
+                                buttonSet.add(menu.getPerms());//按钮
+                            }
+                        });
+                    }
+                });
+            }
+            return Result.ok().data("menuTree",tbMenuService.filterMenuTree(tbMenus, menuSet)).data("buttonTree", (buttonSet));
         }else{
             throw new BusinessException(ResultCodeEnum.MENU_NOT_FOUND_PAGE.getCode(), ResultCodeEnum.MENU_NOT_FOUND_PAGE.getMessage());
         }

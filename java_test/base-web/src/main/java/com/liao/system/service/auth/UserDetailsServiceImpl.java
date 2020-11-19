@@ -51,7 +51,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         List<TbUserRole> roles = tbUserRoleService.listByUserId(tbUser.getId());
-        Set<TbMenu> menuSet = new HashSet<>();
         if(!CollectionUtils.isEmpty(roles)){
             roles.forEach(role -> {
                 //用户权限
@@ -61,13 +60,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 List<TbMenu> menus = tbMenuService.getMenuByRoleId(tbRole.getId());
                 if(!CollectionUtils.isEmpty(menus)){
                     menus.forEach(menu -> {
-                        authorities.add(new SimpleGrantedAuthority(menu.getPerms()));
-                        menuSet.add(menu);
+                        if(!StringUtils.isEmpty(menu.getPerms())){
+                            authorities.add(new SimpleGrantedAuthority(menu.getPerms()));
+                        }
                     });
                 }
             });
         }
-        redisUtil.sSetAndTime("menu:"+tbUser.getUsername(), 3600,menuSet);
         tbUser.setAuthorities(authorities);
         return tbUser;
     }

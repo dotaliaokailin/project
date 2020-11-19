@@ -54,7 +54,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         //拿到roles
         StringBuffer roles = new StringBuffer("");
         tbUser.getAuthorities().forEach(role -> roles.append(role.getAuthority()+","));
-        String role = roles.substring(0, roles.length() - 2);
+        String role = roles.length() > 0 ? roles.substring(0, roles.length() - 2) : null;
         // 根据用户名，角色创建token
         String token = JWTTokenUtil.createToken(tbUser.getUsername(), role, false);
         //设置这个前端才能拿到请求头

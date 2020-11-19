@@ -23,7 +23,7 @@ public interface TbMenuMapper extends BaseMapper<TbMenu> {
     @Select("select * from tb_menu where parent_id = #{parentId} order by order_num")
     public List<TbMenu> findMenuByParentId(Long parentId);
 
-    @Select("select * from tb_menu m where m.id in (select rm.menu_id from tb_role_menu rm where rm.role_id = #{roleId}) and m.available = 1 and m.perms is not null and perms != ''")
+    @Select("select * from tb_menu m where m.id in (select rm.menu_id from tb_role_menu rm where rm.role_id = #{roleId})")
     List<TbMenu> getMenuByRoleId(Long roleId);
 
     @Select("select *, (select menu_name  from tb_menu where id = m.parent_id) as parentName from tb_menu m where m.id = #{id}")

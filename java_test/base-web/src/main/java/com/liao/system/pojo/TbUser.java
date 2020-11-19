@@ -12,6 +12,7 @@ import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
@@ -137,6 +138,20 @@ public class TbUser implements Serializable, UserDetails {
     @TableField(exist = false)
     @ExcelProperty(value = "启用禁用", index = 7)
     private String statusName;
+
+    /**
+     * 用户拥有的菜单Id集合
+     */
+    @TableField(exist = false)
+    @ExcelIgnore
+    private Set<Long> menus;
+
+    /**
+     * 用户拥有的按钮权限名称集合
+     */
+    @TableField(exist = false)
+    @ExcelIgnore
+    private Set<String> buttons;
 
     @TableField(exist = false)
     @ExcelIgnore

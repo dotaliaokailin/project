@@ -4,6 +4,7 @@ import com.liao.system.pojo.TbMenu;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -55,4 +56,12 @@ public interface TbMenuService extends IService<TbMenu> {
      * @return
      */
     List<TbMenu> exportExcel();
+
+    /**
+     * 根据用户菜单过滤菜单树
+     * @param tbMenus
+     * @param menus
+     * @return
+     */
+    List<TbMenu> filterMenuTree(List<TbMenu> tbMenus, Set<Long> menus);
 }
