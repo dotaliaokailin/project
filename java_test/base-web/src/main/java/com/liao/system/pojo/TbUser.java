@@ -139,20 +139,6 @@ public class TbUser implements Serializable, UserDetails {
     @ExcelProperty(value = "启用禁用", index = 7)
     private String statusName;
 
-    /**
-     * 用户拥有的菜单Id集合
-     */
-    @TableField(exist = false)
-    @ExcelIgnore
-    private Set<Long> menus;
-
-    /**
-     * 用户拥有的按钮权限名称集合
-     */
-    @TableField(exist = false)
-    @ExcelIgnore
-    private Set<String> buttons;
-
     @TableField(exist = false)
     @ExcelIgnore
     private Collection<SimpleGrantedAuthority> authorities;
