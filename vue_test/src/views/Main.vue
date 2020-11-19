@@ -73,7 +73,8 @@
         async getMenuDate() {
           const {data}= await menuTree();
           if(data.status){
-            this.menuList = data.data.menuTree;
+            this.menuList = data.data.menuTree;//侧边栏
+            this.$store.commit("buttons", data.data.buttonTree);//按钮权限
           }
         }
       },

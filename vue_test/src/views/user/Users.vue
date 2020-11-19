@@ -43,8 +43,8 @@
           <el-form-item  style="padding-left: 40px">
             <el-button icon="el-icon-refresh" @click="resetUserVo">重置</el-button>
             <el-button type="primary" icon="el-icon-search" @click="selectUserVo">查询</el-button>
-            <el-button type="success" icon="el-icon-plus" @click="show('')">添加</el-button>
-            <el-button type="info" icon="el-icon-download" @click="exportExcel">导出</el-button>
+            <el-button v-hasPermission="'user:add'" type="success" icon="el-icon-plus" @click="show('')">添加</el-button>
+            <el-button v-hasPermission="'user:export'" type="info" icon="el-icon-download" @click="exportExcel">导出</el-button>
           </el-form-item>
         </el-form>
         <!-- table -->

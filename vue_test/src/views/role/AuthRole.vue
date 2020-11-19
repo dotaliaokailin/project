@@ -7,6 +7,8 @@
         :data="menus"
         show-checkbox
         node-key="id"
+        check-strictly
+        accordion
         :default-checked-keys="menuIds">
       </el-tree>
       <div slot="footer">

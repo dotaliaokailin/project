@@ -14,6 +14,12 @@ import moment from 'moment';//时间
 import 'default-passive-events';
 import $ from 'jquery';
 import BaiduMap from 'vue-baidu-map';//百度地图
+import { hasPermission } from './utils/permissionDirect'
+
+const Plugins = [ hasPermission ]
+Plugins.map((plugin) => {
+  Vue.use(plugin)
+})
 
 Vue.prototype.$moment = moment;
 // 直接使用 $axios 即可
