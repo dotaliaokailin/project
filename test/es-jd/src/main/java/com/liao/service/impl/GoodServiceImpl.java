@@ -95,8 +95,8 @@ public class GoodServiceImpl implements GoodService {
             SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
             //设置超时间30秒
             searchSourceBuilder.timeout(new TimeValue(30, TimeUnit.SECONDS));
-            //起始页
-            searchSourceBuilder.from(pageIndex);
+            //起始页 默认0为第一个数据
+            searchSourceBuilder.from(pageIndex - 1);
             //页码容量
             searchSourceBuilder.size(pageSize);
             //设置高亮
