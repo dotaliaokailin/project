@@ -1,4 +1,9 @@
 package com.liao.util;
 
-public class ElasticSearchCont {
+/**
+ * elastic search 常量
+ */
+public class ElasticSearchConst {
+
+    public static final String IMG_INDEX = "img_index";
 }

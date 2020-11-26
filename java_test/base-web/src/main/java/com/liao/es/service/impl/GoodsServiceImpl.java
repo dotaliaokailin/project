@@ -1,10 +1,10 @@
-package com.liao.service.impl;
+package com.liao.es.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.liao.pojo.Good;
-import com.liao.service.GoodService;
-import com.liao.util.EsConst;
-import com.liao.util.JsoupUtil;
+import com.liao.es.pojo.Goods;
+import com.liao.es.service.GoodsService;
+import com.liao.es.util.JsoupUtil;
+import com.liao.util.ElasticSearchConst;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexRequest;
@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +38,7 @@ import java.util.concurrent.TimeUnit;
  * 商品实现类
  */
 @Service
-public class GoodServiceImpl implements GoodService {
+public class GoodsServiceImpl implements GoodsService {
     @Autowired
     private RestHighLevelClient restHighLevelClient;
     @Autowired
@@ -55,10 +56,10 @@ public class GoodServiceImpl implements GoodService {
             //设置超时时间120s
             bulkRequest.timeout(new TimeValue(2, TimeUnit.MINUTES));
             //爬取京东数据
-            List<Good> goodList = jsoupUtil.parse(keyword);
+            List<Goods> goodList = jsoupUtil.parse(keyword);
             goodList.forEach(good -> {
                 bulkRequest.add(
-                        new IndexRequest(EsConst.GOODS)
+                        new IndexRequest(ElasticSearchConst.IMG_INDEX)
                         .source(JSON.toJSONString(good), XContentType.JSON)
                 );
             });
@@ -67,12 +68,6 @@ public class GoodServiceImpl implements GoodService {
         } catch (IOException e) {
             e.printStackTrace();
             return false;
-        } finally {
-            try {
-                restHighLevelClient.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -96,13 +91,11 @@ public class GoodServiceImpl implements GoodService {
                 pageSize = 10;
             }
             //构建查询请求
-            SearchRequest searchRequest = new SearchRequest(EsConst.GOODS);
+            SearchRequest searchRequest = new SearchRequest(ElasticSearchConst.IMG_INDEX);
             //查询source构造器
             SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-            //设置超时间30秒
-            searchSourceBuilder.timeout(new TimeValue(30, TimeUnit.SECONDS));
             //起始页
-            searchSourceBuilder.from(pageIndex);
+            searchSourceBuilder.from(pageIndex - 1);
             //页码容量
             searchSourceBuilder.size(pageSize);
             //设置高亮
@@ -110,22 +103,26 @@ public class GoodServiceImpl implements GoodService {
             highlightBuilder.field("title");
             highlightBuilder.preTags("<span style='color:red'>");
             highlightBuilder.postTags("</span>");
-            //highlightBuilder.requireFieldMatch(false);//如果要多个字段高亮,这项要为false
+            highlightBuilder.requireFieldMatch(false);//如果要多个字段高亮,这项要为false
             searchSourceBuilder.highlighter(highlightBuilder);
             //查询构造器，精准匹配
             TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery("title", keyword);
             //设置查询构造器
             searchSourceBuilder.query(termQueryBuilder);
+            //设置超时间30秒
+            searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
+            //执行搜索
             searchRequest.source(searchSourceBuilder);
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+            System.out.println(JSON.toJSONString(searchResponse));
             for (SearchHit hit : searchResponse.getHits().getHits()) {
                 Map<String, Object> sourceAsMap = hit.getSourceAsMap();
                 //高亮字段
                 Map<String, HighlightField> highlightFields = hit.getHighlightFields();
                 HighlightField title = highlightFields.get("title");
-                Text[] fragments = title.getFragments();
                 String text = "";
-                if(null != fragments){
+                if(null != title){
+                    Text[] fragments = title.getFragments();
                     for (Text fragment : fragments) {
                         text += fragment;
                     }
@@ -135,18 +132,13 @@ public class GoodServiceImpl implements GoodService {
                 goods.add(sourceAsMap);
             }
             //查询总数
-            CountRequest countRequest = new CountRequest(EsConst.GOODS);
+            CountRequest countRequest = new CountRequest(ElasticSearchConst.IMG_INDEX);
             countRequest.query(termQueryBuilder);
             CountResponse countResponse = restHighLevelClient.count(countRequest, RequestOptions.DEFAULT);
             total = countResponse.getCount();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            try {
-                restHighLevelClient.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             map.put("goods", goods);
             map.put("total", total);
             return map;
