@@ -67,6 +67,12 @@ public class GoodServiceImpl implements GoodService {
         } catch (IOException e) {
             e.printStackTrace();
             return false;
+        } finally {
+            try {
+                restHighLevelClient.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -136,6 +142,11 @@ public class GoodServiceImpl implements GoodService {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
+            try {
+                restHighLevelClient.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             map.put("goods", goods);
             map.put("total", total);
             return map;
