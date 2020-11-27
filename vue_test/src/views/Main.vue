@@ -1,19 +1,28 @@
 <template>
   <el-container class="main_container">
-    <el-header>
+    <el-header :style="{'background-color': backgroundColor}">
       <div class="main_top_left_box">
         <img src="../assets/image/logo.gif">
         <span class="main_top_left_title">管理后台</span>
       </div>
-      <div class="main_top_right_box">
-        <el-dropdown @command="handleCommand">
-          <img src="../assets/image/logo.gif">
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-house" command="1">系统首页</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-ship" command="2">交流讨论</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-switch-button" command="3">注销</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
+      <div class="main_top_center_box">
+        <el-color-picker
+          @change='handleChange'
+          v-model="color"
+          show-alpha
+          size="mini"
+          :predefine="predefineColors">
+        </el-color-picker>
+        <div class="main_top_right_box">
+          <el-dropdown @command="handleCommand">
+            <img src="../assets/image/logo.gif">
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item icon="el-icon-house" command="1">系统首页</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-ship" command="2">交流讨论</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-switch-button" command="3">注销</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
       </div>
     </el-header>
     <el-container>
@@ -46,7 +55,25 @@
           activePath : '/welcome',
           isCollapse : false,
           sidebar_i : 'el-icon-d-arrow-left',
-          menuList: []
+          menuList: [],
+          color: 'rgba(255, 69, 0, 0.68)',
+          backgroundColor: '#409EFF',
+          predefineColors: [
+            '#ff4500',
+            '#ff8c00',
+            '#ffd700',
+            '#90ee90',
+            '#00ced1',
+            '#1e90ff',
+            '#c71585',
+            'rgba(255, 69, 0, 0.68)',
+            'rgb(255, 120, 0)',
+            'hsv(51, 100, 98)',
+            'hsva(120, 40, 94, 0.5)',
+            'hsl(181, 100%, 37%)',
+            'hsla(209, 100%, 56%, 0.73)',
+            '#c7158577'
+          ]
         }
       },
       components:{
@@ -55,6 +82,15 @@
         MenuTree
       },
       methods: {
+        handleChange(value) {
+          if(undefined != value){
+            const reg = /[0-9]\d+/g;
+            const getArr = value.match(reg);
+            let hexStr = '#'+((getArr[0] << 16) | (getArr[1]  << 8) | getArr[2] ).toString(16);
+            window.localStorage.setItem("backgroundColor", hexStr);
+            this.backgroundColor = hexStr;
+          }
+        },
         handleCommand(command) {
           if(command == 3){
             logout();
@@ -87,6 +123,8 @@
         }
         this.activePath = path;
         this.getMenuDate();
+        //主题颜色
+        this.backgroundColor = window.localStorage.getItem("backgroundColor");
       }
     }
 </script>
@@ -140,6 +178,14 @@
       .el-dropdown-link {
         cursor: pointer;
         color: #409EFF;
+      }
+    }
+    //顶部中部盒子
+    .main_top_center_box {
+      display: flex;
+      .el-color-picker {
+        margin-top: 32px;
+        margin-right: 10px;
       }
     }
   }

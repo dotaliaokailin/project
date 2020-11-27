@@ -11,6 +11,7 @@ import Swagger from '../views/other/Swagger';
 import Druid from '../views/other/Druid';
 import BaiduMap from '../views/other/BaiduMap';
 import Welcome from '../views/user/Welcome';
+import Shop from '../views/shop/Shop';
 Vue.use(Router);
 
 const router =  new Router({
@@ -75,6 +76,11 @@ const router =  new Router({
           path: '/baiduMap',
           meta: {title: '百度地图'},
           component: BaiduMap
+        },
+        {
+          path: '/shop',
+          meta: {title: '商品搜索'},
+          component: Shop
         }
       ]
     }
