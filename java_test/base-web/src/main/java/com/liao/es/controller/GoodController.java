@@ -1,12 +1,15 @@
 package com.liao.es.controller;
 
 import com.liao.es.service.GoodsService;
+import com.liao.handler.BusinessException;
+import com.liao.response.Result;
+import com.liao.response.ResultCodeEnum;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,18 +17,50 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/es")
+@Api(value = "商品模块", tags = "商品模块接口")
 public class GoodController {
     @Autowired
     private GoodsService goodsService;
 
+    /**
+     * 爬取商品信息
+     * @param keyword
+     * @return
+     */
     @GetMapping("/parse/{keyword}")
-    public Boolean parse(@PathVariable("keyword") String keyword){
-        return goodsService.parse(keyword);
+    @ApiOperation(value = "爬取商品信息", notes = "爬取商品信息接口")
+    public Result parse(@PathVariable("keyword") String keyword){
+        boolean flag = goodsService.parse(keyword);
+        if(flag)
+            return Result.ok();
+        else
+            return Result.error();
     }
 
-    @GetMapping("/search/{keyword}/{pageIndex}/{pageSize}")
-    public Map<String, Object> search(@PathVariable("keyword") String keyword, @PathVariable("pageIndex") Integer pageIndex, @PathVariable("pageSize") Integer pageSize){
-        return goodsService.search(keyword, pageIndex, pageSize);
+    /**
+     * 分页查询商品
+     * @param keyword
+     * @param pageIndex
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("/search")
+    @ApiOperation(value = "分页查询商品信息", notes = "分页查询商品信息接口")
+    public Result search(@RequestParam("keyword") String keyword, @RequestParam("pageIndex") Integer pageIndex, @RequestParam("pageSize") Integer pageSize){
+        return Result.ok().data(goodsService.search(keyword, pageIndex, pageSize));
     }
 
+    /**
+     * 删除商品
+     */
+    @PostMapping("/del")
+    @ApiOperation(value = "删除商品", notes = "删除商品接口")
+    public Result del(@RequestParam("id") String id){
+        boolean flag = goodsService.del(id);
+        if(flag){
+            return Result.ok().code(ResultCodeEnum.DELETE_SUCCESS.getCode()).message(ResultCodeEnum.DELETE_SUCCESS.getMessage());
+        }else{
+            throw new BusinessException(ResultCodeEnum.DELETE_FAIL.getCode(), ResultCodeEnum.DELETE_FAIL.getMessage());
+        }
+    }
 }

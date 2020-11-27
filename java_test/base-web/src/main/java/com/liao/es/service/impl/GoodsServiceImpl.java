@@ -7,6 +7,8 @@ import com.liao.es.util.JsoupUtil;
 import com.liao.util.ElasticSearchConst;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.delete.DeleteRequest;
+import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
@@ -17,6 +19,8 @@ import org.elasticsearch.client.core.CountResponse;
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.index.query.MatchPhraseQueryBuilder;
+import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.search.SearchHit;
@@ -25,8 +29,10 @@ import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,7 +71,7 @@ public class GoodsServiceImpl implements GoodsService {
             });
             BulkResponse bulkResponse = restHighLevelClient.bulk(bulkRequest, RequestOptions.DEFAULT);
             return !bulkResponse.hasFailures();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -88,14 +94,15 @@ public class GoodsServiceImpl implements GoodsService {
                 pageIndex = 1;
             }
             if(null == pageSize || pageSize < 1){
-                pageSize = 10;
+                pageSize = 8;
             }
+
             //构建查询请求
             SearchRequest searchRequest = new SearchRequest(ElasticSearchConst.IMG_INDEX);
             //查询source构造器
             SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
             //起始页
-            searchSourceBuilder.from(pageIndex - 1);
+            searchSourceBuilder.from((pageIndex - 1) * pageSize);
             //页码容量
             searchSourceBuilder.size(pageSize);
             //设置高亮
@@ -105,18 +112,28 @@ public class GoodsServiceImpl implements GoodsService {
             highlightBuilder.postTags("</span>");
             highlightBuilder.requireFieldMatch(false);//如果要多个字段高亮,这项要为false
             searchSourceBuilder.highlighter(highlightBuilder);
+
+            //查询总数
+            CountRequest countRequest = new CountRequest(ElasticSearchConst.IMG_INDEX);
+
             //查询构造器，精准匹配
-            TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery("title", keyword);
-            //设置查询构造器
-            searchSourceBuilder.query(termQueryBuilder);
+            if(!StringUtils.isEmpty(keyword)){
+                keyword= URLDecoder.decode(keyword, "UTF-8");
+                TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery("title", keyword);
+                //设置查询构造器
+                searchSourceBuilder.query(termQueryBuilder);
+                //查询总数设置精准匹配
+                countRequest.query(termQueryBuilder);
+            }
+
             //设置超时间30秒
             searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
             //执行搜索
             searchRequest.source(searchSourceBuilder);
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
-            System.out.println(JSON.toJSONString(searchResponse));
             for (SearchHit hit : searchResponse.getHits().getHits()) {
                 Map<String, Object> sourceAsMap = hit.getSourceAsMap();
+                sourceAsMap.put("id", hit.getId());
                 //高亮字段
                 Map<String, HighlightField> highlightFields = hit.getHighlightFields();
                 HighlightField title = highlightFields.get("title");
@@ -131,9 +148,7 @@ public class GoodsServiceImpl implements GoodsService {
                 }
                 goods.add(sourceAsMap);
             }
-            //查询总数
-            CountRequest countRequest = new CountRequest(ElasticSearchConst.IMG_INDEX);
-            countRequest.query(termQueryBuilder);
+
             CountResponse countResponse = restHighLevelClient.count(countRequest, RequestOptions.DEFAULT);
             total = countResponse.getCount();
         } catch (IOException e) {
@@ -144,4 +159,28 @@ public class GoodsServiceImpl implements GoodsService {
             return map;
         }
     }
+
+    /**
+     * 删除商品
+     *
+     * @param id
+     */
+    @Override
+    public boolean del(String id) {
+        try{
+            if(StringUtils.isEmpty(id)){
+                return false;
+            }
+            DeleteRequest deleteRequest = new DeleteRequest(ElasticSearchConst.IMG_INDEX);
+            deleteRequest.timeout(new TimeValue(3, TimeUnit.SECONDS));
+            deleteRequest.id(id);
+            DeleteResponse deleteResponse = restHighLevelClient.delete(deleteRequest, RequestOptions.DEFAULT);
+            System.out.println(deleteResponse.status());
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }
