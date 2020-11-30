@@ -56,7 +56,7 @@
           isCollapse : false,
           sidebar_i : 'el-icon-d-arrow-left',
           menuList: [],
-          color: 'rgba(255, 69, 0, 0.68)',
+          color: window.localStorage.getItem("backgroundColor") == "" ? 'rgba(255, 69, 0, 0.68)' : window.localStorage.getItem("backgroundColor"),
           backgroundColor: '#409EFF',
           predefineColors: [
             '#ff4500',
@@ -82,6 +82,7 @@
         MenuTree
       },
       methods: {
+        //监听颜色主题
         handleChange(value) {
           if(undefined != value){
             const reg = /[0-9]\d+/g;
@@ -95,6 +96,8 @@
           if(command == 3){
             logout();
             this.$message('成功登出');
+          }else if(command == 1){
+            this.$router.push('/welcome');
           }
         },
         handleOpen(key, keyPath) {
@@ -119,12 +122,16 @@
         let path = window.sessionStorage.getItem("activePath");
         if(path == '/main'){//如果跳main页面则跳到首页welcome
           path = '/welcome';
-          //this.$router.push('/welcome');
         }
         this.activePath = path;
         this.getMenuDate();
         //主题颜色
         this.backgroundColor = window.localStorage.getItem("backgroundColor");
+      },
+      watch: {//监听url变化,来选中侧边栏
+        '$store.state.activePath': function () {
+          this.activePath = window.sessionStorage.getItem("activePath");
+        }
       }
     }
 </script>
@@ -219,4 +226,11 @@
     line-height: 160px;
   }
 
+  //主题颜色样式
+  .el-color-picker{
+    float: right;
+    position: fixed;
+    bottom: 0px;
+    right: -10px;
+  }
 </style>

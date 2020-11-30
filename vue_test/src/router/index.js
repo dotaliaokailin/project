@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Login from '../views/Login';
 import Main from '../views/Main';
+import NotFound from '../views/NotFound';
 import Users from '../views/user/Users';
 import Roles from '../views/role/Roles';
 import Departments from '../views/depaetment/Departments';
@@ -12,7 +13,9 @@ import Druid from '../views/other/Druid';
 import BaiduMap from '../views/other/BaiduMap';
 import Welcome from '../views/user/Welcome';
 import Shop from '../views/shop/Shop';
+import store from '../store/index';
 Vue.use(Router);
+Vue.use(store);
 
 const router =  new Router({
   mode: 'history',
@@ -26,6 +29,11 @@ const router =  new Router({
       name: 'Login',
       //component: () => import('../views/Login')
       component: Login
+    },
+    {
+      path: '*',
+      meta:{title:'页面未找到'},
+      component: NotFound
     },
     {
       path: '/main',
@@ -89,9 +97,14 @@ const router =  new Router({
 
 //修改动态网页标题 beforeEach 导航钩子，路由改变前触发
 router.beforeEach((to,from,next) =>{
-  window.sessionStorage.setItem("activePath", to.path);
+  store.commit("activePath", to.path);//activePath提交到store
   next();
 })
+
+const originalPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 
 export default router;
 
