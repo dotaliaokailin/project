@@ -12,8 +12,8 @@
             <el-button slot="append" icon="el-icon-search" @click="getRolePage(1, pageSize, roleName)"></el-button>
           </el-input>
           <el-button style="margin-left: 10px" icon="el-icon-refresh" @click="reset">重置</el-button>
-          <el-button type="primary" style="margin-left: 10px" icon="el-icon-plus" @click="show(-1)">添加</el-button>
-          <el-button type="info" style="margin-left: 10px" icon="el-icon-download" @click="exportExcel">导出</el-button>
+          <el-button type="primary" style="margin-left: 10px" icon="el-icon-plus" @click="show(-1)" v-has-permission="'role:add'">添加</el-button>
+          <el-button type="info" style="margin-left: 10px" icon="el-icon-download" @click="exportExcel" v-has-permission="'role:export'">导出</el-button>
         </el-row>
         <!-- table -->
         <el-table
@@ -64,9 +64,9 @@
             label="操作"
             width="317">
             <template slot-scope="scope"><!-- 通过作用域插槽获取scope row信息-->
-              <el-button type="warning" size="small" icon="el-icon-setting" @click="authorizationRole(scope.row.id)">授权</el-button>
-              <el-button type="primary" size="small" icon="el-icon-edit" @click="show(scope.row.id)">编辑</el-button>
-              <el-button type="danger" size="small" icon="el-icon-delete" @click="del(scope.row, scope.$index)">删除</el-button>
+              <el-button type="warning" size="small" icon="el-icon-setting" @click="authorizationRole(scope.row.id)" v-has-permission="'role:authority'">授权</el-button>
+              <el-button type="primary" size="small" icon="el-icon-edit" @click="show(scope.row.id)" v-has-permission="'role:update'">编辑</el-button>
+              <el-button type="danger" size="small" icon="el-icon-delete" @click="del(scope.row, scope.$index)" v-has-permission="'role:delete'">删除</el-button>
             </template>
           </el-table-column>
         </el-table>

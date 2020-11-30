@@ -10,7 +10,7 @@
         <el-input placeholder="请输入商品名称" v-model="keyword" class="input_class" clearable>
           <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
         </el-input>
-        <el-button type="primary" @click="parse">同步入库</el-button>
+        <el-button type="primary" @click="parse" v-has-permission="'shop:add'">同步入库</el-button>
         <el-row :span="24">
           <el-col :span="4" v-for="(shop,index) in goods" :key="index" style="margin: 10px 60px;">
             <div><el-image :src="shop.img" fit="fit" style="width: 100%; height: 100%"></el-image></div>
@@ -18,7 +18,7 @@
             <div style="display: flex; justify-content: space-between">
               <el-tag type="success">{{shop.price}}</el-tag>
               <span style="margin-top: 3px;">
-                <button type="button" class="el-button el-button--text el-button--mini" @click="delShop(shop.id)" :id="shop.id">
+                <button type="button" class="el-button el-button--text el-button--mini" @click="delShop(shop.id)" :id="shop.id" v-has-permission="'shop:delete'">
                   <span>
                     <i class="el-icon-delete" ></i>删除
                   </span>

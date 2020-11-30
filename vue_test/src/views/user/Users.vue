@@ -123,9 +123,9 @@
             label="操作"
             width="300">
             <template slot-scope="scope"><!-- 通过作用域插槽获取scope row信息-->
-            <el-button type="primary" size="small" icon="el-icon-edit" @click="show(scope.row.id)">修改</el-button>
-            <el-button type="danger" size="small" icon="el-icon-delete" @click="del(scope.row, scope.$index)">删除</el-button>
-            <el-button type="warning" size="small" icon="el-icon-setting" @click="showRole(scope.row.id,scope.row.username)">授权</el-button>
+            <el-button type="primary" size="small" icon="el-icon-edit" @click="show(scope.row.id)" v-has-permission="'user:update'">修改</el-button>
+            <el-button type="danger" size="small" icon="el-icon-delete" @click="del(scope.row, scope.$index)" v-has-permission="'user:delete'">删除</el-button>
+            <el-button type="warning" size="small" icon="el-icon-setting" @click="showRole(scope.row.id,scope.row.username)" v-has-permission="'user:assign'">授权</el-button>
             </template>
           </el-table-column>
         </el-table>

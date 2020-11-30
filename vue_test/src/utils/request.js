@@ -76,6 +76,10 @@ instance.interceptors.response.use(
       window.localStorage.removeItem("token");
       router.push("/login");
     }
+    //前端重写刷新令牌
+    if(response.headers.token != undefined){
+      window.localStorage.setItem("token", response.headers.token);
+    }
     return response;
   },
   error => {

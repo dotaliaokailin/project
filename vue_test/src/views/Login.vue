@@ -13,7 +13,7 @@
             <el-input v-model="loginForm.username" prefix-icon="el-icon-user-solid" placeholder="用户名"></el-input>
           </el-form-item>
           <el-form-item prop="password">
-            <el-input v-model="loginForm.password" prefix-icon="el-icon-lock" placeholder="密码"></el-input>
+            <el-input type="password" v-model="loginForm.password" prefix-icon="el-icon-lock" placeholder="密码"></el-input>
           </el-form-item>
           <el-form-item prop="verificationCode">
             <div class="verificationCode_box">
@@ -93,8 +93,9 @@
 <style lang="less" scoped>
   //登录容器
   .login_container{
+    background-image: url(../assets/image/starrySky.jpg);
     height: 100%;
-y    background-color: #000003;
+    background-color: #000003;
     //登录盒子
     .login_box{
       height: 400px;

@@ -12,7 +12,7 @@
       </span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="onClose">取消分配</el-button>
-        <el-button type="primary" @click="handelConfirm">确定分配</el-button>
+        <el-button type="primary" @click="handelConfirm" v-has-permission="'user:assign'">确定分配</el-button>
       </span>
     </el-dialog>
   </div>

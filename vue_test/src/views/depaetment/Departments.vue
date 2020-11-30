@@ -12,8 +12,8 @@
             <el-button slot="append" icon="el-icon-search" @click="getDeptPage(1, pageSize, name)"></el-button>
           </el-input>
           <el-button size="large" style="margin-left: 10px" icon="el-icon-refresh" @click="reset">重置</el-button>
-          <el-button type="primary" style="margin-left: 10px" icon="el-icon-plus" @click="show(0)">添加</el-button>
-          <el-button type="info" style="margin-left: 10px" icon="el-icon-download" @click="exportExcel">导出</el-button>
+          <el-button type="primary" style="margin-left: 10px" icon="el-icon-plus" @click="show(0)" v-has-permission="'department:add'">添加</el-button>
+          <el-button type="info" style="margin-left: 10px" icon="el-icon-download" @click="exportExcel" v-has-permission="'department:export'">导出</el-button>
         </el-row>
         <el-table
           :data="deptList"
@@ -79,8 +79,8 @@
             label="操作"
             width="200">
             <template slot-scope="scope"><!-- 通过作用域插槽获取scope row信息-->
-              <el-button size="small" type="primary" icon="el-icon-edit" @click="show(scope.row.id)">编辑</el-button>
-              <el-button size="small" type="danger" icon="el-icon-delete" @click="del(scope.row, scope.$index)">删除</el-button>
+              <el-button size="small" type="primary" icon="el-icon-edit" @click="show(scope.row.id)" v-has-permission="'department:update'">编辑</el-button>
+              <el-button size="small" type="danger" icon="el-icon-delete" @click="del(scope.row, scope.$index)" v-has-permission="'department:delete'">删除</el-button>
             </template>
           </el-table-column>
         </el-table>

@@ -12,8 +12,8 @@
           placeholder="输入关键字进行过滤"
           v-model="filterText">
         </el-input>
-        <el-button type="primary" icon="el-icon-plus" @click="show(0, true)">父级</el-button>
-        <el-button type="info" icon="el-icon-download" @click="exportMenus()">导出</el-button>
+        <el-button type="primary" icon="el-icon-plus" @click="show(0, true)" v-has-permission="'menu:add'">父级</el-button>
+        <el-button type="info" icon="el-icon-download" @click="exportMenus()" v-has-permission="'menu:export'">导出</el-button>
         <p>菜单权限树</p>
         <el-tree
           :data="data"
@@ -36,17 +36,17 @@
               </span>
             </span>
             <span class="right_span">
-              <button type="button" class="el-button el-button--text el-button--mini" @click="show(data.id, false)">
+              <button type="button" class="el-button el-button--text el-button--mini" @click="show(data.id, false)" v-has-permission="'menu:update'">
                 <span>
                   <i class="el-icon-edit"></i>编辑
                 </span>
               </button>
-              <button type="button" class="el-button el-button--text el-button--mini" @click="show(data.id, true)">
+              <button type="button" class="el-button el-button--text el-button--mini" @click="show(data.id, true)" v-has-permission="'menu:add'">
                 <span>
                   <i class="el-icon-plus"></i>添加
                 </span>
               </button>
-              <button type="button" class="el-button el-button--text el-button--mini" @click="del(data.id, data.menuName)">
+              <button type="button" class="el-button el-button--text el-button--mini" @click="del(data.id, data.menuName)" v-has-permission="'menu:delete'">
                 <span>
                   <i class="el-icon-delete"></i>删除
                 </span>
