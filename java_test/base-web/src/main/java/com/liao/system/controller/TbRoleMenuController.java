@@ -12,6 +12,7 @@ import com.liao.system.service.TbRoleMenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -39,6 +40,7 @@ public class TbRoleMenuController {
 
     @GetMapping("/getMenuByRoleId")
     @ApiOperation(value = "全部菜单集合和某角色的菜单ID集合", notes = "全部菜单集合和某角色的菜单ID集合接口")
+    @PreAuthorize("isAuthenticated()")
     public Result getMenuByRoleId(@RequestParam("id") Long id){
         //拿到角色的菜单关系数据
         List<TbRoleMenu> tbRoleMenus = tbRoleMenuService.getMenuByRoleId(id);
@@ -56,6 +58,7 @@ public class TbRoleMenuController {
     @PostMapping("/save")
     @ApiOperation(value = "保存角色菜单关系操作", notes = "保存角色菜单关系操作接口")
     @Transactional(propagation = Propagation.NESTED)
+    @PreAuthorize("hasAuthority('role:add')")
     public Result save(@RequestBody List<Long> menuIds, @RequestParam("roleId") Long roleId){
         try{
             tbRoleMenuService.deleteByRoleId(roleId);

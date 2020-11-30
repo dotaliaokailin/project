@@ -7,6 +7,7 @@ import com.liao.response.ResultCodeEnum;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class GoodController {
      */
     @GetMapping("/parse/{keyword}")
     @ApiOperation(value = "爬取商品信息", notes = "爬取商品信息接口")
+    @PreAuthorize("hasAnyAuthority('shop:add')")
     public Result parse(@PathVariable("keyword") String keyword){
         boolean flag = goodsService.parse(keyword);
         if(flag)
@@ -46,6 +48,7 @@ public class GoodController {
      */
     @GetMapping("/search")
     @ApiOperation(value = "分页查询商品信息", notes = "分页查询商品信息接口")
+    @PreAuthorize("isAuthenticated()")
     public Result search(@RequestParam("keyword") String keyword, @RequestParam("pageIndex") Integer pageIndex, @RequestParam("pageSize") Integer pageSize){
         return Result.ok().data(goodsService.search(keyword, pageIndex, pageSize));
     }
@@ -55,6 +58,7 @@ public class GoodController {
      */
     @PostMapping("/del")
     @ApiOperation(value = "删除商品", notes = "删除商品接口")
+    @PreAuthorize("hasAuthority('shop:delete')")
     public Result del(@RequestParam("id") String id){
         boolean flag = goodsService.del(id);
         if(flag){

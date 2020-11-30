@@ -59,13 +59,14 @@ public class TbMenuController {
 
     @GetMapping("/menus")
     @ApiOperation(value = "所有菜单信息", notes = "获取所有菜单信息")
+    @PreAuthorize("isAuthenticated()")
     public Result menus(){
         return Result.ok().data("menus",tbMenuService.list());
     }
 
     @GetMapping("/menuTree")
     @ApiOperation(value = "所有菜单树信息", notes = "获取所有菜单树信息")
-    @PreAuthorize("hasRole('普通用户')")
+    @PreAuthorize("isAuthenticated()")
     public Result menuTree(HttpServletRequest request){
         List<TbMenu> tbMenus = tbMenuService.menuTree();
         if(!CollectionUtils.isEmpty(tbMenus)){
@@ -96,6 +97,7 @@ public class TbMenuController {
 
     @GetMapping("/menuButtonTree")
     @ApiOperation(value = "菜单按钮树接口", notes = "菜单按钮树")
+    @PreAuthorize("isAuthenticated()")
     public Result menuButtonTree(){
         //拿到所有的菜单
         List<TbMenu> tbMenus = tbMenuService.menuButtonTree();
@@ -108,6 +110,7 @@ public class TbMenuController {
 
     @GetMapping("/getMenuById")
     @ApiOperation(value = "根据ID查询菜单信息接口", notes = "根据ID查询菜单信息")
+    @PreAuthorize("isAuthenticated()")
     public Result getMenuById(@RequestParam("id") Long id){
         TbMenu tbMenu = tbMenuService.getMenuById(id);
         if(null != tbMenu){
@@ -119,6 +122,7 @@ public class TbMenuController {
 
     @PostMapping("/saveOrUpdate")
     @ApiOperation(value = "新增修改菜单信息接口", notes = "新增修改菜单信息")
+    @PreAuthorize("hasAnyAuthority('menu:add', 'menu:update')")
     public Result saveOrUpdate(@RequestBody TbMenu tbMenu){
         Boolean flag = tbMenuService.saveOrUpdateMenu(tbMenu);
         if(flag){
@@ -131,6 +135,7 @@ public class TbMenuController {
     @GetMapping("/deleteById")
     @ApiOperation(value = "根据DI删除菜单接口", notes = "根据DI删除菜单")
     @Transactional(propagation = Propagation.NESTED)
+    @PreAuthorize("hasAuthority('menu:delete')")
     public Result deleteById(@RequestParam("id") Long id){
         List<TbMenu> childMenus = tbMenuService.findMenusByParentId(id);
         if(!CollectionUtils.isEmpty(childMenus)){
@@ -149,6 +154,7 @@ public class TbMenuController {
 
     @GetMapping("/exportExcel")
     @ApiOperation(value = "导出菜单信息Excel接口", notes = "导出菜单信息Excel")
+    @PreAuthorize("hasAuthority('menu:export')")
     public void exportExcel(HttpServletResponse response){
         try {
             ExcelUtil.download(response, "菜单列表", "菜单列表" , tbMenuService.exportExcel(), TbMenu.class);

@@ -5,6 +5,8 @@ import com.liao.handler.BusinessException;
 import com.liao.provider.ApplicationContextProvider;
 import com.liao.response.Result;
 import com.liao.response.ResultCodeEnum;
+import com.liao.system.pojo.TbUser;
+import com.liao.system.service.TbUserService;
 import com.liao.util.JWTTokenUtil;
 import com.liao.util.RedisUtil;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,10 +26,12 @@ import java.io.IOException;
  */
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     private RedisUtil redisUtil;
+    private TbUserService tbUserService;
 
     public JWTAuthorizationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
         this.redisUtil = ApplicationContextProvider.getBean(RedisUtil.class);
+        this.tbUserService = ApplicationContextProvider.getBean(TbUserService.class);
     }
 
     @Override
@@ -42,7 +46,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
                 return;
             }
             // 如果请求头中有token，则进行解析，并且设置认证信息
-            SecurityContextHolder.getContext().setAuthentication(getAuthentication(tokenHeader));
+            SecurityContextHolder.getContext().setAuthentication(getAuthentication(tokenHeader, response));
             super.doFilterInternal(request, response, chain);
         }catch (Exception e){
             response.setCharacterEncoding("utf-8");    //设置 HttpServletResponse使用utf-8编码
@@ -52,17 +56,21 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     }
 
     // 这里从token中获取用户信息并新建一个token
-    private UsernamePasswordAuthenticationToken getAuthentication(String tokenHeader) {
+    private UsernamePasswordAuthenticationToken getAuthentication(String tokenHeader, HttpServletResponse response) {
         String token = tokenHeader.replace(JWTTokenUtil.TOKEN_PREFIX, "");
         String username = JWTTokenUtil.getUsername(token);
-        //redis判断是否存在该token
-        boolean hasToken = redisUtil.sHasKey("token", token);
-        if(!hasToken){
-            throw new RuntimeException();
-        }
         String roles = JWTTokenUtil.getUserRole(token);
         if (username != null){
-            return new UsernamePasswordAuthenticationToken(username, null, AuthorityUtils.commaSeparatedStringToAuthorityList(roles));
+            //redis判断是否存在该token
+            boolean hasToken = redisUtil.sHasKey("token", token);
+            if(!hasToken){
+                String newToken = JWTTokenUtil.createToken(username, roles, false);
+                response.setHeader("Access-Control-Expose-Headers", "token");
+                response.setHeader("token", JWTTokenUtil.TOKEN_PREFIX + newToken);
+                redisUtil.sSetAndTime("token", 3600 ,newToken);
+            }
+            TbUser tbUser = tbUserService.selectByUsername(username);
+            return new UsernamePasswordAuthenticationToken(username, tbUser.getPassword(), AuthorityUtils.commaSeparatedStringToAuthorityList(roles));
         }
         return null;
     }

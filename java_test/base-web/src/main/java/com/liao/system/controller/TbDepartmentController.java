@@ -12,6 +12,7 @@ import com.liao.util.ExcelUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -39,6 +40,7 @@ public class TbDepartmentController {
     
     @ApiOperation(value = "查询部门和人数", notes = "分组查询部门和人数接口")
     @GetMapping("/findDeptAndCount")
+    @PreAuthorize("hasAnyRole('admin', '部门管理员')")
     public Result findDeptAndCount(){
         List<TbDepartment> departments = tbDepartmentService.findDeptAndCount();
         if(null == departments || departments.size() <= 0){
@@ -49,6 +51,7 @@ public class TbDepartmentController {
 
     @ApiOperation(value = "部门分页查询", notes = "部门分页查询接口")
     @GetMapping("/getDeptPage")
+    @PreAuthorize("hasAnyRole('admin', '部门管理员')")
     public Result getDeptPage(@RequestParam("currentPage") Integer currentPage, @RequestParam("pageSize") Integer pageSize, @RequestParam(value = "name", required = false) String name){
         IPage<TbDepartment> deptPage = tbDepartmentService.getDeptPage(currentPage, pageSize, name);
         if(null != deptPage){
@@ -60,6 +63,7 @@ public class TbDepartmentController {
 
     @ApiOperation(value = "根据ID查询部门信息", notes = "根据ID查询部门信息接口")
     @GetMapping("/getDeptById")
+    @PreAuthorize("hasAnyRole('admin', '部门管理员')")
     public Result getDeptById(@RequestParam("id") Long id){
         TbDepartment dept = tbDepartmentService.getById(id);
         if(null != dept){
@@ -71,6 +75,7 @@ public class TbDepartmentController {
 
     @ApiOperation(value = "新增修改部门信息", notes = "新增修改部门信息接口")
     @PostMapping("/saveOrUpdate")
+    @PreAuthorize("hasAnyAuthority('department:add', 'department:update')")
     public Result saveOrUpdate(@RequestBody TbDepartment tbDepartment){
         boolean flag = tbDepartmentService.savoOrUpdateDept(tbDepartment);
         if(flag){
@@ -82,6 +87,7 @@ public class TbDepartmentController {
 
     @ApiOperation(value = "删除部门信息", notes = "根据ID删除部门信息")
     @GetMapping("/delete")
+    @PreAuthorize("hasAuthority('department:delete')")
     @Transactional(propagation = Propagation.NESTED)
     public Result delete(@RequestParam("id") Long id){
        try{
@@ -97,6 +103,7 @@ public class TbDepartmentController {
 
     @ApiOperation(value = "导出部门信息Excel", notes = "导出部门信息Excel接口")
     @GetMapping("/exportExcel")
+    @PreAuthorize("hasAuthority('department:export')")
     public void exportExcel(HttpServletResponse response){
         try {
             ExcelUtil.download(response, "部门列表", "部门列表" , tbDepartmentService.exportExcel(), TbDepartment.class);

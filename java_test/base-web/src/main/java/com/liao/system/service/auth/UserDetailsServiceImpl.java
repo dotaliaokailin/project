@@ -32,8 +32,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private TbUserRoleService tbUserRoleService;
     @Autowired
     private TbMenuService tbMenuService;
-    @Autowired
-    private RedisUtil redisUtil;
     /**
      * 通过用户名查询用户信息
      * @param username

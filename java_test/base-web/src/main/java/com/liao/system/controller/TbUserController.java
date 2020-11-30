@@ -58,7 +58,7 @@ public class TbUserController {
      */
     @GetMapping("/findUsers")
     @ApiOperation(value = "用户列表", notes = "查询所有用户列表")
-    @PreAuthorize("hasRole('测试用户')")
+    @PreAuthorize("isAuthenticated()")
     public Result findUsers(){
         return Result.ok().data("users", tbUserService.list());
     }
@@ -70,6 +70,7 @@ public class TbUserController {
      */
     @GetMapping("/getUserById/{id}")
     @ApiOperation(value = "用户信息", notes = "根据ID查询用户信息")
+    @PreAuthorize("isAuthenticated()")
     public Result getUserById(@PathVariable("id") Long id){
         TbUser user = tbUserService.getById(id);
         if(null != user)
@@ -87,6 +88,7 @@ public class TbUserController {
      */
    @GetMapping("/usersPage")
    @ApiOperation(value = "用户分页", notes = "用户分页列表")
+   @PreAuthorize("isAuthenticated()")
    public Result usersPage(@RequestParam(required = true, defaultValue = "1") Integer currentPage, @RequestParam(required = true, defaultValue = "10") Integer pageSize){
        Page<TbUser> page = tbUserService.page(new Page<>(currentPage, pageSize));
        if(null != page)
@@ -105,6 +107,7 @@ public class TbUserController {
      */
     @PostMapping("/findUserPage")
     @ApiOperation(value = "用户条件分页", notes = "用户条件分页列表")
+    @PreAuthorize("isAuthenticated()")
     public Result findUserPage(@RequestParam(required = true, defaultValue = "1") Integer currentPage, @RequestParam(required = true, defaultValue = "10") Integer pageSize
             , @RequestBody UserVo userVo){
         IPage<TbUser> page = tbUserService.findUserPage(currentPage, pageSize, userVo);
@@ -117,6 +120,7 @@ public class TbUserController {
 
     @GetMapping("/findUserById")
     @ApiOperation(value = "根据用户ID查询用户接口", notes = "根据用户ID查询用户")
+    @PreAuthorize("isAuthenticated()")
     public Result findUserById(@RequestParam("id") Long id){
         TbUser tbUser = tbUserService.findUserById(id);
         if(null != tbUser){
@@ -133,6 +137,7 @@ public class TbUserController {
      */
     @PostMapping("/saveOrUpdate")
     @ApiOperation(value = "用户新增修改", notes = "用户新增修改操作")
+    @PreAuthorize("hasAnyAuthority('user:add', 'user:update')")
     public Result saveOrUpdate(@RequestBody TbUser tbUser){
         boolean flag = tbUserService.saveOrUpdateUser(tbUser);
         if(flag)
@@ -148,6 +153,7 @@ public class TbUserController {
      */
     @GetMapping("/deleteUser")
     @ApiOperation(value = "用户删除", notes = "用户删除操作")
+    @PreAuthorize("hasAuthority('user:delete')")
     public Result deleteUser(@RequestParam("id") Long id){
         boolean flag = tbUserService.removeById(id);
         if(flag)
@@ -161,6 +167,7 @@ public class TbUserController {
      */
     @GetMapping("/download")
     @ApiOperation(value = "导出用户列表", notes = "导出用户列表操作")
+    @PreAuthorize("hasAuthority('user:export')")
     public void download(HttpServletResponse response){
         try {
             ExcelUtil.download(response, "用户列表", "用户列表" , tbUserService.exportUsers(), TbUser.class);
@@ -174,6 +181,7 @@ public class TbUserController {
      */
     @GetMapping("/userRoles")
     @ApiOperation(value = "用户所有的角色", notes = "用户所有的角色的集合")
+    @PreAuthorize("hasAuthority('user:assign')")
     public Result userRoles(@RequestParam("id") Long id){
         Map<String, Object> resultMap = new HashMap<>();
         //用户角色表数据转换成long[]数组，用hutool工具转成Long[],Arrays转成List<Long>
@@ -191,6 +199,7 @@ public class TbUserController {
     @PostMapping("/addUserRoles")
     @ApiOperation(value = "操作用户角色", notes = "操作用户角色接口")
     @Transactional(propagation = Propagation.NESTED)
+    @PreAuthorize("hasAuthority('user:assign')")
     public Result addUserRoles(@RequestBody Long[] list, @RequestParam("id") Long id){
         try {
             tbUserRoleService.removeByUserId(id);

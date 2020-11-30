@@ -13,6 +13,7 @@ import com.liao.util.ExcelUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -41,6 +42,7 @@ public class TbRoleController {
 
     @PostMapping("/findRolePage")
     @ApiOperation(value = "角色分页查询接口", notes = "角色分页查询")
+    @PreAuthorize("hasAnyRole('admin', '角色管理员')")
     public Result findRolePage(@RequestParam("currentPage") Integer currentPage, @RequestParam("pageSize") Integer pageSize, @RequestParam("roleName") String roleName){
         Page<TbRole> page = tbRoleService.findRolePage(currentPage, pageSize, roleName);
         if(null != page)
@@ -51,6 +53,7 @@ public class TbRoleController {
 
     @GetMapping("/findRoleById")
     @ApiOperation(value = "根据ID查询角色信息接口", notes = "根据ID查询角色信息")
+    @PreAuthorize("hasAnyRole('admin', '角色管理员')")
     public Result findRoleById(@RequestParam("id") Long id){
         TbRole tbRole = tbRoleService.selectById(id);
         if(null != tbRole)
@@ -61,6 +64,7 @@ public class TbRoleController {
 
     @PostMapping("/saveOrUpdate")
     @ApiOperation(value = "新增修改角色信息接口", notes = "新增修改角色信息")
+    @PreAuthorize("hasAnyAuthority('role:add', 'role:update')")
     public Result saveOrUpdate(@RequestBody TbRole tbRole){
         Boolean flag = tbRoleService.saveOrUpdateRole(tbRole);
         if(flag)
@@ -72,6 +76,7 @@ public class TbRoleController {
     @GetMapping("/deleteRoleById")
     @ApiOperation(value = "根据ID删除角色信息接口", notes = "根据ID删除角色信息")
     @Transactional(propagation = Propagation.NESTED)
+    @PreAuthorize("hasAuthority('role:delete')")
     public Result deleteRoleById(@RequestParam("id") Long id){
         boolean flag = tbRoleService.removeById(id);
         if(flag) {
@@ -89,6 +94,7 @@ public class TbRoleController {
 
     @GetMapping("/exportExcel")
     @ApiOperation(value = "导出角色信息表Excel", notes = "导出角色信息表Excel接口")
+    @PreAuthorize("hasAuthority('role:export')")
     public void exportExcel(HttpServletResponse response){
         try {
             ExcelUtil.download(response, "角色列表", "角色列表" , tbRoleService.exportExcel(), TbRole.class);
