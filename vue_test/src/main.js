@@ -14,7 +14,7 @@ import moment from 'moment';//时间
 import 'default-passive-events';
 import $ from 'jquery';
 import BaiduMap from 'vue-baidu-map';//百度地图
-import { hasPermission } from './utils/permissionDirect'
+import { hasPermission } from './utils/permissionDirect';//按钮权限
 
 const Plugins = [ hasPermission ]
 Plugins.map((plugin) => {

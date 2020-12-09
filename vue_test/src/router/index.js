@@ -14,6 +14,7 @@ import BaiduMap from '../views/other/BaiduMap';
 import Welcome from '../views/user/Welcome';
 import Shop from '../views/shop/Shop';
 import store from '../store/index';
+import Notices from '../views/other/Notices';
 Vue.use(Router);
 Vue.use(store);
 
@@ -89,6 +90,11 @@ const router =  new Router({
           path: '/shop',
           meta: {title: '商品搜索'},
           component: Shop
+        },
+        {
+          path: '/notices',
+          meta: {title: '公告管理'},
+          component: Notices
         }
       ]
     }
