@@ -16,6 +16,9 @@ public class CodeGenerator {
     /**
      * <p>
      * 读取控制台内容
+     * 1.D:\git_project\java_test\base-web
+     * 2.system
+     * 3.表名...
      * </p>
      */
     public static String scanner(String tip) {
