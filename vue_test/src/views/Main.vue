@@ -32,7 +32,7 @@
             <el-button class="arrow_btn" :icon="isCollapse ? 'el-icon-d-arrow-right' : 'el-icon-d-arrow-left'" circle></el-button>
           </el-tooltip>
         </div>
-        <el-menu :default-active="activePath" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" :collapse-transition="false" :router="true">
+        <el-menu :default-active="activePath" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" :collapse-transition="false" :router="true" :unique-opened="true">
           <!-- 菜单树-->
           <MenuTree :menuList="menuList"></MenuTree>
         </el-menu>

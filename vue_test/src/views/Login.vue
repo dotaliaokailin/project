@@ -86,6 +86,10 @@
         resetForm(formName) {
           this.$refs[formName].resetFields();
         }
+      },
+      created() {
+        window.localStorage.removeItem("token");
+        window.localStorage.removeItem("buttons");
       }
     }
 </script>

@@ -179,3 +179,13 @@ export const addUserRoles = (list, id) => {
     data: list
   });
 }
+
+/**
+ * 查询所有用户
+ */
+export const findUsers = () => {
+  return request({
+    url: '/system/tb-user/findUsers',
+    method: 'GET',
+  });
+}

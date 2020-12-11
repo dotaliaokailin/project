@@ -1,5 +1,5 @@
 /*菜单api*/
-import request from '../utils/request'
+import request from '../utils/request';
 import {Message} from "element-ui";
 
 /**

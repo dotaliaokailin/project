@@ -18,6 +18,18 @@ import Notices from '../views/other/Notices';
 Vue.use(Router);
 Vue.use(store);
 
+//进度条
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css';
+//进度条configure
+NProgress.configure({
+  easing: 'ease',  // 动画方式
+  speed: 500,  // 递增进度条的速度
+  showSpinner: false, // 是否显示加载ico
+  trickleSpeed: 200, // 自动递增间隔
+  minimum: 0.3 // 初始化时的最小百分比
+})
+
 const router =  new Router({
   mode: 'history',
   routes: [
@@ -103,10 +115,18 @@ const router =  new Router({
 
 //修改动态网页标题 beforeEach 导航钩子，路由改变前触发
 router.beforeEach((to,from,next) =>{
+  // 每次切换页面时，调用进度条
+  NProgress.start();
+  // 若加载时间长且不定，担心进度条走完都没有加载完，可以调用
+  NProgress.inc();//这会以随机数量递增，且永远达不到100%，也可以设指定增量
   store.commit("activePath", to.path);//activePath提交到store
   next();
 })
-
+//当路由进入后：关闭进度条
+router.afterEach(() => {
+  // 在即将进入新的页面组件前，关闭掉进度条
+  NProgress.done();
+})
 const originalPush = Router.prototype.push
 Router.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
