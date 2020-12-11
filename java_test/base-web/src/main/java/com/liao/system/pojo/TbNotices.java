@@ -54,4 +54,6 @@ public class TbNotices implements Serializable {
     @ApiModelProperty(value = "是否放入公告栏",notes = "默认0不放入，1是放入" )
     private Integer isNotices;
 
+    @ApiModelProperty(value = "图片")
+    private String image;
 }

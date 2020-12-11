@@ -1,12 +1,9 @@
 package com.liao.auth;
 
 import com.alibaba.fastjson.JSON;
-import com.liao.handler.BusinessException;
 import com.liao.provider.ApplicationContextProvider;
 import com.liao.response.Result;
 import com.liao.response.ResultCodeEnum;
-import com.liao.system.pojo.TbUser;
-import com.liao.system.service.TbUserService;
 import com.liao.util.JWTTokenUtil;
 import com.liao.util.RedisUtil;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,12 +23,10 @@ import java.io.IOException;
  */
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     private RedisUtil redisUtil;
-    private TbUserService tbUserService;
 
     public JWTAuthorizationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
         this.redisUtil = ApplicationContextProvider.getBean(RedisUtil.class);
-        this.tbUserService = ApplicationContextProvider.getBean(TbUserService.class);
     }
 
     @Override
@@ -69,8 +64,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
                 response.setHeader("token", JWTTokenUtil.TOKEN_PREFIX + newToken);
                 redisUtil.sSetAndTime("token", 3600 ,newToken);
             }
-            TbUser tbUser = tbUserService.selectByUsername(username);
-            return new UsernamePasswordAuthenticationToken(username, tbUser.getPassword(), AuthorityUtils.commaSeparatedStringToAuthorityList(roles));
+            return new UsernamePasswordAuthenticationToken(username, null, AuthorityUtils.commaSeparatedStringToAuthorityList(roles));
         }
         return null;
     }
