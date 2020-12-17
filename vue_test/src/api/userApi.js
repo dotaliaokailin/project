@@ -2,6 +2,7 @@
 import request from '../utils/request';
 import { Message} from 'element-ui';
 import router from '../router';
+import store from '../store';
 
 export const login = (username, password) => {
   return request({
@@ -13,7 +14,8 @@ export const login = (username, password) => {
     },
   }).then((response) => {
     if(response.headers.token != undefined){
-      window.localStorage.setItem("token",response.headers.token);
+      //window.localStorage.setItem("token",response.headers.token);
+      store.commit("token", response.headers.token);//token
       router.push('/main');
     }else{
       Message.error(response.data);
@@ -26,7 +28,8 @@ export const logout = () => {
     url: '/logout',
     method: 'GET',
   }).then((response) => {
-    window.localStorage.removeItem("token");
+    //window.localStorage.removeItem("token");
+    store.commit("token", "");//token
     router.push('/login');
   });
 }

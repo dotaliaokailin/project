@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
     buttons:JSON.parse(window.localStorage.getItem("buttons")) || {},
     activePath: window.sessionStorage.getItem("activePath") || '/welcome',
+    token: window.localStorage.getItem("token") || '',
   },
   mutations: {
     buttons(state,buttons){
@@ -16,6 +17,10 @@ export default new Vuex.Store({
     activePath(state, activePath){
       window.sessionStorage.setItem('activePath', activePath);
       state.activePath = activePath;// 之后才是修改state中的状态
+    },
+    token(state, token){
+      window.localStorage.setItem("token", token);
+      state.token = token;
     }
   },
   actions: {

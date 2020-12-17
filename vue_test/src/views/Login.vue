@@ -88,8 +88,6 @@
         }
       },
       created() {
-        window.localStorage.removeItem("token");
-        window.localStorage.removeItem("buttons");
       }
     }
 </script>
