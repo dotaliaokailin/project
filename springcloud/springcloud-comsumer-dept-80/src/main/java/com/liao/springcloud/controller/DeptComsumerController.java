@@ -14,7 +14,7 @@ public class DeptComsumerController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @RequestMapping(value = "/comsumer/dept/add")
+    @RequestMapping("/comsumer/dept/add")
     public boolean add(Dept dept){
         return restTemplate.postForObject(DEPT_PROVIDER_PREFIX + "/dept/add", dept, Boolean.class);
     }

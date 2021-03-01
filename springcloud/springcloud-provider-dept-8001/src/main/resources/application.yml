@@ -15,7 +15,7 @@ mybatis:
 #spring 配置
 spring:
   application:
-    name: springcloud-provider-dept-8001
+    name: springcloud-provider-dept
   #数据源
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
@@ -23,3 +23,19 @@ spring:
     url: jdbc:mysql://localhost:3306/db01?useUnicode=true&characterEncoding=UTF-8&useSSL=false
     username: root
     password: root
+
+#eureka 客户端配置
+eureka:
+  client:
+    service-url:
+      #单机版
+      #defaultZone: http://localhost:7001/eureka/ #配置eureka服务端地址
+      #集群
+      defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/
+  instance:
+    instance-id: springcloud-provider-dept-8001  #修改eureka上默认客户端的描述
+
+#actuatir 监控信息配置
+info:
+  app.name: 部门服务提供
+  company.name: liao的公司

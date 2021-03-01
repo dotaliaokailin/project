@@ -3,6 +3,8 @@ package com.liao.springcloud.controller;
 import com.liao.springcloud.pojo.Dept;
 import com.liao.springcloud.service.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +16,8 @@ import java.util.List;
 public class DeptController {
     @Autowired
     private DeptService deptService;
+    @Autowired
+    private DiscoveryClient discoveryClient;
 
     @PostMapping("/dept/add")
     public boolean addDept(Dept dept){
@@ -28,5 +32,23 @@ public class DeptController {
     @GetMapping("/dept/list")
     public List<Dept> queryAll(){
         return deptService.queryAll();
+    }
+
+    @GetMapping("/dept/discovery")
+    public Object discovery(){
+        List<String> services = discoveryClient.getServices();
+        System.out.println("services:"+services);
+        List<ServiceInstance> instances = discoveryClient.getInstances("SPRINGCLOUD-PROVIDER-DEPT");
+        instances.forEach(instance -> {
+            System.out.println(
+                    instance.getHost() + "\t" +
+                    instance.getInstanceId() + "\t" +
+                    instance.getScheme() + "\t" +
+                    instance.getServiceId() + "\t" +
+                    instance.getPort() + "\t" +
+                    instance.getUri() + "\t"
+            );
+        });
+        return this.discoveryClient;
     }
 }
