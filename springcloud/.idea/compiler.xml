@@ -11,8 +11,13 @@
         <module name="springcloudeureka7002" />
         <module name="springcloudeureka7001" />
         <module name="springcloudcomsumerdept80" />
+        <module name="springcloud-provider-dept-8003" />
+        <module name="springcloud-provider-dept-8002" />
         <module name="springcloudapi" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="springcloudproviderdept8002" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

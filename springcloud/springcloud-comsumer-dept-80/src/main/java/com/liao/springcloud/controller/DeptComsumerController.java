@@ -9,7 +9,9 @@ import java.util.List;
 
 @RestController
 public class DeptComsumerController {
-    private static final String DEPT_PROVIDER_PREFIX= "http://localhost:8001";
+    //Ribbon,这里的地址，应该是一个变量，通过服务名来访问
+    //private static final String DEPT_PROVIDER_PREFIX= "http://localhost:8001";
+    private static final String DEPT_PROVIDER_PREFIX= "http://SPRINGCLOUD-PROVIDER-DEPT";
     //消费者，不应该有service层
     @Autowired
     private RestTemplate restTemplate;
