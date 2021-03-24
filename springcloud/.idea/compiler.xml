@@ -11,6 +11,9 @@
         <module name="springcloudeureka7002" />
         <module name="springcloudeureka7001" />
         <module name="springcloudcomsumerdept80" />
+        <module name="springcloud-provider-dept-hystrix-8001" />
+        <module name="springcloud-consumer-dept-feign-80" />
+        <module name="springcloud-consumer-hystrix-dashboard-9001" />
         <module name="springcloud-provider-dept-8003" />
         <module name="springcloud-provider-dept-8002" />
         <module name="springcloudapi" />
@@ -19,5 +22,10 @@
     <bytecodeTargetLevel>
       <module name="springcloudproviderdept8002" target="1.8" />
     </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="springcloud-consumer-dept-feign-80" options="" />
+    </option>
   </component>
 </project>
