@@ -1,0 +1,37 @@
+server:
+  port: 9527
+
+spring:
+  application:
+    name: springcloud-zuul
+
+#eureka 客户端配置
+#需要在C:\Windows\System32\drivers\etc\hosts文件下配置
+#  127.0.0.1       eureka7001.com
+#  127.0.0.1       eureka7002.com
+#  127.0.0.1       eureka7003.com
+#  127.0.0.1       www.liao.com
+eureka:
+  client:
+    service-url:
+      #单机版
+      #defaultZone: http://localhost:7001/eureka/ #配置eureka服务端地址
+      #集群
+      defaultZone: http://eureka7002.com:7002/eureka/, http://eureka7001.com:7001/eureka/, http://eureka7003.com:7003/eureka/
+  instance:
+    instance-id: zuul  #修改eureka上默认客户端的描述
+    prefer-ip-address: true #显示ip地址
+
+#actuatir 监控信息配置
+info:
+  app.name: zuul
+  company.name: liao的公司
+
+#zuul
+zuul:
+  routes:
+    myDept.serviceId: springcloud-provider-dept    #提供者服务名
+    myDept.path: /mydept/**                         #地址   http://www.liao.com:9527/mydept/dept/get/1
+  ignored-services: "*"                              #隐藏所有的提供者服务名 http://www.liao.com:9527/springcloud-provider-dept/dept/get/1  将不可用
+  prefix: /liao                                      #设置公用前缀  http://www.liao.com:9527/liao/mydept/dept/get/1
+
