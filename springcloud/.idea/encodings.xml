@@ -4,6 +4,10 @@
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-api" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-comsumer-dept-80" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-config-client-3355" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-config-eureka-7001" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-config-provider-dept-8001" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-config-server-3344" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-consumer-dept-feign-80" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-consumer-hystrix-dashboard-9001" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-eureka-7001" charset="UTF-8" />
