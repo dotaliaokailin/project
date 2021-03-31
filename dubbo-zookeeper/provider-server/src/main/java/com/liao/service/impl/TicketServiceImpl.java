@@ -1,6 +1,6 @@
-package com.liao.server.impl;
+package com.liao.service.impl;
 
-import com.liao.server.TicketService;
+import com.liao.service.TicketService;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.stereotype.Component;
 

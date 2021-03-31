@@ -1,4 +1,4 @@
-package com.liao.server;
+package com.liao.service;
 
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.stereotype.Service;
@@ -7,8 +7,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
     @Reference
     private TicketService ticketService;
-    public void getTicket(){
-        String ticket = ticketService.getTicket();
-        System.out.println(ticket);
+    public String getTicket(){
+        return ticketService.getTicket();
     }
 }
